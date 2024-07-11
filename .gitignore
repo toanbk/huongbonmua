@@ -28,7 +28,7 @@ wp-content/upgrade/
 # Ignore all themes except the one you're working on
 # Replace 'your-theme-name' with your actual theme directory
 wp-content/themes/*
-!wp-content/themes/your-theme-name/
+!wp-content/themes/hot-coffee/
 
 # Ignore uploads except placeholder files
 wp-content/uploads/*
