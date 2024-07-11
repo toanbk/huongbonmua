@@ -20,7 +20,6 @@
 /xmlrpc.php
 
 # Ignore specific wp-content subfolders
-wp-content/plugins/
 wp-content/mu-plugins/
 wp-content/cache/
 wp-content/upgrade/
