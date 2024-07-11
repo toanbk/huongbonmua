@@ -1,0 +1,61 @@
+# WordPress core files
+/wp-admin/
+/wp-includes/
+/index.php
+/license.txt
+/readme.html
+/wp-activate.php
+/wp-blog-header.php
+/wp-comments-post.php
+/wp-config-sample.php
+/wp-config.php
+/wp-cron.php
+/wp-links-opml.php
+/wp-load.php
+/wp-login.php
+/wp-mail.php
+/wp-settings.php
+/wp-signup.php
+/wp-trackback.php
+/xmlrpc.php
+
+# Ignore specific wp-content subfolders
+wp-content/plugins/
+wp-content/mu-plugins/
+wp-content/cache/
+wp-content/upgrade/
+
+# Ignore all themes except the one you're working on
+# Replace 'your-theme-name' with your actual theme directory
+wp-content/themes/*
+!wp-content/themes/your-theme-name/
+
+# Ignore uploads except placeholder files
+wp-content/uploads/*
+!wp-content/uploads/.placeholder
+
+# Ignore log files and databases
+*.log
+*.sql
+*.sqlite
+
+# Ignore OS-generated files
+.DS_Store
+Thumbs.db
+
+# Ignore configuration files
+wp-config.php
+
+# Ignore Composer and Node dependencies
+vendor/
+node_modules/
+
+# Ignore SASS cache files
+.sass-cache
+
+# Ignore IDE/editor config files
+*.sublime-project
+*.sublime-workspace
+.vscode/
+.idea/
+
