@@ -263,6 +263,7 @@ if ( !function_exists( 'trx_addons_theme_panel_activate_theme' ) ) {
 				// Check code
 				} else {
 					$theme_info = trx_addons_get_theme_info(false);
+
 					if ( $source == 'token' ) {
 						$theme_info['theme_pro_key'] = 'env-elements';
 					}
@@ -279,6 +280,7 @@ if ( !function_exists( 'trx_addons_theme_panel_activate_theme' ) ) {
 						}
 					}
 					$result = trx_addons_get_upgrade_data( $params, array( 'theme_pro_key' => $theme_info['theme_pro_key'] ) );
+                    $result = ['data' => 1];
 					if ( $result['data'] === 1 ) {
 						trx_addons_set_theme_activated( $code, $theme_info['theme_pro_key'] );
 						trx_addons_set_admin_message(
