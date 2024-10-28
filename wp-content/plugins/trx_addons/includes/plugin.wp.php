@@ -601,7 +601,7 @@ if ( ! function_exists( 'trx_addons_get_post_reactions' ) ) {
 	 * @return string
 	 */
 	function trx_addons_get_post_reactions( $show = false ) {
-		if ( trx_addons_is_off( apply_filters( 'trx_addons_filter_emotions_allowed', trx_addons_get_option('emotions_allowed') ) ) ) {
+		if ( trx_addons_is_off( apply_filters( 'trx_addons_filter_emotions_allowed', trx_addons_get_option( 'emotions_allowed', 0 ) ) ) ) {
 			return '';
 		}
 		$post_id = get_the_ID();
@@ -676,7 +676,7 @@ if ( ! function_exists( 'trx_addons_show_post_reactions' ) ) {
 	 * @param string $slug  post slug
 	 */
 	function trx_addons_show_post_reactions( $slug ) {
-		if ( trx_addons_is_on( trx_addons_get_option( 'emotions_allowed' ) ) && apply_filters('trx_addons_filter_show_post_reactions', trx_addons_is_single() && ! is_attachment() ) ) {
+		if ( trx_addons_is_on( trx_addons_get_option( 'emotions_allowed', 0 ) ) && apply_filters('trx_addons_filter_show_post_reactions', trx_addons_is_single() && ! is_attachment() ) ) {
 			trx_addons_get_post_reactions( true );
 		}
 	}
@@ -695,7 +695,7 @@ if ( ! function_exists( 'trx_addons_post_class_with_reactions' ) ) {
 	 */
 	function trx_addons_post_class_with_reactions( $classes ) {
 		$post_id = get_the_ID();
-		$emotions_allowed = trx_addons_is_on(trx_addons_get_option('emotions_allowed'));
+		$emotions_allowed = trx_addons_is_on( trx_addons_get_option( 'emotions_allowed', 0 ) );
 		if ( $emotions_allowed ) {
 			$liked = explode( ',', trx_addons_get_cookie( 'trx_addons_emotions' ) );
 			$active = '';
@@ -1203,19 +1203,19 @@ if ( ! function_exists( 'trx_addons_clear_menu_cache' ) ) {
 ------------------------------------------------------------------------------------- */
 
 if ( ! function_exists('trx_addons_action_breadcrumbs') ) {
-	add_action( 'trx_addons_action_breadcrumbs', 'trx_addons_action_breadcrumbs', 10, 2 );
+	add_action( 'trx_addons_action_breadcrumbs', 'trx_addons_action_breadcrumbs', 10, 1 );
 	/**
 	 * Show breadcrumbs path on action 'trx_addons_action_breadcrumbs'
 	 * 
 	 * @hooked trx_addons_action_breadcrumbs
 	 * 
-	 * @param string $before		HTML before breadcrumbs
-	 * @param string $after			HTML after breadcrumbs
+	 * @param array $args	An array with arguments for breadcrumbs
 	 */
-	function trx_addons_action_breadcrumbs( $before = '', $after = '' ) {
-		if ( ( $fdir = trx_addons_get_file_dir( 'templates/tpl.breadcrumbs.php' ) ) != '' ) {
-			include $fdir;
-		}
+	function trx_addons_action_breadcrumbs( $args = array() ) {
+		trx_addons_get_template_part( 'templates/tpl.breadcrumbs.php',
+			'trx_addons_args_show_breadcrumbs',
+			$args
+		);
 	}
 }
 
@@ -1235,8 +1235,8 @@ if ( ! function_exists( 'trx_addons_get_breadcrumbs' ) ) {
 			'home_link' => '',								// Home page link
 			'truncate_title' => 50,							// Truncate all titles to this length (if 0 - no truncate)
 			'truncate_add' => '...',						// Append truncated title with this string
-			'delimiter' => '<span class="breadcrumbs_delimiter"></span>',		// Delimiter between breadcrumbs items
-			'max_levels' => trx_addons_get_option('breadcrumbs_max_level')		// Max categories in the path (0 - unlimited)
+			'delimiter' => '<span class="breadcrumbs_delimiter"></span>',			// Delimiter between breadcrumbs items
+			'max_levels' => trx_addons_get_option( 'breadcrumbs_max_level', 0 )		// Max items in the path (0 - unlimited)
 			), is_array($args) ? $args : array( 'home' => $args )
 		);
 
@@ -1244,7 +1244,10 @@ if ( ! function_exists( 'trx_addons_get_breadcrumbs' ) ) {
 			return '';
 		}
 
-		if ( $args['max_levels'] <= 0 ) {
+		if ( (int)$args['truncate_title'] <= 0 ) {
+			$args['truncate_title'] = 999;
+		}
+		if ( (int)$args['max_levels'] <= 0 ) {
 			$args['max_levels'] = 999;
 		}
 		$level = 1 + ( isset( $args['home'] ) && $args['home'] != '' ? 1 : 0 );	// Current element + Home
@@ -2159,6 +2162,30 @@ if ( ! function_exists('trx_addons_get_post_terms') ) {
 	}
 }
 
+if ( ! function_exists('trx_addons_get_post_reading_time') ) {
+	/**
+	 * Return a post's reading time in minutes
+	 *
+	 * @param string|int $post  post content | ID. If not specified - get content of the current post
+	 *
+	 * @return number  reading time in minutes
+	 */
+	function trx_addons_get_post_reading_time( $post = '' ) {
+		if ( empty( $post ) ) {
+			$post = get_the_ID();
+		}
+		if ( is_numeric( $post ) ) {
+			$post = get_post( $post );
+		}
+		if ( empty( $post ) ) {
+			return 0;
+		}
+		$words = str_word_count( wp_strip_all_tags( $post->post_content ) );
+		$minutes = floor( $words / 200 );
+		return apply_filters( 'trx_addons_filter_post_reading_time', $minutes, $post );
+	}
+}
+
 if ( ! function_exists('trx_addons_get_terms_by_taxonomy_from_db') ) {
 	/**
 	 * Return list of term objects by taxonomy name directly from db
@@ -2769,7 +2796,7 @@ if ( ! function_exists( 'trx_addons_allow_search_for_terms_add_handlers' ) ) {
 	 */
 	function trx_addons_allow_search_for_terms_add_handlers( $force = false ) {
 		static $added = false;
-		if ( ! $added && ( $force || (int)trx_addons_get_option( 'search_for_terms' ) > 0 ) ) {
+		if ( ! $added && ( $force || (int)trx_addons_get_option( 'search_for_terms', 0 ) > 0 ) ) {
 			$added = true;
 			add_filter( 'posts_join',    'trx_addons_allow_search_for_terms_posts_join', 10, 2 );
 			add_filter( 'posts_where',   'trx_addons_allow_search_for_terms_posts_where', 10, 2 );

@@ -39,20 +39,21 @@ class PricingTableWidget extends BaseWidget {
 	protected function register_controls() {
 		/* Content Tab */
 		$this->register_content_header_controls();
-		$this->register_content_pricing_controls();
-		$this->register_content_features_controls();
 		$this->register_content_ribbon_controls();
+		$this->register_content_pricing_controls();
 		$this->register_content_tooltip_controls();
+		$this->register_content_features_controls();
 		$this->register_content_button_controls();
+		$this->register_content_footer_controls();
 		$this->register_content_help_docs_controls();
 
 		/* Style Tab */
 		$this->register_style_table_controls();
 		$this->register_style_header_controls();
+		$this->register_style_ribbon_controls();
 		$this->register_style_pricing_controls();
 		$this->register_style_features_controls();
 		$this->register_style_tooltip_controls();
-		$this->register_style_ribbon_controls();
 		$this->register_style_button_controls();
 		$this->register_style_footer_controls();
 	}
@@ -61,11 +62,11 @@ class PricingTableWidget extends BaseWidget {
 	/*	CONTENT TAB
 	/*-----------------------------------------------------------------------------------*/
 
+	/**
+	 * Content Tab: Header
+	 * -------------------------------------------------
+	 */
 	protected function register_content_header_controls() {
-		/**
-		 * Content Tab: Header
-		 * -------------------------------------------------
-		 */
 		$this->start_controls_section(
 			'section_header',
 			[
@@ -208,11 +209,202 @@ class PricingTableWidget extends BaseWidget {
 		$this->end_controls_section();
 	}
 
+	/**
+	 * Content Tab: Ribbon
+	 * -------------------------------------------------
+	 */
+	protected function register_content_ribbon_controls() {
+		$this->start_controls_section(
+			'section_ribbon',
+			[
+				'label'                 => __( 'Ribbon', 'trx_addons' ),
+			]
+		);
+
+		$this->add_control(
+			'show_ribbon',
+			[
+				'label'                 => __( 'Show Ribbon', 'trx_addons' ),
+				'type'                  => Controls_Manager::SWITCHER,
+				'default'               => '',
+				'label_on'              => __( 'Yes', 'trx_addons' ),
+				'label_off'             => __( 'No', 'trx_addons' ),
+				'return_value'          => 'yes',
+			]
+		);
+
+		$this->add_control(
+			'ribbon_style',
+			[
+				'label'                => __( 'Style', 'trx_addons' ),
+				'type'                 => Controls_Manager::SELECT,
+				'default'              => '1',
+				'options'              => [
+					'1'         => __( 'Default', 'trx_addons' ),
+					'2'         => __( 'Circle', 'trx_addons' ),
+					'3'         => __( 'Flag', 'trx_addons' ),
+				],
+				'condition'             => [
+					'show_ribbon'  => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'ribbon_title',
+			[
+				'label'                 => __( 'Title', 'trx_addons' ),
+				'type'                  => Controls_Manager::TEXT,
+				'dynamic'               => [
+					'active'   => true,
+				],
+				'default'               => __( 'New', 'trx_addons' ),
+				'condition'             => [
+					'show_ribbon'  => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'ribbon_position',
+			[
+				'label'                 => __( 'Position', 'trx_addons' ),
+				'type'                  => Controls_Manager::CHOOSE,
+				'toggle'                => false,
+				'label_block'           => false,
+				'options'               => [
+					'left'  => [
+						'title' => __( 'Left', 'trx_addons' ),
+						'icon'  => 'eicon-h-align-left',
+					],
+					'right' => [
+						'title' => __( 'Right', 'trx_addons' ),
+						'icon'  => 'eicon-h-align-right',
+					],
+				],
+				'default'               => 'right',
+				'condition'             => [
+					'show_ribbon'  => 'yes',
+					'ribbon_style' => [ '1', '2', '3' ],
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'ribbon_size',
+			[
+				'label'                 => __( 'Size', 'trx_addons' ),
+				'type'                  => Controls_Manager::SLIDER,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'range'                 => [
+					'px' => [
+						'min'   => 1,
+						'max'   => 200,
+					],
+					'em' => [
+						'min'   => 1,
+						'max'   => 15,
+					],
+				],
+				'default'               => [
+					'size'      => 4,
+					'unit'      => 'em',
+				],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-pricing-table-ribbon-2' => 'min-width: {{SIZE}}{{UNIT}}; min-height: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}};',
+				],
+				'condition'             => [
+					'show_ribbon'  => 'yes',
+					'ribbon_style' => [ '2' ],
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'side_distance',
+			[
+				'label'                 => __( 'Horizontal Offset', 'trx_addons' ),
+				'type'                  => Controls_Manager::SLIDER,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'range'                 => [
+					'px' => [
+						'min'   => 1,
+						'max'   => 200,
+					],
+				],
+				'default'               => [
+					'size'      => '',
+					'unit'      => 'px',
+				],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-pricing-table-ribbon-left' => 'left: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-pricing-table-ribbon-right' => 'right: {{SIZE}}{{UNIT}};',
+				],
+				'condition'             => [
+					'show_ribbon'  => 'yes',
+					'ribbon_style' => [ '2' ],
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'top_distance',
+			[
+				'label'                 => __( 'Vertical Offset', 'trx_addons' ),
+				'type'                  => Controls_Manager::SLIDER,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'range'                 => [
+					'px' => [
+						'min'   => 1,
+						'max'   => 200,
+					],
+				],
+				'default'               => [
+					'size'      => 20,
+					'unit'      => '%',
+				],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-pricing-table-ribbon' => 'top: {{SIZE}}{{UNIT}};',
+				],
+				'condition'             => [
+					'show_ribbon'  => 'yes',
+					'ribbon_style' => [ '2', '3' ],
+				],
+			]
+		);
+
+		$ribbon_distance_transform = is_rtl() ? 'translateY(-50%) translateX({{SIZE}}{{UNIT}}) rotate(-45deg)' : 'translateY(-50%) translateX(-50%) translateX({{SIZE}}{{UNIT}}) rotate(-45deg)';
+
+		$this->add_responsive_control(
+			'ribbon_distance',
+			[
+				'label'                 => __( 'Distance', 'trx_addons' ),
+				'type'                  => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 50,
+					],
+				],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-pricing-table-ribbon-inner' => 'margin-top: {{SIZE}}{{UNIT}}; transform: ' . $ribbon_distance_transform,
+				],
+				'condition'             => [
+					'show_ribbon'  => 'yes',
+					'ribbon_style' => [ '1' ],
+				],
+			]
+		);
+
+		$this->end_controls_section();
+	}
+
+	/**
+	 * Content Tab: Pricing
+	 * -------------------------------------------------
+	 */
 	protected function register_content_pricing_controls() {
-		/**
-		 * Content Tab: Pricing
-		 * -------------------------------------------------
-		 */
 		$this->start_controls_section(
 			'section_pricing',
 			[
@@ -329,11 +521,70 @@ class PricingTableWidget extends BaseWidget {
 		$this->end_controls_section();
 	}
 
+	/**
+	 * Content Tab: Tooltip Controls
+	 */
+	protected function register_content_tooltip_controls() {
+		$this->start_controls_section(
+			'section_tooltip',
+			[
+				'label'                 => __( 'Tooltip', 'trx_addons' ),
+			]
+		);
+
+		$this->add_control(
+			'show_tooltip',
+			[
+				'label'                 => __( 'Enable Tooltip', 'trx_addons' ),
+				'type'                  => Controls_Manager::SWITCHER,
+				'default'               => '',
+				'label_on'              => __( 'Yes', 'trx_addons' ),
+				'label_off'             => __( 'No', 'trx_addons' ),
+				'return_value'          => 'yes',
+			]
+		);
+
+		$this->add_control(
+			'tooltip_display_on',
+			array(
+				'label'   => __( 'Display On', 'trx_addons' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'text',
+				'options' => array(
+					'text' => __( 'Text', 'trx_addons' ),
+					'icon' => __( 'Icon', 'trx_addons' ),
+				),
+				'frontend_available' => true,
+				'condition' => [
+					'show_tooltip' => 'yes',
+				],
+			)
+		);
+
+		$this->add_control(
+			'tooltip_icon',
+			[
+				'label'     => __( 'Icon', 'trx_addons' ),
+				'type'      => Controls_Manager::ICONS,
+				'default'   => [
+					'value'   => 'fas fa-info-circle',
+					'library' => 'fa-solid',
+				],
+				'condition' => [
+					'show_tooltip'       => 'yes',
+					'tooltip_display_on' => 'icon',
+				],
+			]
+		);
+
+		$this->end_controls_section();
+	}
+
+	/**
+	 * Content Tab: Features
+	 * -------------------------------------------------
+	 */
 	protected function register_content_features_controls() {
-		/**
-		 * Content Tab: Features
-		 * -------------------------------------------------
-		 */
 		$this->start_controls_section(
 			'section_features',
 			[
@@ -405,11 +656,11 @@ class PricingTableWidget extends BaseWidget {
 			'tooltip_content',
 			array(
 				'label'       => __( 'Tooltip Content', 'trx_addons' ),
-				'type'        => Controls_Manager::WYSIWYG,
+				'type'        => Controls_Manager::TEXTAREA,
 				'default'     => __( 'This is a tooltip', 'trx_addons' ),
-				'dynamic'     => array(
-					'active' => true,
-				),
+				// 'dynamic'     => array(
+				// 	'active' => true,
+				// ),
 			)
 		);
 
@@ -441,7 +692,7 @@ class PricingTableWidget extends BaseWidget {
 		$repeater->add_control(
 			'feature_text_color',
 			array(
-				'label'     => __( 'Text Color', 'trx_addons' ),
+				'label'     => __( 'Color', 'trx_addons' ),
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '',
 				'selectors' => array(
@@ -495,235 +746,10 @@ class PricingTableWidget extends BaseWidget {
 	}
 
 	/**
-	 * Register Pricing Table Tooltip Controls
-	 *
-	 * @since 2.2.5
-	 * @return void
+	 * Content Tab: Button
+	 * -------------------------------------------------
 	 */
-	protected function register_content_tooltip_controls() {
-		$this->start_controls_section(
-			'section_tooltip',
-			[
-				'label'                 => __( 'Tooltip', 'trx_addons' ),
-			]
-		);
-
-		$this->add_control(
-			'show_tooltip',
-			[
-				'label'                 => __( 'Enable Tooltip', 'trx_addons' ),
-				'type'                  => Controls_Manager::SWITCHER,
-				'default'               => '',
-				'label_on'              => __( 'Yes', 'trx_addons' ),
-				'label_off'             => __( 'No', 'trx_addons' ),
-				'return_value'          => 'yes',
-			]
-		);
-
-		$this->add_control(
-			'tooltip_display_on',
-			array(
-				'label'   => __( 'Display On', 'trx_addons' ),
-				'type'    => Controls_Manager::SELECT,
-				'default' => 'text',
-				'options' => array(
-					'text' => __( 'Text', 'trx_addons' ),
-					'icon' => __( 'Icon', 'trx_addons' ),
-				),
-				'frontend_available' => true,
-				'condition' => [
-					'show_tooltip' => 'yes',
-				],
-			)
-		);
-
-		$this->add_control(
-			'tooltip_icon',
-			[
-				'label'     => __( 'Icon', 'trx_addons' ),
-				'type'      => Controls_Manager::ICONS,
-				'default'   => [
-					'value'   => 'fas fa-info-circle',
-					'library' => 'fa-solid',
-				],
-				'condition' => [
-					'show_tooltip'       => 'yes',
-					'tooltip_display_on' => 'icon',
-				],
-			]
-		);
-
-		$this->end_controls_section();
-	}
-
-	protected function register_content_ribbon_controls() {
-		/**
-		 * Content Tab: Ribbon
-		 * -------------------------------------------------
-		 */
-		$this->start_controls_section(
-			'section_ribbon',
-			[
-				'label'                 => __( 'Ribbon', 'trx_addons' ),
-			]
-		);
-
-		$this->add_control(
-			'show_ribbon',
-			[
-				'label'                 => __( 'Show Ribbon', 'trx_addons' ),
-				'type'                  => Controls_Manager::SWITCHER,
-				'default'               => '',
-				'label_on'              => __( 'Yes', 'trx_addons' ),
-				'label_off'             => __( 'No', 'trx_addons' ),
-				'return_value'          => 'yes',
-			]
-		);
-
-		$this->add_control(
-			'ribbon_style',
-			[
-				'label'                => __( 'Style', 'trx_addons' ),
-				'type'                 => Controls_Manager::SELECT,
-				'default'              => '1',
-				'options'              => [
-					'1'         => __( 'Default', 'trx_addons' ),
-					'2'         => __( 'Circle', 'trx_addons' ),
-					'3'         => __( 'Flag', 'trx_addons' ),
-				],
-				'condition'             => [
-					'show_ribbon'  => 'yes',
-				],
-			]
-		);
-
-		$this->add_control(
-			'ribbon_title',
-			[
-				'label'                 => __( 'Title', 'trx_addons' ),
-				'type'                  => Controls_Manager::TEXT,
-				'dynamic'               => [
-					'active'   => true,
-				],
-				'default'               => __( 'New', 'trx_addons' ),
-				'condition'             => [
-					'show_ribbon'  => 'yes',
-				],
-			]
-		);
-
-		$this->add_responsive_control(
-			'ribbon_size',
-			[
-				'label'                 => __( 'Size', 'trx_addons' ),
-				'type'                  => Controls_Manager::SLIDER,
-				'size_units'            => [ 'px', 'em' ],
-				'range'                 => [
-					'px' => [
-						'min'   => 1,
-						'max'   => 200,
-					],
-					'em' => [
-						'min'   => 1,
-						'max'   => 15,
-					],
-				],
-				'default'               => [
-					'size'      => 4,
-					'unit'      => 'em',
-				],
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-pricing-table-ribbon-2' => 'min-width: {{SIZE}}{{UNIT}}; min-height: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}};',
-				],
-				'condition'             => [
-					'show_ribbon'  => 'yes',
-					'ribbon_style' => [ '2' ],
-				],
-			]
-		);
-
-		$this->add_responsive_control(
-			'top_distance',
-			[
-				'label'                 => __( 'Distance from Top', 'trx_addons' ),
-				'type'                  => Controls_Manager::SLIDER,
-				'size_units'            => [ 'px', '%' ],
-				'range'                 => [
-					'px' => [
-						'min'   => 1,
-						'max'   => 200,
-					],
-				],
-				'default'               => [
-					'size'      => 20,
-					'unit'      => '%',
-				],
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-pricing-table-ribbon' => 'top: {{SIZE}}{{UNIT}};',
-				],
-				'condition'             => [
-					'show_ribbon'  => 'yes',
-					'ribbon_style' => [ '2', '3' ],
-				],
-			]
-		);
-
-		$ribbon_distance_transform = is_rtl() ? 'translateY(-50%) translateX({{SIZE}}{{UNIT}}) rotate(-45deg)' : 'translateY(-50%) translateX(-50%) translateX({{SIZE}}{{UNIT}}) rotate(-45deg)';
-
-		$this->add_responsive_control(
-			'ribbon_distance',
-			[
-				'label'                 => __( 'Distance', 'trx_addons' ),
-				'type'                  => Controls_Manager::SLIDER,
-				'range' => [
-					'px' => [
-						'min' => 0,
-						'max' => 50,
-					],
-				],
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-pricing-table-ribbon-inner' => 'margin-top: {{SIZE}}{{UNIT}}; transform: ' . $ribbon_distance_transform,
-				],
-				'condition'             => [
-					'show_ribbon'  => 'yes',
-					'ribbon_style' => [ '1' ],
-				],
-			]
-		);
-
-		$this->add_control(
-			'ribbon_position',
-			[
-				'label'                 => __( 'Position', 'trx_addons' ),
-				'type'                  => Controls_Manager::CHOOSE,
-				'toggle'                => false,
-				'label_block'           => false,
-				'options'               => [
-					'left'  => [
-						'title' => __( 'Left', 'trx_addons' ),
-						'icon'  => 'eicon-h-align-left',
-					],
-					'right' => [
-						'title' => __( 'Right', 'trx_addons' ),
-						'icon'  => 'eicon-h-align-right',
-					],
-				],
-				'default'               => 'right',
-				'condition'             => [
-					'show_ribbon'  => 'yes',
-					'ribbon_style' => [ '1', '2', '3' ],
-				],
-			]
-		);
-
-		$this->end_controls_section();
-	}
-
 	protected function register_content_button_controls() {
-		/**
-		 * Content Tab: Button
-		 * -------------------------------------------------
-		 */
 		$this->start_controls_section(
 			'section_button',
 			[
@@ -742,18 +768,7 @@ class PricingTableWidget extends BaseWidget {
 					'below'    => __( 'Below Features', 'trx_addons' ),
 					'none'    => __( 'None', 'trx_addons' ),
 				],
-			]
-		);
 
-		$this->add_control(
-			'table_button_text',
-			[
-				'label'                 => __( 'Button Text', 'trx_addons' ),
-				'type'                  => Controls_Manager::TEXT,
-				'dynamic'               => [
-					'active'   => true,
-				],
-				'default'               => __( 'Get Started', 'trx_addons' ),
 			]
 		);
 
@@ -766,10 +781,74 @@ class PricingTableWidget extends BaseWidget {
 				'dynamic'               => [
 					'active'   => true,
 				],
-				'placeholder'           => 'https://www.your-link.com',
 				'default'               => [
 					'url' => '#',
 				],
+				'placeholder'           => 'https://www.your-link.com',
+				'condition'             => [
+					'table_button_position!' => 'none',
+				],
+			]
+		);
+
+		$this->add_control(
+			'table_button_text',
+			[
+				'label'                 => __( 'Button Text', 'trx_addons' ),
+				'type'                  => Controls_Manager::TEXT,
+				'dynamic'               => [
+					'active'   => true,
+				],
+				'default'               => __( 'Get Started', 'trx_addons' ),
+				'condition'             => [
+					'table_button_position!' => 'none',
+					'link[url]!'             => '',
+				],
+			]
+		);
+
+		$this->add_control(
+			'select_button_icon',
+			array(
+				'label'            => __( 'Button Icon', 'trx_addons' ),
+				'type'             => Controls_Manager::ICONS,
+				'fa4compatibility' => 'button_icon',
+				'condition'             => [
+					'table_button_position!' => 'none',
+					'link[url]!'             => '',
+				],
+			)
+		);
+
+		$this->add_control(
+			'button_icon_position',
+			array(
+				'label'     => __( 'Icon Position', 'trx_addons' ),
+				'type'      => Controls_Manager::SELECT,
+				'default'   => 'after',
+				'options'   => array(
+					'after'  => __( 'After', 'trx_addons' ),
+					'before' => __( 'Before', 'trx_addons' ),
+				),
+				'condition'             => [
+					'table_button_position!' => 'none',
+					'link[url]!'             => '',
+				],
+			)
+		);
+
+		$this->end_controls_section();
+	}
+
+	/**
+	 * Content Tab: Footer
+	 * -------------------------------------------------
+	 */
+	protected function register_content_footer_controls() {
+		$this->start_controls_section(
+			'section_footer',
+			[
+				'label'                 => __( 'Footer', 'trx_addons' ),
 			]
 		);
 
@@ -777,27 +856,28 @@ class PricingTableWidget extends BaseWidget {
 			'table_additional_info',
 			[
 				'label'                 => __( 'Additional Info', 'trx_addons' ),
-				'type'                  => Controls_Manager::TEXTAREA,
+				'type'                  => Controls_Manager::WYSIWYG,
+				'default'               => __( 'Enter additional info here', 'trx_addons' ),
 				'dynamic'               => [
 					'active'   => true,
 				],
-				'default'               => __( 'Enter additional info here', 'trx_addons' ),
-				'title'                 => __( 'Additional Info', 'trx_addons' ),
 			]
 		);
 
 		$this->end_controls_section();
 	}
 
+
+
 	/*-----------------------------------------------------------------------------------*/
 	/*	STYLE TAB
 	/*-----------------------------------------------------------------------------------*/
 
+	/**
+	 * Style Tab: Table
+	 * -------------------------------------------------
+	 */
 	protected function register_style_table_controls() {
-		/**
-		 * Content Tab: Table
-		 * -------------------------------------------------
-		 */
 		$this->start_controls_section(
 			'section_table_style',
 			[
@@ -834,11 +914,11 @@ class PricingTableWidget extends BaseWidget {
 		$this->end_controls_section();
 	}
 
+	/**
+	 * Style Tab: Header
+	 * -------------------------------------------------
+	 */
 	protected function register_style_header_controls() {
-		/**
-		 * Style Tab: Header
-		 * -------------------------------------------------
-		 */
 		$this->start_controls_section(
 			'section_table_header_style',
 			[
@@ -881,7 +961,7 @@ class PricingTableWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-pricing-table-head' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -916,7 +996,7 @@ class PricingTableWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px', 'em' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'condition'             => [
 					'icon_type'   => 'icon',
 					'select_table_icon[value]!' => '',
@@ -943,7 +1023,7 @@ class PricingTableWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'condition'             => [
 					'icon_type'        => 'image',
 					'icon_image[url]!' => '',
@@ -991,7 +1071,7 @@ class PricingTableWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Margin', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'condition'             => [
 					'icon_type!' => 'none',
 				],
@@ -1006,7 +1086,7 @@ class PricingTableWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'condition'             => [
 					'icon_type!' => 'none',
 				],
@@ -1035,7 +1115,7 @@ class PricingTableWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Border Radius', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%', 'em' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'condition'             => [
 					'icon_type!' => 'none',
 				],
@@ -1054,18 +1134,6 @@ class PricingTableWidget extends BaseWidget {
 			]
 		);
 
-		$this->add_control(
-			'table_title_color',
-			[
-				'label'                 => __( 'Color', 'trx_addons' ),
-				'type'                  => Controls_Manager::COLOR,
-				'default'               => '#fff',
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-pricing-table-title' => 'color: {{VALUE}}',
-				],
-			]
-		);
-
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
@@ -1079,6 +1147,18 @@ class PricingTableWidget extends BaseWidget {
 		);
 
 		$this->add_control(
+			'table_title_color',
+			[
+				'label'                 => __( 'Color', 'trx_addons' ),
+				'type'                  => Controls_Manager::COLOR,
+				'default'               => '#fff',
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-pricing-table-title' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_control(
 			'table_subtitle_heading',
 			[
 				'label'                 => __( 'Sub Title', 'trx_addons' ),
@@ -1086,21 +1166,6 @@ class PricingTableWidget extends BaseWidget {
 				'separator'             => 'before',
 				'condition'             => [
 					'table_subtitle!' => '',
-				],
-			]
-		);
-
-		$this->add_control(
-			'table_subtitle_color',
-			[
-				'label'                 => __( 'Color', 'trx_addons' ),
-				'type'                  => Controls_Manager::COLOR,
-				'default'               => '#fff',
-				'condition'             => [
-					'table_subtitle!' => '',
-				],
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-pricing-table-subtitle' => 'color: {{VALUE}}',
 				],
 			]
 		);
@@ -1120,6 +1185,21 @@ class PricingTableWidget extends BaseWidget {
 			]
 		);
 
+		$this->add_control(
+			'table_subtitle_color',
+			[
+				'label'                 => __( 'Color', 'trx_addons' ),
+				'type'                  => Controls_Manager::COLOR,
+				'default'               => '#fff',
+				'condition'             => [
+					'table_subtitle!' => '',
+				],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-pricing-table-subtitle' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
 		$this->add_responsive_control(
 			'table_subtitle_spacing',
 			[
@@ -1132,7 +1212,7 @@ class PricingTableWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'condition'             => [
 					'table_subtitle!' => '',
 				],
@@ -1145,11 +1225,68 @@ class PricingTableWidget extends BaseWidget {
 		$this->end_controls_section();
 	}
 
+	/**
+	 * Style Tab: Ribbon
+	 * -------------------------------------------------
+	 */
+	protected function register_style_ribbon_controls() {
+		$this->start_controls_section(
+			'section_table_ribbon_style',
+			[
+				'label'                 => __( 'Ribbon', 'trx_addons' ),
+				'tab'                   => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'                  => 'ribbon_typography',
+				'selector'              => '{{WRAPPER}} .trx-addons-pricing-table-ribbon .trx-addons-pricing-table-ribbon-inner',
+			]
+		);
+
+		$this->add_control(
+			'ribbon_bg_color',
+			[
+				'label'                 => __( 'Background Color', 'trx_addons' ),
+				'type'                  => Controls_Manager::COLOR,
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-pricing-table-ribbon .trx-addons-pricing-table-ribbon-inner' => 'background-color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-pricing-table-ribbon-3.trx-addons-pricing-table-ribbon-right:before' => 'border-left-color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-pricing-table-ribbon-3.trx-addons-pricing-table-ribbon-left:before' => 'border-right-color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_control(
+			'ribbon_text_color',
+			[
+				'label'                 => __( 'Color', 'trx_addons' ),
+				'type'                  => Controls_Manager::COLOR,
+				'default'               => '#ffffff',
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-pricing-table-ribbon .trx-addons-pricing-table-ribbon-inner' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name'                  => 'box_shadow',
+				'selector'              => '{{WRAPPER}} .trx-addons-pricing-table-ribbon .trx-addons-pricing-table-ribbon-inner',
+			]
+		);
+
+		$this->end_controls_section();
+	}
+
+	/**
+	 * Style Tab: Pricing
+	 * -------------------------------------------------
+	 */
 	protected function register_style_pricing_controls() {
-		/**
-		 * Style Tab: Pricing
-		 * -------------------------------------------------
-		 */
 		$this->start_controls_section(
 			'section_table_pricing_style',
 			[
@@ -1172,18 +1309,6 @@ class PricingTableWidget extends BaseWidget {
 		);
 
 		$this->add_control(
-			'table_price_color_normal',
-			[
-				'label'                 => __( 'Color', 'trx_addons' ),
-				'type'                  => Controls_Manager::COLOR,
-				'default'               => '',
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-pricing-table-price' => 'color: {{VALUE}}',
-				],
-			]
-		);
-
-		$this->add_control(
 			'table_price_bg_color_normal',
 			[
 				'label'                 => __( 'Background Color', 'trx_addons' ),
@@ -1191,6 +1316,18 @@ class PricingTableWidget extends BaseWidget {
 				'default'               => '',
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-pricing-table-price' => 'background-color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_control(
+			'table_price_color_normal',
+			[
+				'label'                 => __( 'Color', 'trx_addons' ),
+				'type'                  => Controls_Manager::COLOR,
+				'default'               => '',
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-pricing-table-price' => 'color: {{VALUE}}',
 				],
 			]
 		);
@@ -1211,7 +1348,7 @@ class PricingTableWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Border Radius', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%', 'em' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-pricing-table-price' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1235,7 +1372,7 @@ class PricingTableWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-pricing-table-price' => 'width: {{SIZE}}{{UNIT}}',
 				],
@@ -1247,7 +1384,7 @@ class PricingTableWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Margin', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-pricing-table-price' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1259,7 +1396,7 @@ class PricingTableWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-pricing-table-price' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1312,6 +1449,7 @@ class PricingTableWidget extends BaseWidget {
 				'label'                 => __( 'Position', 'trx_addons' ),
 				'type'                  => Controls_Manager::CHOOSE,
 				'label_block'           => false,
+				'toggle'                => false,
 				'default'               => 'before',
 				'options'               => [
 					'before' => [
@@ -1332,6 +1470,7 @@ class PricingTableWidget extends BaseWidget {
 				'label'                 => __( 'Vertical Position', 'trx_addons' ),
 				'type'                  => Controls_Manager::CHOOSE,
 				'label_block'           => false,
+				'toggle'                => false,
 				'options'               => [
 					'top'       => [
 						'title' => __( 'Top', 'trx_addons' ),
@@ -1354,6 +1493,18 @@ class PricingTableWidget extends BaseWidget {
 				],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-pricing-table-price-prefix' => 'align-self: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'currency_padding',
+			[
+				'label'                 => __( 'Padding', 'trx_addons' ),
+				'type'                  => Controls_Manager::DIMENSIONS,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-pricing-table-price-prefix' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -1381,18 +1532,6 @@ class PricingTableWidget extends BaseWidget {
 			]
 		);
 
-		$this->add_control(
-			'duration_text_color',
-			[
-				'label'                 => __( 'Text Color', 'trx_addons' ),
-				'type'                  => Controls_Manager::COLOR,
-				'default'               => '',
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-pricing-table-price-duration' => 'color: {{VALUE}}',
-				],
-			]
-		);
-
 		$this->add_group_control(
 			Group_Control_Typography::get_type(),
 			[
@@ -1402,6 +1541,18 @@ class PricingTableWidget extends BaseWidget {
 					'default' => Global_Typography::TYPOGRAPHY_SECONDARY,
 				],
 				'selector'              => '{{WRAPPER}} .trx-addons-pricing-table-price-duration',
+			]
+		);
+
+		$this->add_control(
+			'duration_text_color',
+			[
+				'label'                 => __( 'Color', 'trx_addons' ),
+				'type'                  => Controls_Manager::COLOR,
+				'default'               => '',
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-pricing-table-price-duration' => 'color: {{VALUE}}',
+				],
 			]
 		);
 
@@ -1417,13 +1568,14 @@ class PricingTableWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}}.trx-addons-pricing-table-price-duration-wrap .trx-addons-pricing-table-price-duration' => 'margin-top: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.trx-addons-pricing-table-price-duration-nowrap .trx-addons-pricing-table-price-duration' => 'margin-left: {{SIZE}}{{UNIT}};',
 				],
-				'condition'             => [
-					'duration_position' => 'wrap',
-				],
+				// 'condition'             => [
+				// 	'duration_position' => 'wrap',
+				// ],
 			]
 		);
 
@@ -1439,10 +1591,25 @@ class PricingTableWidget extends BaseWidget {
 			]
 		);
 
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'                  => 'table_original_price_typography',
+				'label'                 => __( 'Typography', 'trx_addons' ),
+				'global'                => [
+					'default' => Global_Typography::TYPOGRAPHY_PRIMARY,
+				],
+				'selector'              => '{{WRAPPER}} .trx-addons-pricing-table-price-original',
+				'condition'             => [
+					'discount' => 'yes',
+				],
+			]
+		);
+
 		$this->add_control(
 			'table_original_price_text_color',
 			[
-				'label'                 => __( 'Text Color', 'trx_addons' ),
+				'label'                 => __( 'Color', 'trx_addons' ),
 				'type'                  => Controls_Manager::COLOR,
 				'default'               => '',
 				'condition'             => [
@@ -1455,23 +1622,23 @@ class PricingTableWidget extends BaseWidget {
 		);
 
 		$this->add_responsive_control(
-			'table_original_price_text_size',
+			'table_original_price_spacer',
 			[
-				'label'                 => __( 'Font Size', 'trx_addons' ),
+				'label'                 => __( 'Spacing', 'trx_addons' ),
 				'type'                  => Controls_Manager::SLIDER,
 				'range'                 => [
 					'px' => [
-						'min'   => 5,
+						'min'   => 0,
 						'max'   => 100,
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px', 'em' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'condition'             => [
 					'discount' => 'yes',
 				],
 				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-pricing-table-price-original' => 'font-size: {{SIZE}}{{UNIT}}',
+					'{{WRAPPER}} .trx-addons-pricing-table-price-original' => 'margin-right: {{SIZE}}{{UNIT}}',
 				],
 			]
 		);
@@ -1479,11 +1646,11 @@ class PricingTableWidget extends BaseWidget {
 		$this->end_controls_section();
 	}
 
+	/**
+	 * Style Tab: Features
+	 * -------------------------------------------------
+	 */
 	protected function register_style_features_controls() {
-		/**
-		 * Style Tab: Features
-		 * -------------------------------------------------
-		 */
 		$this->start_controls_section(
 			'section_table_features_style',
 			[
@@ -1519,6 +1686,19 @@ class PricingTableWidget extends BaseWidget {
 			]
 		);
 
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'                  => 'table_features_typography',
+				'label'                 => __( 'Typography', 'trx_addons' ),
+				'global'                => [
+					'default' => Global_Typography::TYPOGRAPHY_TEXT,
+				],
+				'selector'              => '{{WRAPPER}} .trx-addons-pricing-table-features',
+				'separator'             => 'before',
+			]
+		);
+
 		$this->add_control(
 			'table_features_bg_color',
 			[
@@ -1534,7 +1714,7 @@ class PricingTableWidget extends BaseWidget {
 		$this->add_control(
 			'table_features_text_color',
 			[
-				'label'                 => __( 'Text Color', 'trx_addons' ),
+				'label'                 => __( 'Color', 'trx_addons' ),
 				'type'                  => Controls_Manager::COLOR,
 				'global'                => [
 					'default' => Global_Colors::COLOR_TEXT,
@@ -1551,7 +1731,7 @@ class PricingTableWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'default'               => [
 					'top'       => '20',
 					'right'     => '',
@@ -1569,32 +1749,12 @@ class PricingTableWidget extends BaseWidget {
 		$this->add_responsive_control(
 			'table_features_margin',
 			[
-				'label'                 => __( 'Margin Bottom', 'trx_addons' ),
-				'type'                  => Controls_Manager::SLIDER,
-				'range'                 => [
-					'px' => [
-						'min'   => 0,
-						'max'   => 60,
-						'step'  => 1,
-					],
-				],
-				'size_units'            => [ 'px' ],
+				'label'                 => __( 'Margin', 'trx_addons' ),
+				'type'                  => Controls_Manager::DIMENSIONS,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-pricing-table-features' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-pricing-table-features' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
-			]
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			[
-				'name'                  => 'table_features_typography',
-				'label'                 => __( 'Typography', 'trx_addons' ),
-				'global'                => [
-					'default' => Global_Typography::TYPOGRAPHY_TEXT,
-				],
-				'selector'              => '{{WRAPPER}} .trx-addons-pricing-table-features',
-				'separator'             => 'before',
 			]
 		);
 
@@ -1608,14 +1768,47 @@ class PricingTableWidget extends BaseWidget {
 		);
 
 		$this->add_control(
+			'table_features_icon_vertical_position',
+			[
+				'label'                 => __( 'Vertical Position', 'trx_addons' ),
+				'type'                  => Controls_Manager::CHOOSE,
+				'label_block'           => false,
+				'toggle'                => false,
+				'options'               => [
+					'top'       => [
+						'title' => __( 'Top', 'trx_addons' ),
+						'icon'  => 'eicon-v-align-top',
+					],
+					'middle'    => [
+						'title' => __( 'Middle', 'trx_addons' ),
+						'icon'  => 'eicon-v-align-middle',
+					],
+					'bottom'    => [
+						'title' => __( 'Bottom', 'trx_addons' ),
+						'icon'  => 'eicon-v-align-bottom',
+					],
+				],
+				'default'               => 'middle',
+				'selectors_dictionary'  => [
+					'top'      => 'flex-start',
+					'middle'   => 'center',
+					'bottom'   => 'flex-end',
+				],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-pricing-table-feature-content' => 'align-items: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_control(
 			'table_features_icon_color',
 			[
 				'label'                 => __( 'Color', 'trx_addons' ),
 				'type'                  => Controls_Manager::COLOR,
 				'default'               => '',
 				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-pricing-table-fature-icon' => 'color: {{VALUE}}',
-					'{{WRAPPER}} .trx-addons-pricing-table-fature-icon svg' => 'fill: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-pricing-table-feature-icon' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-pricing-table-feature-icon svg' => 'fill: {{VALUE}}',
 				],
 			]
 		);
@@ -1632,9 +1825,9 @@ class PricingTableWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px', 'em' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-pricing-table-fature-icon' => 'font-size: {{SIZE}}{{UNIT}}',
+					'{{WRAPPER}} .trx-addons-pricing-table-feature-icon' => 'font-size: {{SIZE}}{{UNIT}}',
 				],
 			]
 		);
@@ -1655,9 +1848,9 @@ class PricingTableWidget extends BaseWidget {
 					'size' => 5,
 					'unit' => 'px',
 				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-pricing-table-fature-icon' => 'margin-right: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-pricing-table-feature-icon' => 'margin-right: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -1687,7 +1880,7 @@ class PricingTableWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-pricing-table-features li:not(:last-child)' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
@@ -1711,7 +1904,7 @@ class PricingTableWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-pricing-table-features li' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1751,7 +1944,7 @@ class PricingTableWidget extends BaseWidget {
 		$this->add_control(
 			'table_features_text_color_even',
 			[
-				'label'                 => __( 'Text Color', 'trx_addons' ),
+				'label'                 => __( 'Color', 'trx_addons' ),
 				'type'                  => Controls_Manager::COLOR,
 				'default'               => '',
 				'selectors'             => [
@@ -1793,7 +1986,7 @@ class PricingTableWidget extends BaseWidget {
 		$this->add_control(
 			'table_features_text_color_odd',
 			[
-				'label'                 => __( 'Text Color', 'trx_addons' ),
+				'label'                 => __( 'Color', 'trx_addons' ),
 				'type'                  => Controls_Manager::COLOR,
 				'default'               => '',
 				'selectors'             => [
@@ -1833,10 +2026,7 @@ class PricingTableWidget extends BaseWidget {
 	}
 
 	/**
-	 * Register Tooltip Style Controls
-	 *
-	 * @since 2.2.5
-	 * @return void
+	 * Style Tab: Tooltip
 	 */
 	protected function register_style_tooltip_controls() {
 
@@ -1845,6 +2035,21 @@ class PricingTableWidget extends BaseWidget {
 			[
 				'label'     => __( 'Tooltip', 'trx_addons' ),
 				'tab'       => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'show_tooltip' => 'yes',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'      => 'tooltip_typography',
+				'label'     => __( 'Typography', 'trx_addons' ),
+				'global'    => [
+					'default' => Global_Typography::TYPOGRAPHY_ACCENT,
+				],
+				'selector'  => '{{WRAPPER}} [data-tooltip-text]:after',
 				'condition' => [
 					'show_tooltip' => 'yes',
 				],
@@ -1870,7 +2075,7 @@ class PricingTableWidget extends BaseWidget {
 		$this->add_control(
 			'tooltip_color',
 			[
-				'label'     => __( 'Text Color', 'trx_addons' ),
+				'label'     => __( 'Color', 'trx_addons' ),
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '',
 				'selectors' => [
@@ -1882,27 +2087,12 @@ class PricingTableWidget extends BaseWidget {
 			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			[
-				'name'      => 'tooltip_typography',
-				'label'     => __( 'Typography', 'trx_addons' ),
-				'global'    => [
-					'default' => Global_Typography::TYPOGRAPHY_ACCENT,
-				],
-				'selector'  => '{{WRAPPER}} [data-tooltip-text]:after',
-				'condition' => [
-					'show_tooltip' => 'yes',
-				],
-			]
-		);
-
 		$this->add_control(
 			'tooltip_border_radius',
 			[
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => [
 					'{{WRAPPER}} [data-tooltip-text]:after' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1917,7 +2107,7 @@ class PricingTableWidget extends BaseWidget {
 			[
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					//'{{WRAPPER}} [data-tooltip-text]:after' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					'{{WRAPPER}} [data-tooltip-text]' => '--trx-addons-tooltip-padding-top: {{TOP}}{{UNIT}}; --trx-addons-tooltip-padding-bottom: {{BOTTOM}}{{UNIT}}; --trx-addons-tooltip-padding-left: {{LEFT}}{{UNIT}}; --trx-addons-tooltip-padding-right: {{RIGHT}}{{UNIT}};',
@@ -1928,16 +2118,16 @@ class PricingTableWidget extends BaseWidget {
 			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Box_Shadow::get_type(),
-			[
-				'name'      => 'tooltip_box_shadow',
-				'selector'  => '{{WRAPPER}} [data-tooltip-text]:after, {{WRAPPER}} [data-tooltip-text]:before',
-				'condition' => [
-					'show_tooltip' => 'yes',
-				],
-			]
-		);
+		// $this->add_group_control(
+		// 	Group_Control_Box_Shadow::get_type(),
+		// 	[
+		// 		'name'      => 'tooltip_box_shadow',
+		// 		'selector'  => '{{WRAPPER}} [data-tooltip-text]:after, {{WRAPPER}} [data-tooltip-text]:before',
+		// 		'condition' => [
+		// 			'show_tooltip' => 'yes',
+		// 		],
+		// 	]
+		// );
 
 		$this->add_control(
 			'tooltip_icon_style_heading',
@@ -1980,7 +2170,7 @@ class PricingTableWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units' => [ 'px', 'em' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => [
 					'{{WRAPPER}} .trx-addons-pricing-table-features .trx-addons-pricing-table-tooltip-icon' => 'font-size: {{SIZE}}{{UNIT}}',
 				],
@@ -1996,7 +2186,6 @@ class PricingTableWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Icon Spacing', 'trx_addons' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em' ],
 				'range'      => array(
 					'px' => array(
 						'min' => 1,
@@ -2009,6 +2198,7 @@ class PricingTableWidget extends BaseWidget {
 						'step' => 0.1,
 					),
 				),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-pricing-table-tooltip-icon' => 'margin-left: {{SIZE}}{{UNIT}};',
 				),
@@ -2022,68 +2212,11 @@ class PricingTableWidget extends BaseWidget {
 		$this->end_controls_section();
 	}
 
-	protected function register_style_ribbon_controls() {
-		/**
-		 * Style Tab: Ribbon
-		 * -------------------------------------------------
-		 */
-		$this->start_controls_section(
-			'section_table_ribbon_style',
-			[
-				'label'                 => __( 'Ribbon', 'trx_addons' ),
-				'tab'                   => Controls_Manager::TAB_STYLE,
-			]
-		);
-
-		$this->add_control(
-			'ribbon_bg_color',
-			[
-				'label'                 => __( 'Background Color', 'trx_addons' ),
-				'type'                  => Controls_Manager::COLOR,
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-pricing-table-ribbon .trx-addons-pricing-table-ribbon-inner' => 'background-color: {{VALUE}}',
-					'{{WRAPPER}} .trx-addons-pricing-table-ribbon-3.trx-addons-pricing-table-ribbon-right:before' => 'border-left-color: {{VALUE}}',
-					'{{WRAPPER}} .trx-addons-pricing-table-ribbon-3.trx-addons-pricing-table-ribbon-left:before' => 'border-right-color: {{VALUE}}',
-				],
-			]
-		);
-
-		$this->add_control(
-			'ribbon_text_color',
-			[
-				'label'                 => __( 'Text Color', 'trx_addons' ),
-				'type'                  => Controls_Manager::COLOR,
-				'default'               => '#ffffff',
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-pricing-table-ribbon .trx-addons-pricing-table-ribbon-inner' => 'color: {{VALUE}}',
-				],
-			]
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			[
-				'name'                  => 'ribbon_typography',
-				'selector'              => '{{WRAPPER}} .trx-addons-pricing-table-ribbon .trx-addons-pricing-table-ribbon-inner',
-			]
-		);
-
-		$this->add_group_control(
-			Group_Control_Box_Shadow::get_type(),
-			[
-				'name'                  => 'box_shadow',
-				'selector'              => '{{WRAPPER}} .trx-addons-pricing-table-ribbon .trx-addons-pricing-table-ribbon-inner',
-			]
-		);
-
-		$this->end_controls_section();
-	}
-
+	/**
+	 * Style Tab: Button
+	 * -------------------------------------------------
+	 */
 	protected function register_style_button_controls() {
-		/**
-		 * Style Tab: Button
-		 * -------------------------------------------------
-		 */
 		$this->start_controls_section(
 			'section_table_button_style',
 			[
@@ -2091,33 +2224,6 @@ class PricingTableWidget extends BaseWidget {
 				'tab'                   => Controls_Manager::TAB_STYLE,
 				'condition'             => [
 					'table_button_text!' => '',
-				],
-			]
-		);
-
-		$this->add_responsive_control(
-			'button_spacing',
-			[
-				'label'                 => __( 'Spacing', 'trx_addons' ),
-				'type'                  => Controls_Manager::SLIDER,
-				'default'               => [
-					'size'      => 20,
-					'unit'      => 'px',
-				],
-				'range'                 => [
-					'px' => [
-						'min'   => 0,
-						'max'   => 100,
-						'step'  => 1,
-					],
-				],
-				'size_units'            => [ 'px' ],
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-pricing-table-button-wrap' => 'margin-bottom: {{SIZE}}{{UNIT}};',
-				],
-				'condition'             => [
-					'table_button_text!' => '',
-					'table_button_position' => 'above',
 				],
 			]
 		);
@@ -2131,6 +2237,21 @@ class PricingTableWidget extends BaseWidget {
 				'condition'             => [
 					'table_button_text!' => '',
 				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'                  => 'button_typography',
+				'label'                 => __( 'Typography', 'trx_addons' ),
+				'global'                => [
+					'default' => Global_Typography::TYPOGRAPHY_ACCENT,
+				],
+				'condition'             => [
+					'table_button_text!' => '',
+				],
+				'selector'              => '{{WRAPPER}} .trx-addons-pricing-table-button',
 			]
 		);
 
@@ -2155,7 +2276,7 @@ class PricingTableWidget extends BaseWidget {
 		$this->add_control(
 			'button_text_color_normal',
 			[
-				'label'                 => __( 'Text Color', 'trx_addons' ),
+				'label'                 => __( 'Color', 'trx_addons' ),
 				'type'                  => Controls_Manager::COLOR,
 				'default'               => '',
 				'condition'             => [
@@ -2163,6 +2284,7 @@ class PricingTableWidget extends BaseWidget {
 				],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-pricing-table-button' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-pricing-table-button .trx-addons-button-icon svg' => 'fill: {{VALUE}}',
 				],
 			]
 		);
@@ -2181,42 +2303,12 @@ class PricingTableWidget extends BaseWidget {
 			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			[
-				'name'                  => 'button_typography',
-				'label'                 => __( 'Typography', 'trx_addons' ),
-				'global'                => [
-					'default' => Global_Typography::TYPOGRAPHY_ACCENT,
-				],
-				'condition'             => [
-					'table_button_text!' => '',
-				],
-				'selector'              => '{{WRAPPER}} .trx-addons-pricing-table-button',
-			]
-		);
-
-		$this->add_responsive_control(
-			'table_button_padding',
-			[
-				'label'                 => __( 'Padding', 'trx_addons' ),
-				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
-				'condition'             => [
-					'table_button_text!' => '',
-				],
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-pricing-table-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
-		);
-
 		$this->add_control(
 			'button_border_radius',
 			[
 				'label'                 => __( 'Border Radius', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%', 'em' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'condition'             => [
 					'table_button_text!' => '',
 				],
@@ -2226,15 +2318,88 @@ class PricingTableWidget extends BaseWidget {
 			]
 		);
 
+		$this->add_responsive_control(
+			'table_button_padding',
+			[
+				'label'                 => __( 'Padding', 'trx_addons' ),
+				'type'                  => Controls_Manager::DIMENSIONS,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'condition'             => [
+					'table_button_text!' => '',
+				],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-pricing-table-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'table_button_margin',
+			[
+				'label'                 => __( 'Margin', 'trx_addons' ),
+				'type'                  => Controls_Manager::DIMENSIONS,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-pricing-table-button-wrap' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+				'default'               => [
+					'top'       => 0,
+					'right'     => 0,
+					'bottom'    => 20,
+					'left'      => 0,
+					'unit'      => 'px',
+					'isLinked'  => false,
+				],
+				'condition'             => [
+					'table_button_text!' => '',
+				],
+			]
+		);
+
 		$this->add_group_control(
 			Group_Control_Box_Shadow::get_type(),
 			[
-				'name'                  => 'pa_pricing_table_button_shadow',
+				'name'                  => 'table_button_shadow',
 				'condition'             => [
 					'table_button_text!' => '',
 				],
 				'selector'              => '{{WRAPPER}} .trx-addons-pricing-table-button',
 			]
+		);
+
+		$this->add_control(
+			'button_icon_heading',
+			array(
+				'label'     => __( 'Button Icon', 'trx_addons' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+				'condition'             => [
+					'table_button_text!' => '',
+					'select_button_icon[value]!' => '',
+				],
+			)
+		);
+
+		$this->add_responsive_control(
+			'button_icon_margin',
+			array(
+				'label'       => __( 'Margin', 'trx_addons' ),
+				'type'        => Controls_Manager::DIMENSIONS,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'placeholder' => array(
+					'top'    => '',
+					'right'  => '',
+					'bottom' => '',
+					'left'   => '',
+				),
+				'selectors'   => array(
+					'{{WRAPPER}} .trx-addons-pricing-table-button .trx-addons-button-icon' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				),
+				'condition'             => [
+					'table_button_text!' => '',
+					'select_button_icon[value]!' => '',
+				],
+			)
 		);
 
 		$this->end_controls_tab();
@@ -2267,7 +2432,7 @@ class PricingTableWidget extends BaseWidget {
 		$this->add_control(
 			'button_text_color_hover',
 			[
-				'label'                 => __( 'Text Color', 'trx_addons' ),
+				'label'                 => __( 'Color', 'trx_addons' ),
 				'type'                  => Controls_Manager::COLOR,
 				'default'               => '',
 				'condition'             => [
@@ -2275,6 +2440,7 @@ class PricingTableWidget extends BaseWidget {
 				],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-pricing-table-button:hover' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-pricing-table-button:hover .trx-addons-button-icon svg' => 'fill: {{VALUE}}',
 				],
 			]
 		);
@@ -2286,6 +2452,17 @@ class PricingTableWidget extends BaseWidget {
 				'label'                 => __( 'Border', 'trx_addons' ),
 				'placeholder'           => '1px',
 				'default'               => '1px',
+				'condition'             => [
+					'table_button_text!' => '',
+				],
+				'selector'              => '{{WRAPPER}} .trx-addons-pricing-table-button:hover',
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name'                  => 'table_button_shadow_hover',
 				'condition'             => [
 					'table_button_text!' => '',
 				],
@@ -2305,16 +2482,17 @@ class PricingTableWidget extends BaseWidget {
 		);
 
 		$this->end_controls_tab();
+
 		$this->end_controls_tabs();
 
 		$this->end_controls_section();
 	}
 
+	/**
+	 * Style Tab: Footer
+	 * -------------------------------------------------
+	 */
 	protected function register_style_footer_controls() {
-		/**
-		 * Style Tab: Footer
-		 * -------------------------------------------------
-		 */
 		$this->start_controls_section(
 			'section_table_footer_style',
 			[
@@ -2340,7 +2518,7 @@ class PricingTableWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'default'               => [
 					'top'       => '30',
 					'right'     => '30',
@@ -2367,21 +2545,18 @@ class PricingTableWidget extends BaseWidget {
 			]
 		);
 
-		$this->add_control(
-			'additional_info_color',
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
 			[
-				'label'                 => __( 'Text Color', 'trx_addons' ),
-				'type'                  => Controls_Manager::COLOR,
+				'name'                  => 'additional_info_typography',
+				'label'                 => __( 'Typography', 'trx_addons' ),
 				'global'                => [
-					'default' => Global_Colors::COLOR_TEXT,
+					'default' => Global_Typography::TYPOGRAPHY_TEXT,
 				],
-				'default'               => '',
 				'condition'             => [
 					'table_additional_info!' => '',
 				],
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-pricing-table-additional-info' => 'color: {{VALUE}}',
-				],
+				'selector'              => '{{WRAPPER}} .trx-addons-pricing-table-additional-info',
 			]
 		);
 
@@ -2400,28 +2575,20 @@ class PricingTableWidget extends BaseWidget {
 			]
 		);
 
-		$this->add_responsive_control(
-			'additional_info_margin',
+		$this->add_control(
+			'additional_info_color',
 			[
-				'label'                 => __( 'Margin Top', 'trx_addons' ),
-				'type'                  => Controls_Manager::SLIDER,
-				'default'               => [
-					'size'      => 20,
-					'unit'      => 'px',
+				'label'                 => __( 'Color', 'trx_addons' ),
+				'type'                  => Controls_Manager::COLOR,
+				'global'                => [
+					'default' => Global_Colors::COLOR_TEXT,
 				],
-				'range'                 => [
-					'px' => [
-						'min'   => 0,
-						'max'   => 100,
-						'step'  => 1,
-					],
-				],
-				'size_units'            => [ 'px' ],
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-pricing-table-additional-info' => 'margin-top: {{SIZE}}{{UNIT}};',
-				],
+				'default'               => '',
 				'condition'             => [
 					'table_additional_info!' => '',
+				],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-pricing-table-additional-info' => 'color: {{VALUE}}',
 				],
 			]
 		);
@@ -2431,7 +2598,7 @@ class PricingTableWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'condition'             => [
 					'table_additional_info!' => '',
 				],
@@ -2441,18 +2608,26 @@ class PricingTableWidget extends BaseWidget {
 			]
 		);
 
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
+		$this->add_responsive_control(
+			'additional_info_margin',
 			[
-				'name'                  => 'additional_info_typography',
-				'label'                 => __( 'Typography', 'trx_addons' ),
-				'global'                => [
-					'default' => Global_Typography::TYPOGRAPHY_TEXT,
+				'label'                 => __( 'Margin', 'trx_addons' ),
+				'type'                  => Controls_Manager::DIMENSIONS,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-pricing-table-additional-info' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+				'default'               => [
+					'top'       => 20,
+					'right'     => 0,
+					'bottom'    => 0,
+					'left'      => 0,
+					'unit'      => 'px',
+					'isLinked'  => false,
 				],
 				'condition'             => [
 					'table_additional_info!' => '',
 				],
-				'selector'              => '{{WRAPPER}} .trx-addons-pricing-table-additional-info',
 			]
 		);
 
@@ -2460,54 +2635,13 @@ class PricingTableWidget extends BaseWidget {
 
 	}
 
-	private function render_currency_symbol( $symbol, $location ) {
-		$currency_position = $this->get_settings( 'currency_position' );
-		$location_setting = ! empty( $currency_position ) ? $currency_position : 'before';
-		if ( ! empty( $symbol ) && $location === $location_setting ) {
-			$symbol = apply_filters( 'ppe_pricing_table_currency', $symbol, $this->get_id() );
 
-			echo '<span class="trx-addons-pricing-table-price-prefix">' . $symbol . '</span>';
-		}
-	}
-
-	private function get_currency_symbol( $symbol_name ) {
-		$symbols = [
-			'dollar'         => '&#36;',
-			'euro'           => '&#128;',
-			'franc'          => '&#8355;',
-			'pound'          => '&#163;',
-			'ruble'          => '&#8381;',
-			'shekel'         => '&#8362;',
-			'baht'           => '&#3647;',
-			'yen'            => '&#165;',
-			'won'            => '&#8361;',
-			'guilder'        => '&fnof;',
-			'peso'           => '&#8369;',
-			'peseta'         => '&#8359',
-			'lira'           => '&#8356;',
-			'rupee'          => '&#8360;',
-			'indian_rupee'   => '&#8377;',
-			'real'           => 'R$',
-			'krona'          => 'kr',
-		];
-		return isset( $symbols[ $symbol_name ] ) ? $symbols[ $symbol_name ] : '';
-	}
+	/*-----------------------------------------------------------------------------------*/
+	/*	RENDER
+	/*-----------------------------------------------------------------------------------*/
 
 	/**
-	 * Add tooltip attributes
-	 */
-	protected function get_tooltip_attributes( $item, $tooltip_key ) {
-		$this->add_render_attribute(
-			$tooltip_key,
-			array(
-				'class'             => 'trx-addons-pricing-table-tooptip',
-				'data-tooltip-text' => $item['tooltip_content'],
-			)
-		);
-	}
-
-	/**
-	 * Render pricing table widget output on the frontend.
+	 * Render a widget output on the frontend.
 	 *
 	 * Written in PHP and used to generate the final HTML.
 	 *
@@ -2557,28 +2691,16 @@ class PricingTableWidget extends BaseWidget {
 		$this->add_inline_editing_attributes( 'table_additional_info', 'none' );
 		$this->add_render_attribute( 'table_additional_info', 'class', 'trx-addons-pricing-table-additional-info' );
 
-		$this->add_render_attribute( 'pricing-table', 'class', 'trx-addons-pricing-table' );
+		$this->add_render_attribute( 'pricing-table', 'class', 'trx-addons-pricing-table trx-addons-pricing-table-currency-' . esc_attr( $settings['currency_format'] ) );
+		if ( 'yes' == $settings['show_tooltip'] ) {
+			$this->add_render_attribute( 'pricing-table', 'class', 'trx-addons-pricing-table-tooltip-yes' );
+		}
 
 		$this->add_render_attribute( 'feature-list-item', 'class', '' );
-
-		$this->add_inline_editing_attributes( 'table_button_text', 'none' );
-
-		$this->add_render_attribute( 'table_button_text', 'class', [
-			'trx-addons-pricing-table-button',
-			'elementor-button',
-		] );
-
-		if ( ! empty( $settings['link']['url'] ) ) {
-			$this->add_link_attributes( 'table_button_text', $settings['link'] );
-		}
 
 		$this->add_render_attribute( 'pricing-table-duration', 'class', 'trx-addons-pricing-table-price-duration' );
 		if ( 'wrap' === $settings['duration_position'] ) {
 			$this->add_render_attribute( 'pricing-table-duration', 'class', 'next-line' );
-		}
-
-		if ( $settings['button_hover_animation'] ) {
-			$this->add_render_attribute( 'table_button_text', 'class', 'elementor-animation-' . $settings['button_hover_animation'] );
 		}
 
 		if ( 'raised' === $settings['currency_format'] ) {
@@ -2645,9 +2767,15 @@ class PricingTableWidget extends BaseWidget {
 						<?php if ( 'yes' === $settings['discount'] && $settings['table_original_price'] ) { ?>
 							<span class="trx-addons-pricing-table-price-original">
 								<?php
-									$this->render_currency_symbol( $symbol, 'before' );
+									if ( 'before' == $settings['currency_position'] ) {
+										// PHPCS - the currency symbol should not be escaped.
+										echo $symbol;
+									}
 									$this->print_unescaped_setting( 'table_original_price' );
-									$this->render_currency_symbol( $symbol, 'after' );
+									if ( 'after' == $settings['currency_position'] ) {
+										// PHPCS - the currency symbol should not be escaped.
+										echo $symbol;
+									}
 								?>
 							</span>
 						<?php } ?>
@@ -2673,15 +2801,7 @@ class PricingTableWidget extends BaseWidget {
 						<?php } ?>
 					</div>
 				</div>
-				<?php if ( 'above' === $settings['table_button_position'] ) { ?>
-					<div class="trx-addons-pricing-table-button-wrap">
-						<?php if ( $settings['table_button_text'] ) { ?>
-							<a <?php echo wp_kses_post( $this->get_render_attribute_string( 'table_button_text' ) ); ?>>
-								<?php echo wp_kses_post( $settings['table_button_text'] ); ?>
-							</a>
-						<?php } ?>
-					</div>
-				<?php } ?>
+				<?php $this->render_button( 'above', $settings ); ?>
 				<ul class="trx-addons-pricing-table-features">
 					<?php foreach ( $settings['table_features'] as $index => $item ) : ?>
 						<?php
@@ -2727,46 +2847,34 @@ class PricingTableWidget extends BaseWidget {
 						}
 						?>
 						<li <?php echo wp_kses_post( $this->get_render_attribute_string( $feature_list_key ) ); ?>>
-							<div <?php echo wp_kses_post( $this->get_render_attribute_string( $feature_content_key ) ); ?>>
-								<?php
-								if ( ! empty( $item['feature_icon'] ) || ( ! empty( $item['select_feature_icon']['value'] ) && $is_new ) ) : ?>
-									<span class="trx-addons-pricing-table-fature-icon trx-addons-icon">
-										<?php
+							<div <?php echo wp_kses_post( $this->get_render_attribute_string( $feature_content_key ) ); ?>><?php
+								if ( ! empty( $item['feature_icon'] ) || ( ! empty( $item['select_feature_icon']['value'] ) && $is_new ) ) {
+									?><span class="trx-addons-pricing-table-feature-icon trx-addons-icon"><?php
 										if ( $is_new || $migrated ) {
 											Icons_Manager::render_icon( $item['select_feature_icon'], [ 'aria-hidden' => 'true' ] );
-										} else { ?>
-											<i class="<?php echo esc_attr( $item['feature_icon'] ); ?>" aria-hidden="true"></i>
-											<?php
+										} else {
+											?><i class="<?php echo esc_attr( $item['feature_icon'] ); ?>" aria-hidden="true"></i><?php
 										}
-										?>
-									</span>
-									<?php
-									endif;
-								?>
-								<?php if ( $item['feature_text'] ) { ?>
-									<span <?php echo wp_kses_post( $this->get_render_attribute_string( $feature_key ) ); ?>>
+									?></span><?php
+								}
+								if ( $item['feature_text'] ) {
+									?><span <?php echo wp_kses_post( $this->get_render_attribute_string( $feature_key ) ); ?>>
 										<?php echo wp_kses_post( $item['feature_text'] ); ?>
-									</span>
-								<?php } ?>
-								<?php if ( 'yes' === $settings['show_tooltip'] && $item['tooltip_content'] ) { ?>
-									<?php if ( 'icon' === $settings['tooltip_display_on'] ) { ?>
-										<span <?php echo wp_kses_post( $this->get_render_attribute_string( $tooltip_icon_key ) ); ?>>
+									</span><?php
+								}
+								if ( 'yes' === $settings['show_tooltip'] && $item['tooltip_content'] ) {
+									if ( 'icon' === $settings['tooltip_display_on'] ) {
+										?><span <?php echo wp_kses_post( $this->get_render_attribute_string( $tooltip_icon_key ) ); ?>>
 											<?php \Elementor\Icons_Manager::render_icon( $settings['tooltip_icon'], array( 'aria-hidden' => 'true' ) ); ?>
-										</span>
-									<?php } ?>
-								<?php } ?>
-							</div>
+										</span><?php
+									}
+								}
+							?></div>
 						</li>
 					<?php endforeach; ?>
 				</ul>
 				<div class="trx-addons-pricing-table-footer">
-					<?php if ( 'below' === $settings['table_button_position'] ) { ?>
-						<?php if ( $settings['table_button_text'] ) { ?>
-							<a <?php echo wp_kses_post( $this->get_render_attribute_string( 'table_button_text' ) ); ?>>
-								<?php echo wp_kses_post( $settings['table_button_text'] ); ?>
-							</a>
-						<?php } ?>
-					<?php } ?>
+					<?php $this->render_button( 'below', $settings ); ?>
 					<?php if ( $settings['table_additional_info'] ) { ?>
 						<div <?php echo wp_kses_post( $this->get_render_attribute_string( 'table_additional_info' ) ); ?>>
 							<?php echo wp_kses_post( $this->parse_text_editor( $settings['table_additional_info'] ) ); ?>
@@ -2795,8 +2903,122 @@ class PricingTableWidget extends BaseWidget {
 		<?php
 	}
 
+	private function render_currency_symbol( $symbol, $location ) {
+		$currency_position = $this->get_settings( 'currency_position' );
+		$location_setting = ! empty( $currency_position ) ? $currency_position : 'before';
+		if ( ! empty( $symbol ) && $location === $location_setting ) {
+			$symbol = apply_filters( 'ppe_pricing_table_currency', $symbol, $this->get_id() );
+			echo '<span class="trx-addons-pricing-table-price-prefix">' . $symbol . '</span>';	// PHPCS - the currency symbol should not be escaped.
+		}
+	}
+
+	private function get_currency_symbol( $symbol_name ) {
+		$symbols = [
+			'dollar'         => '&#36;',
+			'euro'           => '&#128;',
+			'franc'          => '&#8355;',
+			'pound'          => '&#163;',
+			'ruble'          => '&#8381;',
+			'shekel'         => '&#8362;',
+			'baht'           => '&#3647;',
+			'yen'            => '&#165;',
+			'won'            => '&#8361;',
+			'guilder'        => '&fnof;',
+			'peso'           => '&#8369;',
+			'peseta'         => '&#8359',
+			'lira'           => '&#8356;',
+			'rupee'          => '&#8360;',
+			'indian_rupee'   => '&#8377;',
+			'real'           => 'R$',
+			'krona'          => 'kr',
+		];
+		return isset( $symbols[ $symbol_name ] ) ? $symbols[ $symbol_name ] : '';
+	}
+
 	/**
-	 * Render pricing table widget output in the editor.
+	 * Add tooltip attributes
+	 */
+	protected function get_tooltip_attributes( $item, $tooltip_key ) {
+		$this->add_render_attribute(
+			$tooltip_key,
+			array(
+				'class'             => 'trx-addons-pricing-table-tooptip',
+				'data-tooltip-text' => $item['tooltip_content'],
+			)
+		);
+	}
+
+	private function render_button( $position, $settings ) {
+		if ( $position === $settings['table_button_position'] ) {
+			// Button attributes
+			$this->add_render_attribute( 'table_button_text_button', 'class', [
+				'trx-addons-pricing-table-button',
+				'elementor-button',
+			] );
+			$this->add_render_attribute( 'table_button_text', 'class', 'trx-addons-pricing-table-button-text' );
+			$this->add_inline_editing_attributes( 'table_button_text', 'none' );
+	
+			if ( ! empty( $settings['link']['url'] ) ) {
+				$this->add_link_attributes( 'table_button_text', $settings['link'] );
+			}
+	
+			if ( $settings['button_hover_animation'] ) {
+				$this->add_render_attribute( 'table_button_text', 'class', 'elementor-animation-' . $settings['button_hover_animation'] );
+			}
+			// Icon attributes
+			if ( ! isset( $settings['button_icon'] ) && ! Icons_Manager::is_migration_allowed() ) {
+				// add old default.
+				$settings['button_icon'] = '';
+			}
+			$has_icon = ! empty( $settings['button_icon'] );
+			if ( $has_icon ) {
+				$this->add_render_attribute( 'button-icon', 'class', $settings['button_icon'] );
+				$this->add_render_attribute( 'button-icon', 'aria-hidden', 'true' );
+			}
+			if ( ! $has_icon && ! empty( $settings['select_button_icon']['value'] ) ) {
+				$has_icon = true;
+			}
+			$migrated = isset( $settings['__fa4_migrated']['select_button_icon'] );
+			$is_new   = ! isset( $settings['button_icon'] ) && Icons_Manager::is_migration_allowed();
+	
+			?><div class="trx-addons-pricing-table-button-wrap trx-addons-pricing-table-button-wrap-<?php echo esc_attr( $position ); ?>">
+				<a <?php echo wp_kses_post( $this->get_render_attribute_string( 'table_button_text_button' ) ); ?>>
+					<?php if ( 'before' === $settings['button_icon_position'] && $has_icon ) { ?>
+						<span class='trx-addons-button-icon trx-addons-icon'>
+							<?php
+							if ( $is_new || $migrated ) {
+								Icons_Manager::render_icon( $settings['select_button_icon'], array( 'aria-hidden' => 'true' ) );
+							} else if ( ! empty( $settings['button_icon'] ) ) {
+								?>
+								<i <?php $this->print_render_attribute_string( 'button-icon' ); ?>></i>
+								<?php
+							}
+							?>
+						</span>
+					<?php } ?>
+					<?php if ( ! empty( $settings['table_button_text'] ) ) { ?>
+						<span <?php $this->print_render_attribute_string( 'table_button_text' ); ?>><?php echo wp_kses_post( $settings['table_button_text'] ); ?></span>
+					<?php } ?>
+					<?php if ( 'after' === $settings['button_icon_position'] && $has_icon ) { ?>
+						<span class='trx-addons-button-icon trx-addons-icon'>
+							<?php
+							if ( $is_new || $migrated ) {
+								Icons_Manager::render_icon( $settings['select_button_icon'], array( 'aria-hidden' => 'true' ) );
+							} else if ( ! empty( $settings['button_icon'] ) ) {
+								?>
+								<i <?php $this->print_render_attribute_string( 'button-icon' ); ?>></i>
+								<?php
+							}
+							?>
+						</span>
+					<?php } ?>
+				</a>
+			</div><?php
+		}
+	}
+
+	/**
+	 * Render a widget output in the editor.
 	 *
 	 * Written as a Backbone JavaScript template and used to generate the live preview.
 	 *
@@ -2804,8 +3026,6 @@ class PricingTableWidget extends BaseWidget {
 	 */
 	protected function content_template() {
 		?><#
-		var buttonClasses = 'trx-addons-pricing-table-button elementor-button elementor-animation-' + settings.button_hover_animation;
-		
 		var $i = 1,
 			symbols = {
 				dollar: '&#36;',
@@ -2860,9 +3080,51 @@ class PricingTableWidget extends BaseWidget {
 				}
 			);
 		}
+
+		function render_button( position ) {
+			if ( settings.table_button_position == position ) {
+				// Button attributes
+				view.addRenderAttribute( 'table_button_text', 'class', 'trx-addons-pricing-table-button elementor-button elementor-animation-' + settings.button_hover_animation );
+				view.addRenderAttribute( 'table_button_text_span', 'class', 'trx-addons-pricing-table-button-text' );
+				view.addInlineEditingAttributes( 'table_button_text_span' );
+				// Icon attrinutes
+				var buttonIconHTML = elementor.helpers.renderIcon( view, settings.select_button_icon, { 'aria-hidden': true }, 'i' , 'object' ),
+					buttonMigrated = elementor.helpers.isIconMigrated( settings, 'select_button_icon' );
+				// Additional wrapper for button above the features list
+				#><div class="trx-addons-pricing-table-button-wrap trx-addons-pricing-table-button-wrap-{{ position }}">
+					<a href="{{{ _.escape( settings.link.url ) }}}" {{{ view.getRenderAttributeString( 'table_button_text' ) }}}>
+						<# if ( settings.button_icon_position == 'before' ) { #>
+							<# if ( settings.button_icon || settings.select_button_icon.value ) { #>
+								<span class="trx-addons-button-icon trx-addons-icon">
+									<# if ( buttonIconHTML && buttonIconHTML.rendered && ( ! settings.button_icon || buttonMigrated ) ) { #>
+										{{{ buttonIconHTML.value }}}
+									<# } else { #>
+										<i class="{{ settings.button_icon }}" aria-hidden="true"></i>
+									<# } #>
+								</span>
+							<# } #>
+						<# } #>
+						<# if ( settings.table_button_text ) { #>
+							<span {{{ view.getRenderAttributeString( 'table_button_text_span' ) }}}>{{{ settings.table_button_text }}}</span>
+						<# } #>
+						<# if ( settings.button_icon_position == 'after' ) { #>
+							<# if ( settings.button_icon || settings.select_button_icon.value ) { #>
+								<span class="trx-addons-button-icon trx-addons-icon">
+									<# if ( buttonIconHTML && buttonIconHTML.rendered && ( ! settings.button_icon || buttonMigrated ) ) { #>
+										{{{ buttonIconHTML.value }}}
+									<# } else { #>
+										<i class="{{ settings.button_icon }}" aria-hidden="true"></i>
+									<# } #>
+								</span>
+							<# } #>
+						<# } #>
+					</a>
+				</div><#
+			}
+		}
 		#>
 		<div class="trx-addons-pricing-table-container">
-			<div class="trx-addons-pricing-table">
+			<div class="trx-addons-pricing-table trx-addons-pricing-table-currency-{{ settings.currency_format }} trx-addons-pricing-table-tooltip-{{ settings.show_tooltip }}">
 				<div class="trx-addons-pricing-table-head">
 					<# if ( settings.icon_type != 'none' ) { #>
 						<div class="trx-addons-pricing-table-icon-wrap">
@@ -2947,23 +3209,7 @@ class PricingTableWidget extends BaseWidget {
 						<# } #>
 					</div>
 				</div>
-				<# if ( settings.table_button_position == 'above' ) { #>
-					<div class="trx-addons-pricing-table-button-wrap">
-						<#
-						if ( settings.table_button_text ) {
-							var button_text = settings.table_button_text;
-
-							view.addRenderAttribute( 'table_button_text', 'class', buttonClasses );
-
-							view.addInlineEditingAttributes( 'table_button_text' );
-
-							var button_text_html = '<a ' + 'href="' + _.escape( settings.link.url ) + '"' + view.getRenderAttributeString( 'table_button_text' ) + '>' + button_text + '</a>';
-
-							print( button_text_html );
-						}
-						#>
-					</div>
-				<# } #>
+				<# render_button( 'above' ) #>
 				<ul class="trx-addons-pricing-table-features">
 					<#
 					var i = 1;
@@ -2992,11 +3238,12 @@ class PricingTableWidget extends BaseWidget {
 							} else {
 								get_tooltip_attributes( item, tooltipIconKey );
 							}
-						} #>
-						<li class="elementor-repeater-item-{{ item._id }} <# if ( item.exclude == 'yes' ) { #> excluded <# } #>">
+						}
+						#>
+						<li class="elementor-repeater-item-{{ item._id }}<# if ( item.exclude == 'yes' ) print( ' excluded' ); #>">
 							<div {{{ view.getRenderAttributeString( featureContentKey ) }}}>
 								<# if ( item.feature_icon || item.select_feature_icon.value ) { #>
-									<span class="trx-addons-pricing-table-fature-icon trx-addons-icon">
+									<span class="trx-addons-pricing-table-feature-icon trx-addons-icon">
 									<#
 										iconsHTML[ index ] = elementor.helpers.renderIcon( view, item.select_feature_icon, { 'aria-hidden': true }, 'i', 'object' );
 										iconsMigrated[ index ] = elementor.helpers.isIconMigrated( item, 'select_feature_icon' );
@@ -3033,30 +3280,14 @@ class PricingTableWidget extends BaseWidget {
 				</ul>
 				<div class="trx-addons-pricing-table-footer">
 					<#
-					if ( settings.table_button_position == 'below' ) {
-						if ( settings.table_button_text ) {
-							var button_text = settings.table_button_text;
+					// Button
+					render_button( 'below' );
 
-							view.addRenderAttribute( 'table_button_text', 'class', buttonClasses );
-
-							view.addInlineEditingAttributes( 'table_button_text' );
-
-							var button_text_html = '<a ' + 'href="' + _.escape( settings.link.url ) + '"' + view.getRenderAttributeString( 'table_button_text' ) + '>' + button_text + '</a>';
-
-							print( button_text_html );
-						}
-					}
-
+					// Additional Info
 					if ( settings.table_additional_info ) {
-						var additional_info_text = settings.table_additional_info;
-
 						view.addRenderAttribute( 'table_additional_info', 'class', 'trx-addons-pricing-table-additional-info' );
-
 						view.addInlineEditingAttributes( 'table_additional_info' );
-
-						var additional_info_text_html = '<div ' + view.getRenderAttributeString( 'table_additional_info' ) + '>' + additional_info_text + '</div>';
-
-						print( additional_info_text_html );
+						print( '<div ' + view.getRenderAttributeString( 'table_additional_info' ) + '>' + settings.table_additional_info + '</div>' );
 					}
 					#>
 				</div>

@@ -400,10 +400,10 @@ body:not(.fixed_blocks_sticky) .sc_column_fixed_placeholder {
 
 /* Elm 3.16.0+ Container max width. Attention! A theme-specific CSS-var "--theme-var-page" is used */
 body.elementor-use-container .e-con {
-  --container-max-width: calc( var(--theme-var-page) + var(--theme-var-elm_add_page_margins, 30px) );
-}
-body.elementor-use-container .e-con-gap-no {
   --container-max-width: var(--theme-var-page);
+}
+body.elementor-use-container.elementor-use-container-with-paddings .e-con:not(.e-con-gap-no) {
+  --container-max-width: calc( var(--theme-var-page) + var(--theme-var-elm_add_page_margins, 30px) );
 }
 
 /* Elm 3.16.0+ Containers with a row type (narrow, normal, compact) */

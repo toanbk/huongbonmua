@@ -80,6 +80,7 @@ class IconListWidget extends BaseWidget {
 					],
 				],
 				'render_type'           => 'template',
+				'toggle'                => false,
 				'prefix_class'          => 'trx-addons-icon-list-',
 				'label_block'           => false,
 			]
@@ -208,10 +209,42 @@ class IconListWidget extends BaseWidget {
 						'max' => 100,
 					],
 				],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-list-items {{CURRENT_ITEM}} .trx-addons-icon-list-icon' => 'font-size: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-list-items {{CURRENT_ITEM}} .trx-addons-icon-list-icon' => 'font-size: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}};',	// height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}};
 					'{{WRAPPER}} .trx-addons-list-items {{CURRENT_ITEM}} .trx-addons-icon-list-image img' => 'width: {{SIZE}}{{UNIT}};',
 				],
+			]
+		);
+
+		$repeater->add_responsive_control(
+			'single_icon_box_size',
+			[
+				'label'                 => __( 'Box Size', 'trx_addons' ),
+				'type'                  => Controls_Manager::SLIDER,
+				'range'                 => [
+					'px' => [
+						'min' => 6,
+						'max' => 100,
+					],
+				],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-list-items {{CURRENT_ITEM}} .trx-addons-icon-list-icon' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-list-items {{CURRENT_ITEM}} .trx-addons-icon-list-image' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-list-items {{CURRENT_ITEM}} .trx-addons-icon-list-image img' => 'width: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$repeater->add_group_control(
+			Group_Control_Border::get_type(),
+			[
+				'name'                  => 'single_item_border',
+				'label'                 => __( 'Border', 'trx_addons' ),
+				'placeholder'           => '',
+				'default'               => '',
+				'selector'              => '{{WRAPPER}}  .trx-addons-list-items {{CURRENT_ITEM}}',
 			]
 		);
 
@@ -306,11 +339,13 @@ class IconListWidget extends BaseWidget {
 						'max' => 50,
 					],
 				],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'separator'             => 'before',
 				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-list-items.trx-addons-inline-items' => 'gap: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}} .trx-addons-list-items:not(.trx-addons-inline-items) li:not(:last-child)' => 'margin-bottom: {{SIZE}}{{UNIT}};',
-					'body:not(.rtl) {{WRAPPER}} .trx-addons-list-items.trx-addons-inline-items li:not(:last-child)' => 'margin-right: {{SIZE}}{{UNIT}};',
-					'body.rtl {{WRAPPER}} .trx-addons-list-items.trx-addons-inline-items li:not(:last-child)' => 'margin-left: {{SIZE}}{{UNIT}};',
+					// 'body:not(.rtl) {{WRAPPER}} .trx-addons-list-items.trx-addons-inline-items li:not(:last-child)' => 'margin-right: {{SIZE}}{{UNIT}};',
+					// 'body.rtl {{WRAPPER}} .trx-addons-list-items.trx-addons-inline-items li:not(:last-child)' => 'margin-left: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -331,7 +366,7 @@ class IconListWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Border Radius', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%', 'em' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-list-items li' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -343,7 +378,7 @@ class IconListWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-list-items li' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -432,6 +467,7 @@ class IconListWidget extends BaseWidget {
 				'condition'             => [
 					'divider' => 'yes',
 				],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-list-items:not(.trx-addons-inline-items) li:not(:last-child)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}} .trx-addons-list-items.trx-addons-inline-items li:not(:last-child)' => 'border-right-width: {{SIZE}}{{UNIT}};',
@@ -527,6 +563,99 @@ class IconListWidget extends BaseWidget {
 			]
 		);
 
+		$this->add_responsive_control(
+			'icon_size',
+			[
+				'label'                 => __( 'Size', 'trx_addons' ),
+				'type'                  => Controls_Manager::SLIDER,
+				'default'               => [
+					'size' => 14,
+				],
+				'range'                 => [
+					'px' => [
+						'min' => 6,
+						'max' => 100,
+					],
+				],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-list-items .trx-addons-icon-list-icon' => 'font-size: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-list-items .trx-addons-icon-list-image img' => 'width: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'icon_box_size',
+			[
+				'label'                 => __( 'Box Size', 'trx_addons' ),
+				'type'                  => Controls_Manager::SLIDER,
+				'default'               => [
+					'size' => '',
+				],
+				'range'                 => [
+					'px' => [
+						'min' => 6,
+						'max' => 100,
+					],
+				],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-list-items .trx-addons-icon-list-icon' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-list-items .trx-addons-icon-list-image' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-list-items .trx-addons-icon-list-image img' => 'width: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'icon_spacing',
+			[
+				'label'                 => __( 'Spacing', 'trx_addons' ),
+				'type'                  => Controls_Manager::SLIDER,
+				'default'               => [
+					'size' => 8,
+				],
+				'range'                 => [
+					'px' => [
+						'max' => 50,
+					],
+				],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'selectors'             => [
+					'body:not(.rtl) {{WRAPPER}}.trx-addons-icon-left .trx-addons-list-items .trx-addons-icon-wrapper' => 'margin-right: {{SIZE}}{{UNIT}};',
+					'body.rtl {{WRAPPER}}.trx-addons-icon-left .trx-addons-list-items .trx-addons-icon-wrapper' => 'margin-left: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.trx-addons-icon-right .trx-addons-list-items .trx-addons-icon-wrapper' => 'margin-left: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'icon_vertical_offset',
+			[
+				'label'                 => esc_html__( 'Vertical Offset', 'trx_addons' ),
+				'type'                  => Controls_Manager::SLIDER,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'default'               => [
+					'size' => 0,
+				],
+				'range'                 => [
+					'px' => [
+						'min' => -15,
+						'max' => 15,
+					],
+					'em' => [
+						'min' => -1,
+						'max' => 1,
+						'step' => 0.1
+					],
+				],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-icon-wrapper' => 'top: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
 		$this->start_controls_tabs( 'tabs_icon_style' );
 
 		$this->start_controls_tab(
@@ -564,74 +693,6 @@ class IconListWidget extends BaseWidget {
 			]
 		);
 
-		$this->add_responsive_control(
-			'icon_size',
-			[
-				'label'                 => __( 'Size', 'trx_addons' ),
-				'type'                  => Controls_Manager::SLIDER,
-				'default'               => [
-					'size' => 14,
-				],
-				'range'                 => [
-					'px' => [
-						'min' => 6,
-						'max' => 100,
-					],
-				],
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-list-items .trx-addons-icon-list-icon' => 'font-size: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .trx-addons-list-items .trx-addons-icon-list-image img' => 'width: {{SIZE}}{{UNIT}};',
-				],
-			]
-		);
-
-		$this->add_responsive_control(
-			'icon_spacing',
-			[
-				'label'                 => __( 'Spacing', 'trx_addons' ),
-				'type'                  => Controls_Manager::SLIDER,
-				'default'               => [
-					'size' => 8,
-				],
-				'range'                 => [
-					'px' => [
-						'max' => 50,
-					],
-				],
-				'selectors'             => [
-					'body:not(.rtl) {{WRAPPER}}.trx-addons-icon-left .trx-addons-list-items .trx-addons-icon-wrapper' => 'margin-right: {{SIZE}}{{UNIT}};',
-					'body.rtl {{WRAPPER}}.trx-addons-icon-left .trx-addons-list-items .trx-addons-icon-wrapper' => 'margin-left: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}}.trx-addons-icon-right .trx-addons-list-items .trx-addons-icon-wrapper' => 'margin-left: {{SIZE}}{{UNIT}};',
-				],
-			]
-		);
-
-		$this->add_responsive_control(
-			'icon_vertical_offset',
-			[
-				'label'                 => esc_html__( 'Vertical Offset', 'trx_addons' ),
-				'type'                  => Controls_Manager::SLIDER,
-				'size_units'            => [ 'px', 'em' ],
-				'default'               => [
-					'size' => 0,
-				],
-				'range'                 => [
-					'px' => [
-						'min' => -15,
-						'max' => 15,
-					],
-					'em' => [
-						'min' => -1,
-						'max' => 1,
-						'step' => 0.1
-					],
-				],
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-icon-wrapper' => 'top: {{SIZE}}{{UNIT}};',
-				],
-			]
-		);
-
 		$this->add_group_control(
 			Group_Control_Border::get_type(),
 			[
@@ -648,7 +709,7 @@ class IconListWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Border Radius', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%', 'em' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-list-items .trx-addons-icon-wrapper, {{WRAPPER}} .trx-addons-list-items .trx-addons-icon-list-image img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -660,7 +721,7 @@ class IconListWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-list-items .trx-addons-icon-wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -728,6 +789,27 @@ class IconListWidget extends BaseWidget {
 
 		$this->end_controls_tabs();
 
+		$this->add_control(
+			'icon_number_heading',
+			array(
+				'label'     => __( 'Icon Type: Text', 'trx_addons' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'icon_number_typography',
+				'label'    => __( 'Typography', 'trx_addons' ),
+				'global'   => [
+					'default' => Global_Typography::TYPOGRAPHY_ACCENT,
+				],
+				'selector' => '{{WRAPPER}} .trx-addons-list-items .trx-addons-icon-list-number',
+			)
+		);
+
 		$this->end_controls_section();
 	}
 
@@ -775,6 +857,18 @@ class IconListWidget extends BaseWidget {
 				'default'               => '',
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-icon-list-text' => 'background: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'text_padding',
+			[
+				'label'                 => __( 'Padding', 'trx_addons' ),
+				'type'                  => Controls_Manager::DIMENSIONS,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-icon-list-text' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -830,8 +924,13 @@ class IconListWidget extends BaseWidget {
 		$this->end_controls_section();
 	}
 
+	
+	/*-----------------------------------------------------------------------------------*/
+	/*	RENDER
+	/*-----------------------------------------------------------------------------------*/
+
 	/**
-	 * Render icon list widget output on the frontend.
+	 * Render a widget output on the frontend.
 	 *
 	 * Written in PHP and used to generate the final HTML.
 	 *
@@ -979,7 +1078,7 @@ class IconListWidget extends BaseWidget {
 						$number = $i;
 					}
 					?>
-					<span class="trx-addons-icon-list-icon <?php echo esc_attr( $icon_animation ); ?>"><?php echo esc_attr( $number ); ?></span>
+					<span class="trx-addons-icon-list-icon trx-addons-icon-list-number <?php echo esc_attr( $icon_animation ); ?>"><?php echo esc_attr( $number ); ?></span>
 					<?php
 				}
 				?>
@@ -1071,7 +1170,7 @@ class IconListWidget extends BaseWidget {
 									} else {
 										var number = i;
 									}
-									#><span class="trx-addons-icon-list-icon elementor-animation-{{ settings.icon_hover_animation }}">
+									#><span class="trx-addons-icon-list-icon trx-addons-icon-list-number elementor-animation-{{ settings.icon_hover_animation }}">
 										{{ number }}
 									</span><#
 								}

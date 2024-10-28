@@ -48,11 +48,10 @@ if ( !function_exists( 'trx_addons_sc_title_load_scripts_preview' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_title' ) ) {
 	function trx_addons_sc_title($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_title', $atts, trx_addons_sc_common_atts('id,title', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_title', $atts, trx_addons_sc_common_atts( 'trx_sc_title', 'id,title', array(
 			// Individual params
 			'type' => '',
-			))
-		);
+		) ) );
 		
 		$output = '';
 

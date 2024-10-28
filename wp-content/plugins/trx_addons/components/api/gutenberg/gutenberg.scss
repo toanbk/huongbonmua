@@ -5,7 +5,8 @@
 
 /* Fixes for the block editor
 ---------------------------------------- */
-body.edit-post-visual-editor {
+body.edit-post-visual-editor,
+.editor-styles-wrapper {
 	position: relative;
 	flex: 1 0 auto;
 	height: auto !important;
@@ -19,10 +20,15 @@ body.edit-post-visual-editor {
 			margin-right: 0;
 		}
 	}
+	
+	.block-editor-block-list__block select {
+		visibility: visible !important;
+	}
 }
 
 /* Dashicons */
-body.edit-post-visual-editor .components-button {
+body.edit-post-visual-editor .components-button,
+.editor-styles-wrapper .components-button {
 	.dashicons, .dashicons-before::before {
 		font-family: dashicons;
 		line-height: 1;

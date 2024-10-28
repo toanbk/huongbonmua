@@ -93,7 +93,7 @@ subtitle="" link="#" link_text="Buy now"]Description[/trx_sc_promo]
 */
 if (!function_exists('trx_addons_sc_promo')) {	
 	function trx_addons_sc_promo($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_promo', $atts, trx_addons_sc_common_atts('id,title,icon', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_promo', $atts, trx_addons_sc_common_atts( 'trx_sc_promo', 'id,title,icon', array(
 			// Individual params
 			"type" => "default",
 			"size" => "normal",
@@ -119,8 +119,7 @@ if (!function_exists('trx_addons_sc_promo')) {
 			"link2" => '',
 			"link2_text" => esc_html__('Learn more', 'trx_addons'),
 			"link2_style" => 'default',
-			))
-		);
+		) ) );
 
 		if ( !empty( $content ) ) {
 			$atts['content'] = $content;

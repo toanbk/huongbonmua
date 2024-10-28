@@ -102,7 +102,7 @@ if ( !function_exists( 'trx_addons_sc_supertitle_has_side_title' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_supertitle' ) ) {
 	function trx_addons_sc_supertitle($atts, $content = '') {
-		$atts = trx_addons_sc_prepare_atts('trx_sc_supertitle', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_supertitle', $atts, trx_addons_sc_common_atts( 'trx_sc_supertitle', 'id', array(
 				// Individual params
 				'type' => 'default',
 				'icon_column' => 8,
@@ -113,8 +113,7 @@ if ( !function_exists( 'trx_addons_sc_supertitle' ) ) {
 				'icon_size' => '',
 				'icon_bg_color' => '',
 				'image' => '',
-			))
-		);
+		) ) );
 		$atts['header_column'] = max(0, min($atts['header_column'], 11));
 		if (function_exists('vc_param_group_parse_atts') && !is_array($atts['items'])) {
 			$atts['items'] = (array) vc_param_group_parse_atts( $atts['items'] );

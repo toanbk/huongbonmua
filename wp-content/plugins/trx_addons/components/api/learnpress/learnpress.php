@@ -293,6 +293,22 @@ if ( ! function_exists( 'trx_addons_learnpress_extended_taxonomy_add_inline_css'
 	}
 }
 
+if ( ! function_exists( 'trx_addons_learnpress_sc_layouts_content_add_inline_css' ) ) {
+	add_filter( 'trx_addons_filter_sc_layout_content_need_inline_css', 'trx_addons_learnpress_sc_layouts_content_add_inline_css', 10, 2 );
+	/**
+	 * Add inline styles for the extended taxonomy
+	 * 
+	* @param boolean $add      true - add inline styles, false - not
+	* @param int     $post_id  Post ID
+	*/
+	function trx_addons_learnpress_sc_layouts_content_add_inline_css( $add, $post_id = 0 ) {
+		if ( trx_addons_exists_learnpress() && trx_addons_is_learnpress_page() ) {		// && learn_press_is_course()
+			$add = true;
+		}
+		return $add;
+	}
+}
+
 
 // Demo data install
 //----------------------------------------------------------------------------

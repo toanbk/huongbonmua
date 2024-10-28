@@ -200,7 +200,7 @@ if (!function_exists('trx_addons_sc_osmap_add_in_vc_params')) {
 							), 'trx_sc_osmap')
 						)
 					),
-					trx_addons_vc_add_title_param(),
+					apply_filters( 'trx_addons_filter_add_title_param', true, 'trx_sc_osmap' ) ? trx_addons_vc_add_title_param() : array(),
 					trx_addons_vc_add_id_param()
 				)
 				

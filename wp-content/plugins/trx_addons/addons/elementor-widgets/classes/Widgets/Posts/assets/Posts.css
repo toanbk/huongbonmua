@@ -1,16 +1,13 @@
-.trx-addons-posts h1, .trx-addons-posts h2, .trx-addons-posts h3, .trx-addons-posts h4, .trx-addons-posts h5, .trx-addons-posts h6, .trx-addons-posts p {
+h1.trx-addons-posts-item-title, h2.trx-addons-posts-item-title, h3.trx-addons-posts-item-title, h4.trx-addons-posts-item-title, h5.trx-addons-posts-item-title, h6.trx-addons-posts-item-title, p.trx-addons-posts-item-title {
+  letter-spacing: 0;
   margin: 0;
 }
 
-.trx-addons-posts-equal-height-yes .trx-addons-post {
+.trx-addons-posts-equal-height-yes .trx-addons-posts-item {
   height: 100%;
 }
 
-.trx-addons-post .trx-addons-post-title {
-  font-size: 26px;
-}
-
-.trx-addons-post .trx-addons-post-title a {
+.trx-addons-posts-item .trx-addons-posts-item-title a {
   color: inherit;
   font-family: inherit;
   font-size: inherit;
@@ -19,16 +16,16 @@
   line-height: inherit;
 }
 
-.trx-addons-post-thumbnail img {
+.trx-addons-posts-item-thumbnail img {
   width: 100%;
   transition: all .25s linear;
 }
 
-.trx-addons-posts-thumbnail-ratio .trx-addons-post-thumbnail-wrap {
+.trx-addons-posts-thumbnail-ratio .trx-addons-posts-item-thumbnail-wrap {
   position: relative;
 }
 
-.trx-addons-posts-thumbnail-ratio .trx-addons-post-thumbnail-wrap img {
+.trx-addons-posts-thumbnail-ratio .trx-addons-posts-item-thumbnail-wrap img {
   position: absolute;
   -o-object-fit: cover;
   object-fit: cover;
@@ -39,44 +36,69 @@
   height: 100%;
 }
 
-.trx-addons-posts-align-buttons .trx-addons-post {
+.trx-addons-posts-align-buttons .trx-addons-posts-item {
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow: hidden;
 }
 
-.trx-addons-posts-align-buttons .trx-addons-post-content-wrap {
-  flex-grow: 1;
+.trx-addons-posts-align-buttons .trx-addons-posts-item-content-wrap {
   display: flex;
   flex-direction: column;
   align-items: baseline;
+  flex-grow: 1;
 }
 
-.trx-addons-posts-align-buttons .trx-addons-post-content {
+.trx-addons-posts-align-buttons .trx-addons-posts-item-content {
   flex-grow: 1;
+  width: 100%;
+  overflow: hidden;
 }
 
 .trx-addons-posts-align-buttons.trx-addons-posts-skin-event .trx-addons-posts-button {
   align-self: center;
 }
 
-.trx-addons-post-separator-wrap {
+.trx-addons-posts-button {
+  display: inline-flex;
+  vertical-align: top;
+}
+
+.trx-addons-posts-item-separator-wrap {
   margin-bottom: 15px;
 }
 
-.trx-addons-post-separator {
+.trx-addons-posts-item-separator {
   background: #e6e6e6;
   height: 1px;
   width: 100%;
 }
 
-.trx-addons-post-terms {
-  transition: all 0.25s linear 0s;
+.trx-addons-posts-item-terms {
   display: inline-block;
+  vertical-align: top;
 }
 
-.trx-addons-post-terms a {
+.trx-addons-posts-item-terms a {
   color: inherit;
+  -webkit-transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+  -ms-transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.trx-addons-posts-item-meta .trx-addons-meta-separator:empty:not(:last-child):after {
+  content: '\2022';
+}
+
+.trx-addons-posts-item-terms .trx-addons-terms-separator:last-child,
+.trx-addons-posts-item-meta .trx-addons-meta-separator:last-child {
+  display: none;
+}
+
+.trx-addons-posts-item-meta .trx-addons-icon {
+  display: inline-block;
+  vertical-align: baseline;
 }
 
 .trx-addons-posts-pagination a,
@@ -165,19 +187,15 @@
   flex-shrink: 0;
 }
 
-.trx-addons-loader,
-.trx-addons-posts-loader {
-  width: 46px;
-  height: 46px;
-}
-
-.trx-addons-loader {
-  text-align: center;
+.trx-addons-loader-overlay {
+  content: ' ';
+  background: rgba(255, 255, 255, 0.5);
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  z-index: 2;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
 }
 
 .trx-addons-posts-loader {
@@ -186,8 +204,18 @@
   margin-right: auto;
 }
 
-.trx-addons-loader:after,
-.trx-addons-posts-loader:after {
+.trx-addons-loader {
+  position: absolute;
+  z-index: 2;
+  width: 46px;
+  height: 46px;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  text-align: center;
+}
+
+.trx-addons-loader:after {
   content: " ";
   display: block;
   width: 100%;
@@ -220,16 +248,6 @@
   100% {
     transform: rotate(360deg);
   }
-}
-.trx-addons-loader-overlay {
-  background: rgba(255, 255, 255, 0.5);
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  height: 100%;
-  width: 100%;
 }
 
 /*# sourceMappingURL=Posts.css.map */

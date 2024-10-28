@@ -19,7 +19,7 @@ trx_addons_show_layout($title, $before_title, $after_title);
 	
 // Widget body
 $form_style = $trx_addons_args['style'] = empty($trx_addons_args['style']) || trx_addons_is_inherit($trx_addons_args['style']) 
-			? trx_addons_get_option('input_hover') 
+			? trx_addons_get_option( 'input_hover', 'default' ) 
 			: $trx_addons_args['style'];
 ?><div <?php if (!empty($trx_addons_args['id'])) echo ' id="'.esc_attr($trx_addons_args['id']).'"'; ?>
 	class="sc_form trx_addons_woocommerce_search trx_addons_woocommerce_search_type_<?php 

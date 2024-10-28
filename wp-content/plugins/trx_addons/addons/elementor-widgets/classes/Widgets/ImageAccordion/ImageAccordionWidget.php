@@ -288,7 +288,7 @@ class ImageAccordionWidget extends BaseWidget {
 						'step'  => 0.1,
 					],
 				],
-				'size_units'            => [ 'px', 'em', 'vh' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'default'               => [
 					'size' => 400,
 					'unit' => 'px',
@@ -430,16 +430,16 @@ class ImageAccordionWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'default'               => [
 					'size' => '',
 					'unit' => 'px',
 				],
 				'selectors'             => [
-					'(desktop){{WRAPPER}}.trx-addons-image-accordion-orientation-vertical .trx-addons-image-accordion-item:not(:last-child)' => 'margin-right: {{SIZE}}px',
-					'(desktop){{WRAPPER}}.trx-addons-image-accordion-orientation-horizontal .trx-addons-image-accordion-item:not(:last-child)' => 'margin-bottom: {{SIZE}}px',
-					'(tablet){{WRAPPER}}.trx-addons-image-accordion-orientation-vertical.trx-addons-image-accordion-stack-on-tablet .trx-addons-image-accordion-item:not(:last-child)' => 'margin-bottom: {{SIZE}}px;',
-					'(mobile){{WRAPPER}}.trx-addons-image-accordion-orientation-vertical.trx-addons-image-accordion-stack-on-mobile .trx-addons-image-accordion-item:not(:last-child)' => 'margin-bottom: {{SIZE}}px;',
+					'(desktop){{WRAPPER}}.trx-addons-image-accordion-orientation-vertical .trx-addons-image-accordion-item:not(:last-child)' => 'margin-right: {{SIZE}}{{UNIT}}',
+					'(desktop){{WRAPPER}}.trx-addons-image-accordion-orientation-horizontal .trx-addons-image-accordion-item:not(:last-child)' => 'margin-bottom: {{SIZE}}{{UNIT}}',
+					'(tablet){{WRAPPER}}.trx-addons-image-accordion-orientation-vertical.trx-addons-image-accordion-stack-on-tablet .trx-addons-image-accordion-item:not(:last-child)' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'(mobile){{WRAPPER}}.trx-addons-image-accordion-orientation-vertical.trx-addons-image-accordion-stack-on-mobile .trx-addons-image-accordion-item:not(:last-child)' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -479,9 +479,21 @@ class ImageAccordionWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Border Radius', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-image-accordion-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'items_padding',
+			[
+				'label'                 => __( 'Padding', 'trx_addons' ),
+				'type'                  => Controls_Manager::DIMENSIONS,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-image-accordion-overlay' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -584,7 +596,7 @@ class ImageAccordionWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Border Radius', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-image-accordion .trx-addons-image-accordion-content' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -694,7 +706,7 @@ class ImageAccordionWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'default'               => [
 					'size' => '',
 					'unit' => 'px',
@@ -711,7 +723,7 @@ class ImageAccordionWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-image-accordion .trx-addons-image-accordion-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -759,13 +771,13 @@ class ImageAccordionWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'default'               => [
 					'size' => '',
 					'unit' => 'px',
 				],
 				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-image-accordion .trx-addons-image-accordion-title' => 'margin-bottom: {{SIZE}}px',
+					'{{WRAPPER}} .trx-addons-image-accordion .trx-addons-image-accordion-title' => 'margin-bottom: {{SIZE}}{{UNIT}}',
 				],
 			]
 		);
@@ -829,13 +841,13 @@ class ImageAccordionWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'default'               => [
 					'size' => 15,
 					'unit' => 'px',
 				],
 				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-image-accordion-button' => 'margin-top: {{SIZE}}px',
+					'{{WRAPPER}} .trx-addons-image-accordion-button' => 'margin-top: {{SIZE}}{{UNIT}}',
 				],
 			]
 		);
@@ -890,7 +902,7 @@ class ImageAccordionWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Border Radius', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-image-accordion-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -914,7 +926,7 @@ class ImageAccordionWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-image-accordion-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -992,6 +1004,7 @@ class ImageAccordionWidget extends BaseWidget {
 		);
 
 		$this->end_controls_tab();
+
 		$this->end_controls_tabs();
 
 		$this->add_control(
@@ -1004,58 +1017,36 @@ class ImageAccordionWidget extends BaseWidget {
 		);
 
 		$this->add_responsive_control(
-			'button_icon_spacing',
-			[
-				'label'                 => esc_html__( 'Icon Spacing', 'trx_addons' ),
-				'type'                  => Controls_Manager::SLIDER,
-				'range'                 => [
-					'px'        => [
-						'min'   => 0,
-						'max'   => 50,
-						'step'  => 1,
-					],
-				],
-				'size_units'            => [ 'px' ],
-				'default'               => [
-					'size' => 2,
-					'unit' => 'px',
-				],
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-button-icon-before .trx-addons-button-icon' => 'margin-right: {{SIZE}}px',
-					'{{WRAPPER}} .trx-addons-button-icon-after .trx-addons-button-icon' => 'margin-left: {{SIZE}}px',
-				],
-			]
+			'button_icon_margin',
+			array(
+				'label'       => __( 'Margin', 'trx_addons' ),
+				'type'        => Controls_Manager::DIMENSIONS,
+				'size_units'  => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'placeholder' => array(
+					'top'    => '',
+					'right'  => '',
+					'bottom' => '',
+					'left'   => '',
+				),
+				'selectors'   => array(
+					'{{WRAPPER}} .trx-addons-image-accordion-button .trx-addons-button-icon' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				),
+			)
 		);
 
 		$this->end_controls_section();
 	}
 
-	protected function render_button_icon( $item ) {
-		$settings = $this->get_settings_for_display();
 
-		$migration_allowed = Icons_Manager::is_migration_allowed();
+	/*-----------------------------------------------------------------------------------*/
+	/*	RENDER
+	/*-----------------------------------------------------------------------------------*/
 
-		// add old default
-		if ( ! isset( $item['button_icon'] ) && ! $migration_allowed ) {
-			$item['hotspot_icon'] = '';
-		}
-
-		$migrated = isset( $item['__fa4_migrated']['select_button_icon'] );
-		$is_new = ! isset( $item['button_icon'] ) && $migration_allowed;
-
-		if ( ! empty( $item['button_icon'] ) || ( ! empty( $item['select_button_icon']['value'] ) && $is_new ) ) {
-			?>
-			<span class="trx-addons-button-icon trx-addons-icon trx-addons-no-trans">
-				<?php if ( $is_new || $migrated ) {
-					Icons_Manager::render_icon( $item['select_button_icon'], [ 'aria-hidden' => 'true' ] );
-				} else { ?>
-					<i class="<?php echo esc_attr( $item['button_icon'] ); ?>" aria-hidden="true"></i>
-				<?php } ?>
-			</span>
-			<?php
-		}
-	}
-
+	/**
+	 * Render a widget output in the frontend.
+	 *
+	 * @access protected
+	 */
 	protected function render() {
 		$settings = $this->get_settings_for_display();
 
@@ -1133,23 +1124,19 @@ class ImageAccordionWidget extends BaseWidget {
 									</div>
 									<?php if ( 'yes' === $item['show_button'] && $item['link']['url'] ) { ?>
 										<div class="trx-addons-image-accordion-button-wrap">
-											<a <?php echo wp_kses_post( $this->get_render_attribute_string( $button_key ) ); ?>>
-												<?php
+											<a <?php echo wp_kses_post( $this->get_render_attribute_string( $button_key ) ); ?>><?php
 												if ( 'before' === $item['button_icon_position'] ) {
 													$this->render_button_icon( $item );
 												}
-												?>
-												<?php if ( ! empty( $item['button_text'] ) ) { ?>
-													<span class="trx-addons-button-text">
+												if ( ! empty( $item['button_text'] ) ) {
+													?><span class="trx-addons-button-text">
 														<?php echo wp_kses_post( $item['button_text'] ); ?>
-													</span>
-												<?php } ?>
-												<?php
+													</span><?php
+												}
 												if ( 'after' === $item['button_icon_position'] ) {
 													$this->render_button_icon( $item );
 												}
-												?>
-											</a>
+											?></a>
 										</div>
 									<?php } ?>
 								</div>
@@ -1160,4 +1147,29 @@ class ImageAccordionWidget extends BaseWidget {
 			</div>
 		<?php }
 	}
+
+	protected function render_button_icon( $item ) {
+		$settings = $this->get_settings_for_display();
+
+		$migration_allowed = Icons_Manager::is_migration_allowed();
+
+		// add old default
+		if ( ! isset( $item['button_icon'] ) && ! $migration_allowed ) {
+			$item['hotspot_icon'] = '';
+		}
+
+		$migrated = isset( $item['__fa4_migrated']['select_button_icon'] );
+		$is_new = ! isset( $item['button_icon'] ) && $migration_allowed;
+
+		if ( ! empty( $item['button_icon'] ) || ( ! empty( $item['select_button_icon']['value'] ) && $is_new ) ) {
+			?><span class="trx-addons-button-icon trx-addons-icon trx-addons-no-trans"><?php
+				if ( $is_new || $migrated ) {
+					Icons_Manager::render_icon( $item['select_button_icon'], [ 'aria-hidden' => 'true' ] );
+				} else {
+					?><i class="<?php echo esc_attr( $item['button_icon'] ); ?>" aria-hidden="true"></i><?php
+				}
+			?></span><?php
+		}
+	}
+
 }

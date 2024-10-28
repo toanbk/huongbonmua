@@ -129,8 +129,8 @@ if ( !function_exists( 'trx_addons_elm_add_bg_colors_data' ) ) {
 				// Add data-parameters to the element wrapper
 				$bg_color_selector = $element->get_settings( 'trx_bg_colors_selector' );
 				$element->add_render_attribute( '_wrapper', array(
-					'data-trx-bg-colors-color'    => $bg_color,
-					'data-trx-bg-colors-selector' => $bg_color_selector
+					'data-trx-bg-colors-color'    => $bg_color ?? '',
+					'data-trx-bg-colors-selector' => $bg_color_selector ?? ''
 				) );
 			}
 		}

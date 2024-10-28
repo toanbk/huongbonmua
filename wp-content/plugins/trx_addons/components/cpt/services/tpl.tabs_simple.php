@@ -63,8 +63,12 @@ if ($query->post_count > 0) {
 
 			// Prepare tab's titles and contents
 			$tabs_list = array();
-			$trx_addons_number = $args['offset'] + ( $args['page'] > 1 ? $args['count'] * ( $args['page'] - 1 ) : 0 );
+
+			$trx_addons_number_offset = apply_filters( 'trx_addons_filter_services_number_use_offset', true, $args ) ? $args['offset'] : 0;
+			$trx_addons_number = $trx_addons_number_offset + ( $args['page'] > 1 ? $args['count'] * ( $args['page'] - 1 ) : 0 );
+
 			while ( $query->have_posts() ) { $query->the_post();
+
 				$trx_addons_number++;
 				
 				$meta = (array)get_post_meta(get_the_ID(), 'trx_addons_options', true);
@@ -73,12 +77,12 @@ if ($query->post_count > 0) {
 							: '';
 				// Prepare tab's title block
 				$tabs_item = '<div data-post-id="<?php the_ID(); ?>" class="sc_services_item sc_services_tabs_simple_item sc_services_tabs_list_item' 
-									. ($trx_addons_number-1 == $args['offset'] ? ' sc_services_tabs_list_item_active' : '') 
-									. (empty($args['featured']) || $args['featured']=='image' 
+									. ( $trx_addons_number - 1 == $trx_addons_number_offset ? ' sc_services_tabs_list_item_active' : '' )
+									. ( empty( $args['featured'] ) || $args['featured'] == 'image' 
 											? ' with_image' 
-											: ($args['featured']=='icon' 
+											: ( $args['featured'] == 'icon' 
 												? ' with_icon' 
-												: ($args['featured']=='pictogram' 
+												: ( $args['featured'] == 'pictogram' 
 													? ' with_pictogram' 
 													: ' with_number'))
 										)
@@ -115,7 +119,7 @@ if ($query->post_count > 0) {
 					}
 					$tabs_item .= '<span'
 									. ( $svg_present && !empty($args['id'])
-										? ' id="' . esc_attr( $args['id'].'_'.trim($meta['icon']).'_'.trim($trx_addons_number) ) . '"'
+										? ' id="' . esc_attr( $args['id'] . '_' . trim( $meta['icon'] ) . '_' . trim( $trx_addons_number ) ) . '"'
 										: ''
 										)
 									. ' class="sc_services_item_icon'
@@ -158,14 +162,14 @@ if ($query->post_count > 0) {
 				$tabs_list[] = array(
 									'title' => $tabs_item,
 									'content' => '<div class="sc_services_tabs_content_item'
-													. ($trx_addons_number-1 == $args['offset'] ? ' sc_services_tabs_content_item_active' : '') 
+													. ( $trx_addons_number - 1 == $trx_addons_number_offset ? ' sc_services_tabs_content_item_active' : '' )
 													. '">'
 														. '<div class="sc_services_tabs_content_item_text">'
 															. get_the_excerpt()
 														. '</div>'
-														. (!empty($link) && !empty($args['more_text'])
+														. ( ! empty( $link ) && ! empty( $args['more_text'] )
 															? '<div class="sc_services_item_button sc_item_button">'
-																. '<a href="'.esc_url($link).'"'.(!empty($meta['link']) && trx_addons_is_external_url($meta['link']) ? ' target="_blank"' : '').' class="'.esc_attr(apply_filters('trx_addons_filter_sc_item_link_classes', 'sc_button', 'sc_services', $args)).'">'.esc_html($args['more_text']).'</a>'
+																. '<a href="'.esc_url($link) . '"' . ( ! empty( $meta['link'] ) && trx_addons_is_external_url($meta['link']) ? ' target="_blank"' : '' ) . ' class="' . esc_attr( apply_filters( 'trx_addons_filter_sc_item_link_classes', 'sc_button', 'sc_services', $args ) ) . '">' . esc_html( $args['more_text'] ) . '</a>'
 																. '</div>'
 															: '')
 													. '</div>'

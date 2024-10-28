@@ -42,7 +42,11 @@ if ( ! function_exists( 'hot_coffee_gutenberg_fse_replace_frontpage_content' ) )
 			$output = ob_get_contents();
 			ob_end_clean();
 			if ( ! empty( $output ) ) {
-				$_wp_current_template_content = preg_replace( '#<!-- wp:query[\s\S]*<!-- /wp:query -->#', $output, $_wp_current_template_content );
+				$_wp_current_template_content = preg_replace(
+													'#<!-- wp:query[\s\S]*<!-- /wp:query -->#',
+													str_replace( '$', '\$', $output ),	// Escape a dollar sign in the replacement string to avoid interpretation as a reference to a capture group
+													$_wp_current_template_content
+												);
 			}
 		}
 		return $template;
@@ -101,7 +105,11 @@ if ( ! function_exists( 'hot_coffee_gutenberg_fse_replace_no_posts_content' ) ) 
 					if ( ! empty( $content ) ) {
 						global $_wp_current_template_content;
 						$_wp_current_template_content = $part_exists
-															? preg_replace( '#<!-- wp:query[\s\S]*<!-- /wp:query -->#', $content, $_wp_current_template_content )
+															? preg_replace(
+																	'#<!-- wp:query[\s\S]*<!-- /wp:query -->#',
+																	str_replace( '$', '\$', $content ),	// Escape a dollar sign in the replacement string to avoid interpretation as a reference to a capture group
+																	$_wp_current_template_content
+																)
 															: $content;
 					}
 				}
@@ -244,9 +252,9 @@ if ( ! function_exists( 'hot_coffee_gutenberg_fse_modify_template_replace_header
 				if ( ! empty( $before_header ) || ! empty( $after_header ) ) {
 					$content = preg_replace(
 									'#(<!-- wp:template-part[\s]*{[^}]*"slug":[\s]*"header[^"]*"[^>]*/-->)#U',
-									( ! empty( $before_header ) ? $before_header : '' )
+									( ! empty( $before_header ) ? str_replace( '$', '\$', $before_header ) : '' )
 									. '${1}'
-									. ( ! empty( $after_header ) ? $after_header : '' ),
+									. ( ! empty( $after_header ) ? str_replace( '$', '\$', $after_header ) : '' ),
 									$content
 								);
 				}
@@ -277,7 +285,11 @@ if ( ! function_exists( 'hot_coffee_gutenberg_fse_modify_template_replace_header
 				$html = ob_get_contents();
 				ob_end_clean();
 				if ( ! empty( $html ) ) {
-					$content = preg_replace( '#<!-- wp:template-part[\s]*{[^}]*"slug":[\s]*"header[^"]*"[^>]*/-->#U', $html, $content );
+					$content = preg_replace(
+									'#<!-- wp:template-part[\s]*{[^}]*"slug":[\s]*"header[^"]*"[^>]*/-->#U',
+									str_replace( '$', '\$', $html ),	// Escape a dollar sign in the replacement string to avoid interpretation as a reference to a capture group
+									$content
+								);
 				}
 			}
 		}
@@ -478,13 +490,17 @@ if ( ! function_exists( 'hot_coffee_gutenberg_fse_modify_template_replace_sideba
 								// Old way - if a sidebar is placed to the template as wp:group
 								$content = preg_replace( $sidebar_mask,
 														'${1}' 
-															. $html
+															. str_replace( '$', '\$', $html )	// Escape a dollar sign in the replacement string to avoid interpretation as a reference to a capture group
 														. '${3}',
 														$content
 													);
 							} else {
 								// New way - if a sidebar is placed to the template as wp:template-part
-								$content = preg_replace( '#<!-- wp:template-part[\s]*{[^}]*"slug":[\s]*"sidebar[^"]*"[^>]*/-->#U', $html, $content );
+								$content = preg_replace(
+												'#<!-- wp:template-part[\s]*{[^}]*"slug":[\s]*"sidebar[^"]*"[^>]*/-->#U',
+												str_replace( '$', '\$', $html ),	// Escape a dollar sign in the replacement string to avoid interpretation as a reference to a capture group
+												$content
+											);
 							}
 						}
 					}
@@ -541,9 +557,9 @@ if ( ! function_exists( 'hot_coffee_gutenberg_fse_modify_template_replace_footer
 				if ( ! empty( $before_footer ) || ! empty( $after_footer ) ) {
 					$content = preg_replace(
 									'#(<!-- wp:template-part[\s]*{[^}]*"slug":[\s]*"footer[^"]*"[^>]*/-->)#U',
-									( ! empty( $before_footer ) ? $before_footer : '' )
+									( ! empty( $before_footer ) ? str_replace( '$', '\$', $before_footer ) : '' )
 									. '${1}'
-									. ( ! empty( $after_footer ) ? $after_footer : '' ),
+									. ( ! empty( $after_footer ) ? str_replace( '$', '\$', $after_footer ) : '' ),
 									$content
 								);
 				}
@@ -574,7 +590,11 @@ if ( ! function_exists( 'hot_coffee_gutenberg_fse_modify_template_replace_footer
 				$html = ob_get_contents();
 				ob_end_clean();
 				if ( ! empty( $html ) ) {
-					$content = preg_replace( '#<!-- wp:template-part[\s]*{[^}]*"slug":[\s]*"footer[^"]*"[^>]*/-->#U', $html, $content );
+					$content = preg_replace(
+									'#<!-- wp:template-part[\s]*{[^}]*"slug":[\s]*"footer[^"]*"[^>]*/-->#U',
+									str_replace( '$', '\$', $html ),	// Escape a dollar sign in the replacement string to avoid interpretation as a reference to a capture group
+									$content
+								);
 				}
 			}
 		}

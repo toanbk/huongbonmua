@@ -31,7 +31,7 @@ if (!function_exists('trx_addons_sc_layouts_meta_add_in_vc')) {
 if (!function_exists('trx_addons_sc_layouts_meta_add_in_vc_params')) {
 	function trx_addons_sc_layouts_meta_add_in_vc_params() {
 
-		$components = apply_filters('trx_addons_filter_get_list_meta_parts', array());
+		$components = trx_addons_get_list_meta_parts();
 
 		return apply_filters('trx_addons_sc_map', array(
 				"base" => "trx_sc_layouts_meta",

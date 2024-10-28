@@ -89,8 +89,8 @@
 						default: ''
 					}
 				},
-				trx_addons_gutenberg_get_param_title(),
-				trx_addons_gutenberg_get_param_button(),
+				! trx_addons_apply_filters( 'trx_addons_filter_add_title_param', true, 'trx-addons/icompare' ) ? {} : trx_addons_gutenberg_get_param_title(),
+				! trx_addons_apply_filters( 'trx_addons_filter_add_title_param', true, 'trx-addons/icompare' ) ? {} : trx_addons_gutenberg_get_param_button(),
 				trx_addons_gutenberg_get_param_id()
 			), 'trx-addons/icompare' ),
 			edit: function(props) {
@@ -202,7 +202,7 @@
 						),
 						'additional_params': el( wp.element.Fragment, { key: props.name + '-additional-params' },
 							// Title params
-							trx_addons_gutenberg_add_param_title( props, true ),
+							! trx_addons_apply_filters( 'trx_addons_filter_add_title_param', true, 'trx-addons/icompare' ) ? null : trx_addons_gutenberg_add_param_title( props, true ),
 							// ID, Class, CSS params
 							trx_addons_gutenberg_add_param_id( props )
 						)

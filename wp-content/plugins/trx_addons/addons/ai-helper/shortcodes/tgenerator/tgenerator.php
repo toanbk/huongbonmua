@@ -107,7 +107,7 @@ if ( ! function_exists( 'trx_addons_sc_tgenerator_check_in_html_output' ) ) {
 */
 if ( ! function_exists( 'trx_addons_sc_tgenerator' ) ) {
 	function trx_addons_sc_tgenerator( $atts, $content = '' ) {	
-		$atts = trx_addons_sc_prepare_atts( 'trx_sc_tgenerator', $atts, trx_addons_sc_common_atts( 'id,title', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_tgenerator', $atts, trx_addons_sc_common_atts( 'trx_sc_tgenerator', 'id,title', array(
 			// Individual params
 			"type" => "default",
 			"prompt" => "",

@@ -74,8 +74,8 @@ if ( !function_exists( 'trx_addons_sc_anchor_localize_script' ) ) {
 	function trx_addons_sc_anchor_localize_script($vars) {
 		$is_preview = trx_addons_is_preview( 'elementor' );
 		return array_merge($vars, array(
-			'scroll_to_anchor' => $is_preview ? 0 : trx_addons_get_option('scroll_to_anchor'),
-			'update_location_from_anchor' => $is_preview ? 0 : trx_addons_get_option('update_location_from_anchor'),
+			'scroll_to_anchor' => $is_preview ? 0 : trx_addons_get_option( 'scroll_to_anchor', 1 ),
+			'update_location_from_anchor' => $is_preview ? 0 : trx_addons_get_option( 'update_location_from_anchor', 1 ),
 		));
 	}
 }
@@ -89,7 +89,7 @@ if ( !function_exists( 'trx_addons_sc_anchor_localize_script' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_anchor' ) ) {
 	function trx_addons_sc_anchor($atts, $content = '') {	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_anchor', $atts, trx_addons_sc_common_atts('icon', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_anchor', $atts, trx_addons_sc_common_atts( 'trx_sc_anchor', 'icon', array(
 			// Individual params
 			"type" => "default",
 			"title" => "",
@@ -97,8 +97,7 @@ if ( !function_exists( 'trx_addons_sc_anchor' ) ) {
 			// Common params
 			"id" => "",
 			"anchor_id" => ""		// Alter name for id in Elementor ('id' is reserved by Elementor)
-			))
-		);
+		) ) );
 		if (!empty($atts['anchor_id'])) {
 			$atts['id'] = $atts['anchor_id'];
 		}

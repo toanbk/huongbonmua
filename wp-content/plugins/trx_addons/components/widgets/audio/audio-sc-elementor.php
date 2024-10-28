@@ -273,6 +273,7 @@ if ( ! function_exists( 'trx_addons_sc_widget_audio_add_in_elementor' ) ) {
 					[
 						'label'   => '',
 						'type'    => \Elementor\Controls_Manager::REPEATER,
+						'title_field' => '{{caption}}',
 						'default' => apply_filters(
 							'trx_addons_sc_param_group_value', [
 								[

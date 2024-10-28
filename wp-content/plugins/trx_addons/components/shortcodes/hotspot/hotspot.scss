@@ -6,9 +6,10 @@
 	--sc-hotspot-content-item-size: 20px;
 	--sc-hotspot-content-item-size-half: calc( var(--sc-hotspot-content-item-size) / 2 );
 	--sc-hotspot-content-item-size-half-: calc( var(--sc-hotspot-content-item-size) / -2 );
-	--sc-hotspot-content-item-size-double: calc( var(--sc-hotspot-content-item-size) * 2 );
-	--sc-hotspot-content-item-size-double-: calc( var(--sc-hotspot-content-item-size) * -2 );
 	--sc-hotspot-content-item-popup-z-index: 10;
+	--sc-hotspot-content-item-popup-offset: 10px;
+	--sc-hotspot-content-item-popup-offset-x: calc( var(--sc-hotspot-content-item-size) + var(--sc-hotspot-content-item-popup-offset) );
+	--sc-hotspot-content-item-popup-offset-y: calc( -1 * var(--sc-hotspot-content-item-size) - var(--sc-hotspot-content-item-popup-offset) );
 }
 .sc_hotspot_content {
 	position: relative;
@@ -91,9 +92,10 @@
 	span {
 		color: #000;
 	}
+	span.sc_icon_type_,			// icon
 	span.sc_icon_type_custom,
 	span.sc_icon_type_number {
-		font-size: 10px;
+		font-size: calc( var(--sc-hotspot-content-item-size) / 2 );
 	}
 }
 .sc_hotspot_item_open_hover span.sc_hotspot_item_icon {
@@ -114,15 +116,15 @@
 	@include transition(opacity 0.8s ease,transform 0.8s ease);
 	@include box-shadow(0 0 3px rgba(0,0,0,0.15));
 }
-.sc_hotspot_item_popup_tl { @include abs-rb( var(--sc-hotspot-content-item-size-double), var(--sc-hotspot-content-item-size-double-), var(--sc-hotspot-content-item-popup-z-index) ); }
-.sc_hotspot_item_popup_tc { @include abs-cb( var(--sc-hotspot-content-item-size-double), var(--sc-hotspot-content-item-popup-z-index) ); }
-.sc_hotspot_item_popup_tr { @include abs-lb( var(--sc-hotspot-content-item-size-double), var(--sc-hotspot-content-item-size-double-), var(--sc-hotspot-content-item-popup-z-index) ); }
-.sc_hotspot_item_popup_ml { @include abs-rc( var(--sc-hotspot-content-item-size-double), var(--sc-hotspot-content-item-popup-z-index) ); }
+.sc_hotspot_item_popup_tl { @include abs-rb( var(--sc-hotspot-content-item-popup-offset-x), var(--sc-hotspot-content-item-popup-offset-y), var(--sc-hotspot-content-item-popup-z-index) ); }
+.sc_hotspot_item_popup_tc { @include abs-cb( var(--sc-hotspot-content-item-popup-offset-x), var(--sc-hotspot-content-item-popup-z-index) ); }
+.sc_hotspot_item_popup_tr { @include abs-lb( var(--sc-hotspot-content-item-popup-offset-x), var(--sc-hotspot-content-item-popup-offset-y), var(--sc-hotspot-content-item-popup-z-index) ); }
+.sc_hotspot_item_popup_ml { @include abs-rc( var(--sc-hotspot-content-item-popup-offset-x), var(--sc-hotspot-content-item-popup-z-index) ); }
 .sc_hotspot_item_popup_mc { @include abs-cc( var(--sc-hotspot-content-item-popup-z-index) ); }
-.sc_hotspot_item_popup_mr { @include abs-lc( var(--sc-hotspot-content-item-size-double), var(--sc-hotspot-content-item-popup-z-index) ); }
-.sc_hotspot_item_popup_bl { @include abs-rt( var(--sc-hotspot-content-item-size-double), var(--sc-hotspot-content-item-size-double-), var(--sc-hotspot-content-item-popup-z-index) ); }
-.sc_hotspot_item_popup_bc { @include abs-ct( var(--sc-hotspot-content-item-size-double), var(--sc-hotspot-content-item-popup-z-index) ); }
-.sc_hotspot_item_popup_br { @include abs-lt( var(--sc-hotspot-content-item-size-double), var(--sc-hotspot-content-item-size-double-), var(--sc-hotspot-content-item-popup-z-index) ); }
+.sc_hotspot_item_popup_mr { @include abs-lc( var(--sc-hotspot-content-item-popup-offset-x), var(--sc-hotspot-content-item-popup-z-index) ); }
+.sc_hotspot_item_popup_bl { @include abs-rt( var(--sc-hotspot-content-item-popup-offset-x), var(--sc-hotspot-content-item-popup-offset-y), var(--sc-hotspot-content-item-popup-z-index) ); }
+.sc_hotspot_item_popup_bc { @include abs-ct( var(--sc-hotspot-content-item-popup-offset-x), var(--sc-hotspot-content-item-popup-z-index) ); }
+.sc_hotspot_item_popup_br { @include abs-lt( var(--sc-hotspot-content-item-popup-offset-x), var(--sc-hotspot-content-item-popup-offset-y), var(--sc-hotspot-content-item-popup-z-index) ); }
 
 .sc_hotspot_item_popup_align_left {   text-align: left; }
 .sc_hotspot_item_popup_align_center { text-align: center; }
@@ -199,6 +201,7 @@
 		.trx_addons_button_close_icon:before,
 		.trx_addons_button_close_icon:after {
 			border-color: #000;
+			@include transition-property(border-color);
 		}
 	}
 }

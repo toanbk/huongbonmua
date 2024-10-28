@@ -13,6 +13,7 @@ if ( empty( $args['effect'] ) ) $args['effect'] = 'swap';
 	class="sc_switcher sc_switcher_<?php
 		echo esc_attr( $args['type'] );
 		echo ' sc_switcher_effect_' . esc_attr( $args['effect'] );
+		echo ' sc_switcher_toggle_on';
 		if ( ! empty( $args['class'] ) ) echo ' ' . esc_attr( $args['class'] );
 		?>"<?php
 	if ( ! empty( $args['css'] ) ) echo ' style="' . esc_attr( $args['css'] ) . '"';
@@ -26,30 +27,15 @@ if ( empty( $args['effect'] ) ) $args['effect'] = 'swap';
 	?>>
 		<div class="sc_switcher_controls">
 			<div class="sc_switcher_controls_section1">
-				<h3 class="sc_switcher_controls_section_title<?php
-					if ( ! empty( $args['slide1_title_color'] ) ) {
-						echo ' ' . trx_addons_add_inline_css_class( 'color:' . esc_attr( $args['slide1_title_color'] ) );
-					}
-				?>"><?php
+				<h3 class="sc_switcher_controls_section_title"><?php
 					echo esc_html( $args['slide1_title'] );
 				?></h3>
 			</div>
 			<div class="sc_switcher_controls_toggle sc_switcher_controls_toggle_on">
-				<span class="sc_switcher_controls_toggle_button<?php
-					if ( ! empty( $args['slide2_switcher_color'] ) ) {
-						echo ' ' . trx_addons_add_inline_css_class( 'background-color:' . esc_attr( $args['slide2_switcher_color'] ) );
-					}
-					if ( ! empty( $args['slide1_switcher_color'] ) ) {
-						echo ' ' . trx_addons_add_inline_css_class( 'background-color: ' . esc_attr( $args['slide1_switcher_color'] ), '', '.sc_switcher_controls_toggle_on ' );
-					}
-				?>"></span>
+				<span class="sc_switcher_controls_toggle_button"></span>
 			</div>
 			<div class="sc_switcher_controls_section2">
-				<h3 class="sc_switcher_controls_section_title<?php
-					if ( ! empty( $args['slide2_title_color'] ) ) {
-						echo ' ' . trx_addons_add_inline_css_class( 'color:' . esc_attr( $args['slide2_title_color'] ) );
-					}
-				?>"><?php
+				<h3 class="sc_switcher_controls_section_title"><?php
 					echo esc_html( $args['slide2_title'] );
 				?></h3>
 			</div>

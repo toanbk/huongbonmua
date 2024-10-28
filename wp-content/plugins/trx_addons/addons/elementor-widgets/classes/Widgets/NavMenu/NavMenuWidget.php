@@ -51,10 +51,12 @@ class NavMenuWidget extends BaseWidget {
 		$this->register_style_vertical_toggler_controls();
 		$this->register_style_menu_container_controls();
 		$this->register_style_menu_item_controls();
-		$this->register_style_menu_item_extras_controls();
+		$this->register_style_menu_item_icon_controls();
+		$this->register_style_menu_item_badge_controls();
 		$this->register_style_submenu_container_controls();
 		$this->register_style_submenu_item_controls();
-		$this->register_style_submenu_item_extras_controls();
+		$this->register_style_submenu_item_icon_controls();
+		$this->register_style_submenu_item_badge_controls();
 		$this->register_style_toggle_menu_controls();
 	}
 
@@ -300,9 +302,27 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'       => __( 'Full Width Dropdown', 'trx_addons' ),
 				'type'        => Controls_Manager::SWITCHER,
-				'description' => __( 'Enable this option to set the dropdown width to the same width of the parent section', 'trx_addons' ),
+				'description' => __( 'Enable this option to set the dropdown width to the same width of the wrapper below', 'trx_addons' ),
 				'condition'   => array(
 					'item_type' => 'menu',
+				),
+			)
+		);
+
+		$repeater->add_control(
+			'section_full_width_wrapper',
+			array(
+				'label'       => __( 'Full Width Wrapper', 'trx_addons' ),
+				'type'        => Controls_Manager::SELECT,
+				'options'     => array(
+					'window'       => __( 'Window', 'trx_addons' ),
+					'window_boxed' => __( 'Window Boxed', 'trx_addons' ),
+					'content'      => __( 'Content', 'trx_addons' ),
+				),
+				'default'     => 'content',
+				'condition'   => array(
+					'item_type' => 'menu',
+					'section_full_width' => 'yes',
 				),
 			)
 		);
@@ -310,7 +330,7 @@ class NavMenuWidget extends BaseWidget {
 		$repeater->add_responsive_control(
 			'section_width',
 			array(
-				'label'     => __( 'Dropdown Minimum Width (px)', 'trx_addons' ),
+				'label'     => __( 'Dropdown Minimum Width', 'trx_addons' ),
 				'type'      => Controls_Manager::SLIDER,
 				'range'     => array(
 					'px' => array(
@@ -318,6 +338,7 @@ class NavMenuWidget extends BaseWidget {
 						'max' => 1500,
 					),
 				),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors' => array(
 					'{{WRAPPER}} {{CURRENT_ITEM}} ul.trx-addons-submenu, {{WRAPPER}} {{CURRENT_ITEM}} .trx-addons-mega-content-container' => 'min-width: {{SIZE}}{{UNIT}}',
 				),
@@ -938,7 +959,7 @@ class NavMenuWidget extends BaseWidget {
 				'label'       => __( 'Title Spacing', 'trx_addons' ),
 				'type'        => Controls_Manager::SLIDER,
 				'label_block' => true,
-				'size_units'  => array( 'px', 'em' ),
+				'size_units'  => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'description' => __( 'Use this option to control the spacing between the title icon and the title.', 'trx_addons' ),
 				'selectors'   => array(
 					'{{WRAPPER}} .trx-addons-ver-toggler-txt' => 'text-indent: {{SIZE}}{{UNIT}};',
@@ -1039,6 +1060,10 @@ class NavMenuWidget extends BaseWidget {
 						'plus',
 					),
 				),
+				'default'                => array(
+					'value'   => 'fas fa-angle-down',
+					'library' => 'fa-solid',
+				),
 				'label_block'            => false,
 				'skin'                   => 'inline',
 				'exclude_inline_options' => array( 'svg' ),
@@ -1053,11 +1078,14 @@ class NavMenuWidget extends BaseWidget {
 				'type'                   => Controls_Manager::ICONS,
 				'recommended'            => array(
 					'fa-solid' => array(
-						'chevron-down',
-						'angle-down',
-						'caret-down',
-						'plus',
+						'chevron-right',
+						'angle-right',
+						'caret-right',
 					),
+				),
+				'default'                => array(
+					'value'   => 'fas fa-angle-right',
+					'library' => 'fa-solid',
 				),
 				'label_block'            => false,
 				'skin'                   => 'inline',
@@ -1133,7 +1161,7 @@ class NavMenuWidget extends BaseWidget {
 				'render_type' => 'template',
 				'options'     => array(
 					'hover' => __( 'Hover', 'trx_addons' ),
-					'click' => __( 'click', 'trx_addons' ),
+					'click' => __( 'Click', 'trx_addons' ),
 				),
 				'condition'   => array(
 					'nav_menu_layout' => array( 'hor', 'ver' ),
@@ -1205,7 +1233,7 @@ class NavMenuWidget extends BaseWidget {
 				'label'       => __( 'Dot Size', 'trx_addons' ),
 				'type'        => Controls_Manager::SLIDER,
 				'label_block' => true,
-				'size_units'  => array( 'px' ),
+				'size_units'  => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'       => array(
 					'px' => array(
 						'min' => 0,
@@ -1252,17 +1280,21 @@ class NavMenuWidget extends BaseWidget {
 			)
 		);
 
+		$bp_list = array_merge( trx_addons_elm_get_breakpoints(), array( 'custom' => __( 'Custom', 'trx_addons' ) ) );
+		unset( $bp_list['widescreen'] );
+		unset( $bp_list['desktop'] );
+		$breakpoints = array();
+		foreach ( $bp_list as $bp => $width ) {
+			$breakpoints[ $bp ] = ucfirst( str_replace( '_', ' ', $bp ) ) . ( $bp !== 'custom' ? ' (' . $width . ')' : '' );
+		}
+
 		$this->add_control(
 			'mobile_menu_breakpoint',
 			array(
 				'label'     => __( 'Breakpoint', 'trx_addons' ),
 				'type'      => Controls_Manager::SELECT,
-				'options'   => array(
-					'767'    => __( 'Mobile (<768)', 'trx_addons' ),
-					'1024'   => __( 'Tablet (<1025)', 'trx_addons' ),
-					'custom' => __( 'Custom', 'trx_addons' ),
-				),
-				'default'   => '1024',
+				'options'   => $breakpoints,
+				'default'   => 'tablet',
 				'condition' => array(
 					'nav_menu_layout' => array( 'hor', 'ver' ),
 				),
@@ -1306,7 +1338,7 @@ class NavMenuWidget extends BaseWidget {
 		$this->add_control(
 			'btn_toggle_heading',
 			array(
-				'label' => __( 'Toggle Button', 'trx_addons' ),
+				'label' => __( 'Toggle Button Settings', 'trx_addons' ),
 				'type'  => Controls_Manager::HEADING,
 			)
 		);
@@ -1385,26 +1417,34 @@ class NavMenuWidget extends BaseWidget {
 		);
 
 		$this->add_control(
+			'mobile_menu_heading',
+			array(
+				'label'      => __( 'Menu Settings', 'trx_addons' ),
+				'type'       => Controls_Manager::HEADING,
+				'separator'  => 'before',
+			)
+		);
+
+		$this->add_control(
 			'mobile_menu_pos',
 			array(
 				'label'      => __( 'Menu Position', 'trx_addons' ),
 				'type'       => Controls_Manager::CHOOSE,
-				'separator'  => 'before',
 				'options'    => array(
-					'left'   => array(
+					$align_left  => array(
 						'title' => __( 'Left', 'trx_addons' ),
 						'icon'  => 'eicon-h-align-left',
 					),
-					'center' => array(
+					'center'     => array(
 						'title' => __( 'Center', 'trx_addons' ),
 						'icon'  => 'eicon-h-align-center',
 					),
-					'right'  => array(
+					$align_right => array(
 						'title' => __( 'Right', 'trx_addons' ),
 						'icon'  => 'eicon-h-align-right',
 					),
 				),
-				'default'    => 'right',
+				'default'    => 'center',
 				'toggle'     => false,
 				'selectors'  => array(
 					'{{WRAPPER}}.trx-addons-ham-dropdown .trx-addons-mobile-menu-container, {{WRAPPER}}.trx-addons-nav-dropdown .trx-addons-mobile-menu-container' => 'justify-content: {{VALUE}}',
@@ -1436,6 +1476,30 @@ class NavMenuWidget extends BaseWidget {
 		);
 
 		$this->add_control(
+			'slide_menu_pos',
+			array(
+				'label'      => __( 'Slide Menu Position', 'trx_addons' ),
+				'type'       => Controls_Manager::CHOOSE,
+				'options'    => array(
+					'left'  => array(
+						'title' => __( 'Left', 'trx_addons' ),
+						'icon'  => 'eicon-h-align-left',
+					),
+					'right' => array(
+						'title' => __( 'Right', 'trx_addons' ),
+						'icon'  => 'eicon-h-align-right',
+					),
+				),
+				'default'    => 'left',
+				'toggle'     => false,
+				'prefix_class' => 'trx-addons-ver-hamburger-menu-',
+				'condition' => array(
+					'nav_menu_layout' => 'slide',
+				),
+			)
+		);
+
+		$this->add_control(
 			'mobile_menu_align',
 			array(
 				'label'     => __( 'Menu Alignment', 'trx_addons' ),
@@ -1454,10 +1518,12 @@ class NavMenuWidget extends BaseWidget {
 						'icon'  => 'eicon-text-align-right',
 					),
 				),
-				'default'   => 'flex-start',
+				'default'   => $align_left,
+				'prefix_class' => 'trx-addons-mobile-menu-align-',
 				'toggle'    => false,
 				'selectors' => array(
 					'{{WRAPPER}}.trx-addons-hamburger-menu .trx-addons-main-mobile-menu > .trx-addons-nav-menu-item > .trx-addons-menu-link, {{WRAPPER}}.trx-addons-nav-dropdown .trx-addons-main-mobile-menu > .trx-addons-nav-menu-item > .trx-addons-menu-link, {{WRAPPER}}.trx-addons-nav-slide .trx-addons-main-mobile-menu > .trx-addons-nav-menu-item > .trx-addons-menu-link' => 'justify-content: {{VALUE}}',
+					'{{WRAPPER}}.trx-addons-hamburger-menu .trx-addons-main-mobile-menu .trx-addons-submenu .trx-addons-submenu-link, {{WRAPPER}}.trx-addons-nav-dropdown .trx-addons-main-mobile-menu .trx-addons-submenu .trx-addons-submenu-link, {{WRAPPER}}.trx-addons-nav-slide .trx-addons-main-mobile-menu .trx-addons-submenu .trx-addons-submenu-link' => 'justify-content: {{VALUE}}',
 				),
 			)
 		);
@@ -1471,7 +1537,7 @@ class NavMenuWidget extends BaseWidget {
 				'type'        => Controls_Manager::SLIDER,
 				'separator'   => 'before',
 				'label_block' => true,
-				'size_units'  => array( 'px', 'vw' ),
+				'size_units'  => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'       => array(
 					'px' => array(
 						'min' => 0,
@@ -1634,7 +1700,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'.trx-addons-sticky-parent-{{ID}}' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1682,7 +1748,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Icon Size', 'trx_addons' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-ver-title-icon i' => 'font-size: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}} .trx-addons-ver-title-icon svg' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}',
@@ -1796,7 +1862,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Size', 'trx_addons' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-ver-toggler-btn i' => 'font-size: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}} .trx-addons-ver-toggler-btn svg' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}',
@@ -1975,7 +2041,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-ver-toggler' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				),
@@ -1987,7 +2053,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-ver-toggler' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2018,7 +2084,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'       => __( 'Height', 'trx_addons' ),
 				'type'        => Controls_Manager::SLIDER,
-				'size_units'  => array( 'px', 'em', '%', 'custom' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'label_block' => true,
 				'selectors'   => array(
 					'{{WRAPPER}}.trx-addons-nav-hor > .elementor-widget-container > .trx-addons-nav-widget-container > .trx-addons-ver-inner-container > .trx-addons-nav-menu-container' => 'height: {{SIZE}}{{UNIT}};',
@@ -2034,7 +2100,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'       => __( 'Width', 'trx_addons' ),
 				'type'        => Controls_Manager::SLIDER,
-				'size_units'  => array( 'px', '%', 'custom' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'       => array(
 					'px' => array(
 						'min' => 0,
@@ -2081,7 +2147,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-nav-menu-container' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				),
@@ -2093,7 +2159,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-nav-menu-container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2128,23 +2194,11 @@ class NavMenuWidget extends BaseWidget {
 		);
 
 		$this->add_responsive_control(
-			'nav_item_drop_icon_size',
-			array(
-				'label'      => __( 'Dropdown Icon Size', 'trx_addons' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', 'em' ),
-				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-main-nav-menu > .trx-addons-nav-menu-item > .trx-addons-menu-link .trx-addons-dropdown-icon' => 'font-size: {{SIZE}}{{UNIT}};',
-				),
-			)
-		);
-
-		$this->add_responsive_control(
 			'pointer_thinkness',
 			array(
 				'label'      => __( 'Pointer Thickness', 'trx_addons' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'      => array(
 					'px' => array(
 						'min' => 0,
@@ -2155,12 +2209,12 @@ class NavMenuWidget extends BaseWidget {
 					'{{WRAPPER}} .trx-addons-nav-pointer-underline .trx-addons-menu-link-parent::after,
 					{{WRAPPER}} .trx-addons-nav-pointer-overline .trx-addons-menu-link-parent::before,
 					{{WRAPPER}} .trx-addons-nav-pointer-double-line .trx-addons-menu-link-parent::before,
-					{{WRAPPER}} .trx-addons-nav-pointer-double-line .trx-addons-menu-link-parent::after' => 'height: {{SIZE}}px;',
-					'{{WRAPPER}} .trx-addons-nav-pointer-framed:not(.trx-addons-nav-animation-draw):not(.trx-addons-nav-animation-corners) .trx-addons-menu-link-parent::before' => 'border-width: {{SIZE}}px;',
-					'{{WRAPPER}} .trx-addons-nav-pointer-framed.trx-addons-nav-animation-draw .trx-addons-menu-link-parent::before' => 'border-width: 0 0 {{SIZE}}px {{SIZE}}px;',
-					'{{WRAPPER}} .trx-addons-nav-pointer-framed.trx-addons-nav-animation-draw .trx-addons-menu-link-parent::after' => 'border-width: {{SIZE}}px {{SIZE}}px 0 0;',
-					'{{WRAPPER}} .trx-addons-nav-pointer-framed.trx-addons-nav-animation-corners .trx-addons-menu-link-parent::before' => 'border-width: {{SIZE}}px 0 0 {{SIZE}}px',
-					'{{WRAPPER}} .trx-addons-nav-pointer-framed.trx-addons-nav-animation-corners .trx-addons-menu-link-parent::after' => 'border-width: 0 {{SIZE}}px {{SIZE}}px 0',
+					{{WRAPPER}} .trx-addons-nav-pointer-double-line .trx-addons-menu-link-parent::after' => 'height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-nav-pointer-framed:not(.trx-addons-nav-animation-draw):not(.trx-addons-nav-animation-corners) .trx-addons-menu-link-parent::before' => 'border-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-nav-pointer-framed.trx-addons-nav-animation-draw .trx-addons-menu-link-parent::before' => 'border-width: 0 0 {{SIZE}}{{UNIT}} {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-nav-pointer-framed.trx-addons-nav-animation-draw .trx-addons-menu-link-parent::after' => 'border-width: {{SIZE}}{{UNIT}} {{SIZE}}{{UNIT}} 0 0;',
+					'{{WRAPPER}} .trx-addons-nav-pointer-framed.trx-addons-nav-animation-corners .trx-addons-menu-link-parent::before' => 'border-width: {{SIZE}}{{UNIT}} 0 0 {{SIZE}}{{UNIT}}',
+					'{{WRAPPER}} .trx-addons-nav-pointer-framed.trx-addons-nav-animation-corners .trx-addons-menu-link-parent::after' => 'border-width: 0 {{SIZE}}{{UNIT}} {{SIZE}}{{UNIT}} 0',
 				),
 				'condition'  => array(
 					'pointer!' => array( 'none', 'text', 'background' ),
@@ -2170,11 +2224,23 @@ class NavMenuWidget extends BaseWidget {
 		);
 
 		$this->add_responsive_control(
+			'nav_item_drop_icon_size',
+			array(
+				'label'      => __( 'Dropdown Icon Size', 'trx_addons' ),
+				'type'       => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'selectors'  => array(
+					'{{WRAPPER}} .trx-addons-main-nav-menu > .trx-addons-nav-menu-item > .trx-addons-menu-link .trx-addons-dropdown-icon' => 'font-size: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_responsive_control(
 			'nav_item_drop_icon_margin',
 			array(
 				'label'      => __( 'Dropdown Icon Margin', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-main-nav-menu > .trx-addons-nav-menu-item > .trx-addons-menu-link .trx-addons-dropdown-icon' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2248,7 +2314,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-main-nav-menu > .trx-addons-nav-menu-item > .trx-addons-menu-link' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				),
@@ -2260,7 +2326,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-main-nav-menu > .trx-addons-nav-menu-item > .trx-addons-menu-link' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2272,7 +2338,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Margin', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-main-nav-menu > .trx-addons-nav-menu-item' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2366,7 +2432,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-main-nav-menu > .trx-addons-nav-menu-item:hover > .trx-addons-menu-link' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				),
@@ -2378,7 +2444,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-main-nav-menu > .trx-addons-nav-menu-item:hover > .trx-addons-menu-link' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2390,7 +2456,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Margin', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-main-nav-menu > .trx-addons-nav-menu-item:hover' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2464,7 +2530,7 @@ class NavMenuWidget extends BaseWidget {
 			Group_Control_Text_Shadow::get_type(),
 			array(
 				'name'     => 'nav_item_shadow_active',
-				'selector' => '{{WRAPPER}} .trx-addons-main-nav-menu > .trx-addons-active-item',
+				'selector' => '{{WRAPPER}} .trx-addons-main-nav-menu > .trx-addons-active-item > .trx-addons-menu-link',
 			)
 		);
 
@@ -2472,7 +2538,7 @@ class NavMenuWidget extends BaseWidget {
 			Group_Control_Border::get_type(),
 			array(
 				'name'     => 'nav_item_border_active',
-				'selector' => '{{WRAPPER}} .trx-addons-main-nav-menu > .trx-addons-active-item',
+				'selector' => '{{WRAPPER}} .trx-addons-main-nav-menu > .trx-addons-active-item > .trx-addons-menu-link',
 			)
 		);
 
@@ -2481,9 +2547,9 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-main-nav-menu > .trx-addons-active-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+					'{{WRAPPER}} .trx-addons-main-nav-menu > .trx-addons-active-item > .trx-addons-menu-link' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				),
 			)
 		);
@@ -2493,9 +2559,9 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-main-nav-menu > .trx-addons-active-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-main-nav-menu > .trx-addons-active-item > .trx-addons-menu-link' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -2505,7 +2571,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Margin', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-main-nav-menu > .trx-addons-active-item' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2513,32 +2579,22 @@ class NavMenuWidget extends BaseWidget {
 		);
 
 		$this->end_controls_tab();
+
 		$this->end_controls_tabs();
 
 		$this->end_controls_section();
 	}
 
 	/**
-	 * Get Menu Item Extras.
-	 * 
-	 * Adds Menu Items' Icon & Badge Style.
+	 * Adds Menu Item's Icon Style.
 	 */
-	private function register_style_menu_item_extras_controls() {
+	private function register_style_menu_item_icon_controls() {
 
 		$this->start_controls_section(
-			'nav_item_extra_style',
+			'nav_item_icon_style_section',
 			array(
-				'label' => __( 'Menu Item Icon & Badge', 'trx_addons' ),
+				'label' => __( 'Menu Item Icon', 'trx_addons' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
-			)
-		);
-
-		$this->start_controls_tabs( 'nav_items_extras' );
-
-		$this->start_controls_tab(
-			'nav_item_icon_style',
-			array(
-				'label' => __( 'Icon', 'trx_addons' ),
 			)
 		);
 
@@ -2569,6 +2625,46 @@ class NavMenuWidget extends BaseWidget {
 			)
 		);
 
+		$this->add_responsive_control(
+			'nav_item_icon_size',
+			array(
+				'label'       => __( 'Size', 'trx_addons' ),
+				'type'        => Controls_Manager::SLIDER,
+				'label_block' => true,
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'range'       => array(
+					'px' => array(
+						'min' => 0,
+						'max' => 300,
+					),
+				),
+				'selectors'   => array(
+					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-item-icon' => 'font-size: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-item-icon.dashicons, {{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > img.trx-addons-item-icon, {{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-item-icon.trx-addons-lottie-animation' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->start_controls_tabs( 'tabs_nav_items_icon' );
+
+		$this->start_controls_tab(
+			'nav_item_icon_style',
+			array(
+				'label' => __( 'Normal', 'trx_addons' ),
+			)
+		);
+
+		$this->add_control(
+			'menu_item_icon_back_color',
+			array(
+				'label'     => __( 'Background Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-item-icon' => 'background-color: {{VALUE}};',
+				),
+			)
+		);
+
 		$this->add_control(
 			'menu_item_icon_color',
 			array(
@@ -2586,34 +2682,11 @@ class NavMenuWidget extends BaseWidget {
 			)
 		);
 
-		$this->add_responsive_control(
-			'nav_item_icon_size',
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
 			array(
-				'label'       => __( 'Size', 'trx_addons' ),
-				'type'        => Controls_Manager::SLIDER,
-				'label_block' => true,
-				'size_units'  => array( 'px' ),
-				'range'       => array(
-					'px' => array(
-						'min' => 0,
-						'max' => 300,
-					),
-				),
-				'selectors'   => array(
-					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-item-icon' => 'font-size: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-item-icon.dashicons, {{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > img.trx-addons-item-icon, {{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-item-icon.trx-addons-lottie-animation' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
-				),
-			)
-		);
-
-		$this->add_control(
-			'menu_item_icon_back_color',
-			array(
-				'label'     => __( 'Background Color', 'trx_addons' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-item-icon' => 'background-color: {{VALUE}};',
-				),
+				'name'     => 'menu_item_icon_border',
+				'selector' => '{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-item-icon',
 			)
 		);
 
@@ -2622,21 +2695,9 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-item-icon' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
-				),
-			)
-		);
-
-		$this->add_responsive_control(
-			'nav_item_icon_margin',
-			array(
-				'label'      => __( 'Margin', 'trx_addons' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-item-icon' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -2646,9 +2707,21 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-item-icon' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_responsive_control(
+			'nav_item_icon_margin',
+			array(
+				'label'      => __( 'Margin', 'trx_addons' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'selectors'  => array(
+					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-item-icon' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -2656,9 +2729,122 @@ class NavMenuWidget extends BaseWidget {
 		$this->end_controls_tab();
 
 		$this->start_controls_tab(
-			'nav_item_badge_style',
+			'nav_item_icon_style_hover',
 			array(
-				'label' => __( 'Badge', 'trx_addons' ),
+				'label' => __( 'Hover', 'trx_addons' ),
+			)
+		);
+
+		$this->add_control(
+			'menu_item_icon_back_color_hover',
+			array(
+				'label'     => __( 'Background Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link:hover > .trx-addons-item-icon' => 'background-color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'menu_item_icon_color_hover',
+			array(
+				'label'     => __( 'Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'global'    => array(
+					'default' => Global_Colors::COLOR_PRIMARY,
+				),
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link:hover > .trx-addons-item-icon' => 'color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->add_control(
+			'menu_item_icon_border_color_hover',
+			array(
+				'label'     => __( 'Border Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link:hover > .trx-addons-item-icon' => 'border-color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'nav_item_icon_style_active',
+			array(
+				'label' => __( 'Active', 'trx_addons' ),
+			)
+		);
+
+		$this->add_control(
+			'menu_item_icon_back_color_active',
+			array(
+				'label'     => __( 'Background Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-nav-menu-item.trx-addons-active-item > .trx-addons-menu-link > .trx-addons-item-icon' => 'background-color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'menu_item_icon_color_active',
+			array(
+				'label'     => __( 'Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'global'    => array(
+					'default' => Global_Colors::COLOR_PRIMARY,
+				),
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-nav-menu-item.trx-addons-active-item > .trx-addons-menu-link > .trx-addons-item-icon' => 'color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->add_control(
+			'menu_item_icon_border_color_active',
+			array(
+				'label'     => __( 'Border Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-nav-menu-item.trx-addons-active-item > .trx-addons-menu-link > .trx-addons-item-icon' => 'border-color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->end_controls_section();
+	}
+
+	/**
+	 * Adds Menu Item's Badge Style.
+	 */
+	private function register_style_menu_item_badge_controls() {
+
+		$this->start_controls_section(
+			'nav_item_badge_style_section',
+			array(
+				'label' => __( 'Menu Item Badge', 'trx_addons' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
 			)
 		);
 
@@ -2672,19 +2858,12 @@ class NavMenuWidget extends BaseWidget {
 			)
 		);
 
-		$this->add_control(
-			'item_badge_color',
+		$this->start_controls_tabs( 'tabs_nav_items_badge' );
+
+		$this->start_controls_tab(
+			'nav_item_badge_style',
 			array(
-				'label'     => __( 'Color', 'trx_addons' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-item-badge,
-					{{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item > .trx-addons-rn-badge,
-					 {{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-rn-badge' => 'color: {{VALUE}};',
-				),
-				'condition' => array(
-					'menu_type' => 'custom',
-				),
+				'label' => __( 'Normal', 'trx_addons' ),
 			)
 		);
 
@@ -2697,6 +2876,22 @@ class NavMenuWidget extends BaseWidget {
 					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-item-badge,
 					 {{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item > .trx-addons-rn-badge,
 					 {{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-rn-badge' => 'background-color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->add_control(
+			'item_badge_color',
+			array(
+				'label'     => __( 'Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-item-badge,
+					{{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item > .trx-addons-rn-badge,
+					 {{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-rn-badge' => 'color: {{VALUE}};',
 				),
 				'condition' => array(
 					'menu_type' => 'custom',
@@ -2719,7 +2914,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-item-badge,
 					{{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item > .trx-addons-rn-badge,
@@ -2733,10 +2928,10 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-item-badge,
-					{{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item > .trx-addons-rn-badge,
+					 {{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item > .trx-addons-rn-badge,
 					 {{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-rn-badge' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
@@ -2747,7 +2942,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Margin', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link > .trx-addons-item-badge,
 					 {{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item > .trx-addons-rn-badge,
@@ -2757,6 +2952,121 @@ class NavMenuWidget extends BaseWidget {
 		);
 
 		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'nav_item_badge_style_hover',
+			array(
+				'label' => __( 'Hover', 'trx_addons' ),
+			)
+		);
+
+		$this->add_control(
+			'item_badge_back_color_hover',
+			array(
+				'label'     => __( 'Background Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link:hover > .trx-addons-item-badge,
+					 {{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item:hover > .trx-addons-rn-badge,
+					 {{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item > .trx-addons-menu-link:hover > .trx-addons-rn-badge' => 'background-color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->add_control(
+			'item_badge_color_hover',
+			array(
+				'label'     => __( 'Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link:hover > .trx-addons-item-badge,
+					{{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item:hover > .trx-addons-rn-badge,
+					 {{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item > .trx-addons-menu-link:hover > .trx-addons-rn-badge' => 'color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->add_control(
+			'item_badge_border_color_hover',
+			array(
+				'label'     => __( 'Border Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-nav-menu-item > .trx-addons-menu-link:hover > .trx-addons-item-badge,
+					 {{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item:hover > .trx-addons-rn-badge,
+					 {{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item > .trx-addons-menu-link:hover > .trx-addons-rn-badge' => 'border-color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'nav_item_badge_style_active',
+			array(
+				'label' => __( 'Active', 'trx_addons' ),
+			)
+		);
+
+		$this->add_control(
+			'item_badge_back_color_active',
+			array(
+				'label'     => __( 'Background Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-nav-menu-item.trx-addons-active-item > .trx-addons-menu-link > .trx-addons-item-badge,
+					 {{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item.trx-addons-active-item > .trx-addons-rn-badge,
+					 {{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item.trx-addons-active-item > .trx-addons-menu-link > .trx-addons-rn-badge' => 'background-color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->add_control(
+			'item_badge_color_active',
+			array(
+				'label'     => __( 'Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-nav-menu-item.trx-addons-active-item > .trx-addons-menu-link > .trx-addons-item-badge,
+					{{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item.trx-addons-active-item > .trx-addons-rn-badge,
+					 {{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item.trx-addons-active-item > .trx-addons-menu-link > .trx-addons-rn-badge' => 'color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->add_control(
+			'item_badge_border_color_active',
+			array(
+				'label'     => __( 'Border Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-nav-menu-item.trx-addons-active-item > .trx-addons-menu-link > .trx-addons-item-badge,
+					 {{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item.trx-addons-active-item > .trx-addons-rn-badge,
+					 {{WRAPPER}} .trx-addons-ver-inner-container > div .trx-addons-main-nav-menu > .trx-addons-nav-menu-item.trx-addons-active-item > .trx-addons-menu-link > .trx-addons-rn-badge' => 'border-color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->end_controls_tab();
+
 		$this->end_controls_tabs();
 
 		$this->end_controls_section();
@@ -2790,7 +3100,7 @@ class NavMenuWidget extends BaseWidget {
 				'label'       => __( 'Minimum Width', 'trx_addons' ),
 				'type'        => Controls_Manager::SLIDER,
 				'label_block' => true,
-				'size_units'  => array( 'px', 'em', '%', 'custom' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'       => array(
 					'px' => array(
 						'min' => 0,
@@ -2838,7 +3148,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-nav-menu-container .trx-addons-submenu, {{WRAPPER}} .trx-addons-mobile-menu-container .trx-addons-submenu' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				),
@@ -2850,7 +3160,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-nav-menu-container .trx-addons-submenu, {{WRAPPER}} .trx-addons-mobile-menu-container .trx-addons-submenu' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2862,7 +3172,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Margin (1st level)', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-nav-menu-container > .trx-addons-nav-menu > .trx-addons-nav-menu-item > .trx-addons-submenu, {{WRAPPER}} .trx-addons-mobile-menu-container > .trx-addons-nav-menu > .trx-addons-nav-menu-item > .trx-addons-submenu' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2874,7 +3184,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Margin (2nd+ level)', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-nav-menu-container .trx-addons-submenu .trx-addons-nav-menu-item > .trx-addons-submenu, {{WRAPPER}} .trx-addons-mobile-menu-container .trx-addons-submenu .trx-addons-nav-menu-item > .trx-addons-submenu' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2898,7 +3208,7 @@ class NavMenuWidget extends BaseWidget {
 				'label'       => __( 'Offset', 'trx_addons' ),
 				'type'        => Controls_Manager::SLIDER,
 				'label_block' => true,
-				'size_units'  => array( 'px', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'       => array(
 					'px' => array(
 						'min' => -1000,
@@ -2949,9 +3259,10 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-nav-menu-container .trx-addons-mega-content-container, {{WRAPPER}} .trx-addons-mobile-menu-container .trx-addons-mega-content-container' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+					'{{WRAPPER}} .trx-addons-nav-menu-container .trx-addons-mega-content-container,
+					 {{WRAPPER}} .trx-addons-mobile-menu-container .trx-addons-mega-content-container' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				),
 			)
 		);
@@ -2961,9 +3272,10 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-nav-menu-container .trx-addons-mega-content-container, {{WRAPPER}} .trx-addons-mobile-menu-container .trx-addons-mega-content-container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-nav-menu-container .trx-addons-nav-menu-item .trx-addons-mega-content-container,
+					 {{WRAPPER}} .trx-addons-mobile-menu-container .trx-addons-nav-menu-item .trx-addons-mega-content-container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -2973,9 +3285,10 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Margin (1st level)', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-nav-menu-container > .trx-addons-nav-menu > .trx-addons-nav-menu-item > .trx-addons-mega-content-container, {{WRAPPER}} .trx-addons-mobile-menu-container > .trx-addons-nav-menu > .trx-addons-nav-menu-item > .trx-addons-mega-content-container' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-nav-menu-container > .trx-addons-nav-menu > .trx-addons-nav-menu-item > .trx-addons-mega-content-container,
+					 {{WRAPPER}} .trx-addons-mobile-menu-container > .trx-addons-nav-menu > .trx-addons-nav-menu-item > .trx-addons-mega-content-container' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -2985,7 +3298,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Margin (2nd+ level)', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-nav-menu-container .trx-addons-submenu .trx-addons-nav-menu-item > .trx-addons-mega-content-container, {{WRAPPER}} .trx-addons-mobile-menu-container .trx-addons-submenu .trx-addons-nav-menu-item > .trx-addons-mega-content-container' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2993,6 +3306,7 @@ class NavMenuWidget extends BaseWidget {
 		);
 
 		$this->end_controls_tab();
+
 		$this->end_controls_tabs();
 
 		$this->end_controls_section();
@@ -3027,7 +3341,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Dropdown Icon Size', 'trx_addons' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-link .trx-addons-dropdown-icon' => 'font-size: {{SIZE}}{{UNIT}};',
 				),
@@ -3038,11 +3352,25 @@ class NavMenuWidget extends BaseWidget {
 		);
 
 		$this->add_responsive_control(
+			'sub_item_drop_icon_position',
+			array(
+				'label'        => __( 'Dropdown Icon Position', 'trx_addons' ),
+				'type'         => Controls_Manager::SELECT,
+				'options'      => array(
+					'inline' => __( 'Inline', 'trx_addons' ),
+					'fixed'  => __( 'Fixed', 'trx_addons' ),
+				),
+				'default'      => 'inline',
+				'prefix_class' => 'trx-addons-dropdown-icon-',
+			)
+		);
+
+		$this->add_responsive_control(
 			'sub_item_drop_icon_margin',
 			array(
 				'label'      => __( 'Dropdown Icon Margin', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-link .trx-addons-dropdown-icon' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -3097,7 +3425,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'name'     => 'sub_item_bg',
 				'types'    => array( 'classic', 'gradient' ),
-				'selector' => '{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item',
+				'selector' => '{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item > .trx-addons-submenu-link',
 			)
 		);
 
@@ -3105,7 +3433,7 @@ class NavMenuWidget extends BaseWidget {
 			Group_Control_Text_Shadow::get_type(),
 			array(
 				'name'     => 'sub_item_shadow',
-				'selector' => '{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item',
+				'selector' => '{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item > .trx-addons-submenu-link',
 			)
 		);
 
@@ -3113,7 +3441,7 @@ class NavMenuWidget extends BaseWidget {
 			Group_Control_Border::get_type(),
 			array(
 				'name'     => 'sub_item_border',
-				'selector' => '{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item',
+				'selector' => '{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item > .trx-addons-submenu-link',
 			)
 		);
 
@@ -3122,9 +3450,9 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+					'{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item > .trx-addons-submenu-link' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				),
 			)
 		);
@@ -3134,9 +3462,9 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item > .trx-addons-submenu-link' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -3146,7 +3474,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Margin', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -3167,7 +3495,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'     => __( 'Color', 'trx_addons' ),
 				'type'      => Controls_Manager::COLOR,
-				'default'   => '#fff',
+				'default'   => '#000',
 				'selectors' => array(
 					'{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu-item:hover > .trx-addons-submenu-link' => 'color: {{VALUE}};',
 				),
@@ -3179,7 +3507,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'     => __( 'Dropdown Icon Color', 'trx_addons' ),
 				'type'      => Controls_Manager::COLOR,
-				'default'   => '#fff',
+				'default'   => '#000',
 				'selectors' => array(
 					'{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu-item:hover > .trx-addons-submenu-link .trx-addons-dropdown-icon' => 'color: {{VALUE}};',
 				),
@@ -3194,7 +3522,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'name'           => 'sub_item_bg_hover',
 				'types'          => array( 'classic', 'gradient' ),
-				'selector'       => '{{WRAPPER}}:not(.trx-addons-hamburger-menu):not(.trx-addons-nav-slide):not(.trx-addons-nav-dropdown) .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item:hover,
+				'selector'       => '{{WRAPPER}}:not(.trx-addons-hamburger-menu):not(.trx-addons-nav-slide):not(.trx-addons-nav-dropdown) .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item:hover > .trx-addons-submenu-link,
 									{{WRAPPER}}.trx-addons-hamburger-menu .trx-addons-main-nav-menu .trx-addons-submenu > .trx-addons-submenu-item:hover > .trx-addons-submenu-link,
 									{{WRAPPER}}.trx-addons-nav-slide .trx-addons-main-nav-menu .trx-addons-submenu > .trx-addons-submenu-item:hover > .trx-addons-submenu-link,
 									{{WRAPPER}}.trx-addons-nav-dropdown .trx-addons-main-nav-menu .trx-addons-submenu > .trx-addons-submenu-item:hover > .trx-addons-submenu-link',
@@ -3223,7 +3551,7 @@ class NavMenuWidget extends BaseWidget {
 			Group_Control_Border::get_type(),
 			array(
 				'name'     => 'sub_item_border_hover',
-				'selector' => '{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item:hover',
+				'selector' => '{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item:hover > .trx-addons-submenu-link',
 			)
 		);
 
@@ -3232,9 +3560,9 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item:hover' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+					'{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item:hover > .trx-addons-submenu-link' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				),
 			)
 		);
@@ -3244,9 +3572,9 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item:hover' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item:hover > .trx-addons-submenu-link' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -3256,7 +3584,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Margin', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-submenu-item:hover' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -3305,7 +3633,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'name'     => 'sub_item_bg_active',
 				'types'    => array( 'classic', 'gradient' ),
-				'selector' => '{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-active-item',
+				'selector' => '{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-active-item > .trx-addons-submenu-link',
 			)
 		);
 
@@ -3321,7 +3649,7 @@ class NavMenuWidget extends BaseWidget {
 			Group_Control_Border::get_type(),
 			array(
 				'name'     => 'sub_item_border_active',
-				'selector' => '{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-active-item',
+				'selector' => '{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-active-item > .trx-addons-submenu-link',
 			)
 		);
 
@@ -3330,9 +3658,9 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-active-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+					'{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-active-item > .trx-addons-submenu-link' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				),
 			)
 		);
@@ -3342,9 +3670,9 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-active-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-active-item > .trx-addons-submenu-link' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -3354,7 +3682,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Margin', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-main-nav-menu .trx-addons-submenu .trx-addons-active-item' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -3369,26 +3697,15 @@ class NavMenuWidget extends BaseWidget {
 	}
 
 	/**
-	 * Get Submenu Item Extras.
-	 * 
-	 * Adds Submenu Items' Icon & Badge Style.
+	 * Adds Submenu Items' Icon Style.
 	 */
-	private function register_style_submenu_item_extras_controls() {
+	private function register_style_submenu_item_icon_controls() {
 
 		$this->start_controls_section(
-			'sub_extra_style',
+			'sub_items_icon_style',
 			array(
-				'label' => __( 'Submenu Item Icon & Badge', 'trx_addons' ),
+				'label' => __( 'Submenu Item Icon', 'trx_addons' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
-			)
-		);
-
-		$this->start_controls_tabs( 'sub_items_extras' );
-
-		$this->start_controls_tab(
-			'sub_icon_style',
-			array(
-				'label' => __( 'Icon', 'trx_addons' ),
 			)
 		);
 
@@ -3419,6 +3736,46 @@ class NavMenuWidget extends BaseWidget {
 			)
 		);
 
+		$this->add_responsive_control(
+			'sub_icon_size',
+			array(
+				'label'       => __( 'Size', 'trx_addons' ),
+				'type'        => Controls_Manager::SLIDER,
+				'label_block' => true,
+				'size_units'  => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'range'       => array(
+					'px' => array(
+						'min' => 0,
+						'max' => 300,
+					),
+				),
+				'selectors'   => array(
+					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-icon' => 'font-size: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-icon.dashicons, {{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link img.trx-addons-sub-item-icon, {{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-icon.trx-addons-lottie-animation' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->start_controls_tabs( 'tabs_sub_items_icon' );
+
+		$this->start_controls_tab(
+			'sub_icon_style',
+			array(
+				'label' => __( 'Normal', 'trx_addons' ),
+			)
+		);
+
+		$this->add_control(
+			'sub_item_icon_back_color',
+			array(
+				'label'     => __( 'Background Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-icon' => 'background-color: {{VALUE}};',
+				),
+			)
+		);
+
 		$this->add_control(
 			'sub_item_icon_color',
 			array(
@@ -3436,34 +3793,11 @@ class NavMenuWidget extends BaseWidget {
 			)
 		);
 
-		$this->add_responsive_control(
-			'sub_icon_size',
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
 			array(
-				'label'       => __( 'Size', 'trx_addons' ),
-				'type'        => Controls_Manager::SLIDER,
-				'label_block' => true,
-				'size_units'  => array( 'px' ),
-				'range'       => array(
-					'px' => array(
-						'min' => 0,
-						'max' => 300,
-					),
-				),
-				'selectors'   => array(
-					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-icon' => 'font-size: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-icon.dashicons, {{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link img.trx-addons-sub-item-icon, {{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-icon.trx-addons-lottie-animation' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
-				),
-			)
-		);
-
-		$this->add_control(
-			'sub_item_icon_back_color',
-			array(
-				'label'     => __( 'Background Color', 'trx_addons' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-icon' => 'background-color: {{VALUE}};',
-				),
+				'name'     => 'sub_item_icon_border',
+				'selector' => '{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-icon',
 			)
 		);
 
@@ -3472,21 +3806,9 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-icon' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
-				),
-			)
-		);
-
-		$this->add_responsive_control(
-			'sub_icon_margin',
-			array(
-				'label'      => __( 'Margin', 'trx_addons' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-icon' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -3496,9 +3818,21 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-icon' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_responsive_control(
+			'sub_icon_margin',
+			array(
+				'label'      => __( 'Margin', 'trx_addons' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'selectors'  => array(
+					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-icon' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -3506,9 +3840,119 @@ class NavMenuWidget extends BaseWidget {
 		$this->end_controls_tab();
 
 		$this->start_controls_tab(
-			'sub_badge_style',
+			'sub_icon_style_hover',
 			array(
-				'label' => __( 'Badge', 'trx_addons' ),
+				'label' => __( 'Hover', 'trx_addons' ),
+			)
+		);
+
+		$this->add_control(
+			'sub_item_icon_back_color_hover',
+			array(
+				'label'     => __( 'Background Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link:hover .trx-addons-sub-item-icon' => 'background-color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'sub_item_icon_color_hover',
+			array(
+				'label'     => __( 'Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'global'    => array(
+					'default' => Global_Colors::COLOR_PRIMARY,
+				),
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link:hover .trx-addons-sub-item-icon' => 'color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->add_control(
+			'sub_item_icon_border_color_hover',
+			array(
+				'label'     => __( 'Border Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link:hover .trx-addons-sub-item-icon' => 'border-color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'sub_icon_style_active',
+			array(
+				'label' => __( 'Active', 'trx_addons' ),
+			)
+		);
+
+		$this->add_control(
+			'sub_item_icon_back_color_active',
+			array(
+				'label'     => __( 'Background Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-submenu-item.trx-addons-active-item .trx-addons-submenu-link .trx-addons-sub-item-icon' => 'background-color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'sub_item_icon_color_active',
+			array(
+				'label'     => __( 'Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'global'    => array(
+					'default' => Global_Colors::COLOR_PRIMARY,
+				),
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-submenu-item.trx-addons-active-item .trx-addons-submenu-link .trx-addons-sub-item-icon' => 'color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->add_control(
+			'sub_item_icon_border_color_active',
+			array(
+				'label'     => __( 'Border Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-submenu-item.trx-addons-active-item .trx-addons-submenu-link .trx-addons-sub-item-icon' => 'border-color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->end_controls_section();
+	}
+
+	/**
+	 * Adds Submenu Items' Badge Style.
+	 */
+	private function register_style_submenu_item_badge_controls() {
+
+		$this->start_controls_section(
+			'sub_extra_style',
+			array(
+				'label' => __( 'Submenu Item Badge', 'trx_addons' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
 			)
 		);
 
@@ -3517,34 +3961,6 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'name'     => 'sub_badge_typo',
 				'selector' => '{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-badge, {{WRAPPER}} .trx-addons-submenu-item .trx-addons-rn-badge, {{WRAPPER}} .trx-addons-mega-content-container .trx-addons-rn-badge',
-			)
-		);
-
-		$this->add_control(
-			'sub_item_badge_color',
-			array(
-				'label'     => __( 'Color', 'trx_addons' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-badge, {{WRAPPER}} .trx-addons-submenu-item .trx-addons-rn-badge, {{WRAPPER}} .trx-addons-mega-content-container .trx-addons-rn-badge' => 'color: {{VALUE}};',
-				),
-				'condition' => array(
-					'menu_type' => 'custom',
-				),
-			)
-		);
-
-		$this->add_control(
-			'sub_item_badge_back_color',
-			array(
-				'label'     => __( 'Background Color', 'trx_addons' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-badge, {{WRAPPER}} .trx-addons-submenu-item .trx-addons-rn-badge, {{WRAPPER}} .trx-addons-mega-content-container .trx-addons-rn-badge' => 'background-color: {{VALUE}};',
-				),
-				'condition' => array(
-					'menu_type' => 'custom',
-				),
 			)
 		);
 
@@ -3557,7 +3973,7 @@ class NavMenuWidget extends BaseWidget {
 				'label'       => __( 'Horizontal Offset', 'trx_addons' ),
 				'type'        => Controls_Manager::SLIDER,
 				'label_block' => true,
-				'size_units'  => array( 'px', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'       => array(
 					'px' => array(
 						'min' => 0,
@@ -3578,7 +3994,7 @@ class NavMenuWidget extends BaseWidget {
 				'label'       => __( 'Vertical Offset', 'trx_addons' ),
 				'type'        => Controls_Manager::SLIDER,
 				'label_block' => true,
-				'size_units'  => array( 'px', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'       => array(
 					'px' => array(
 						'min' => 0,
@@ -3587,6 +4003,43 @@ class NavMenuWidget extends BaseWidget {
 				),
 				'selectors'   => array(
 					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-badge, {{WRAPPER}} .trx-addons-submenu-item .trx-addons-rn-badge, {{WRAPPER}} .trx-addons-mega-content-container .trx-addons-rn-badge' => 'top: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->start_controls_tabs( 'tabs_sub_items_badge' );
+
+		$this->start_controls_tab(
+			'sub_badge_style',
+			array(
+				'label' => __( 'Normal', 'trx_addons' ),
+			)
+		);
+
+		$this->add_control(
+			'sub_item_badge_back_color',
+			array(
+				'label'     => __( 'Background Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-badge, {{WRAPPER}} .trx-addons-submenu-item .trx-addons-rn-badge, {{WRAPPER}} .trx-addons-mega-content-container .trx-addons-rn-badge' => 'background-color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->add_control(
+			'sub_item_badge_color',
+			array(
+				'label'     => __( 'Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-badge, {{WRAPPER}} .trx-addons-submenu-item .trx-addons-rn-badge, {{WRAPPER}} .trx-addons-mega-content-container .trx-addons-rn-badge' => 'color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
 				),
 			)
 		);
@@ -3604,7 +4057,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-badge, {{WRAPPER}} .trx-addons-submenu-item .trx-addons-rn-badge, {{WRAPPER}} .trx-addons-mega-content-container .trx-addons-rn-badge' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				),
@@ -3616,7 +4069,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link .trx-addons-sub-item-badge,
 					 {{WRAPPER}} .trx-addons-submenu-item .trx-addons-rn-badge,
@@ -3626,6 +4079,109 @@ class NavMenuWidget extends BaseWidget {
 		);
 
 		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'sub_badge_style_hover',
+			array(
+				'label' => __( 'Hover', 'trx_addons' ),
+			)
+		);
+
+		$this->add_control(
+			'sub_item_badge_back_color_hover',
+			array(
+				'label'     => __( 'Background Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link:hover .trx-addons-sub-item-badge, {{WRAPPER}} .trx-addons-submenu-item:hover .trx-addons-rn-badge, {{WRAPPER}} .trx-addons-mega-content-container .trx-addons-rn-badge:hover' => 'background-color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->add_control(
+			'sub_item_badge_color_hover',
+			array(
+				'label'     => __( 'Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link:hover .trx-addons-sub-item-badge, {{WRAPPER}} .trx-addons-submenu-item:hover .trx-addons-rn-badge, {{WRAPPER}} .trx-addons-mega-content-container .trx-addons-rn-badge:hover' => 'color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->add_control(
+			'sub_item_badge_border_color_hover',
+			array(
+				'label'     => __( 'Border Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-submenu-item .trx-addons-submenu-link:hover .trx-addons-sub-item-badge, {{WRAPPER}} .trx-addons-submenu-item:hover .trx-addons-rn-badge, {{WRAPPER}} .trx-addons-mega-content-container .trx-addons-rn-badge:hover' => 'border-color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'sub_badge_style_active',
+			array(
+				'label' => __( 'Active', 'trx_addons' ),
+			)
+		);
+
+		$this->add_control(
+			'sub_item_badge_back_color_active',
+			array(
+				'label'     => __( 'Background Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-submenu-item.trx-addons-active-item .trx-addons-submenu-link .trx-addons-sub-item-badge, {{WRAPPER}} .trx-addons-submenu-item.trx-addons-active-item .trx-addons-rn-badge' => 'background-color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->add_control(
+			'sub_item_badge_color_active',
+			array(
+				'label'     => __( 'Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-submenu-item.trx-addons-active-item .trx-addons-submenu-link .trx-addons-sub-item-badge, {{WRAPPER}} .trx-addons-submenu-item.trx-addons-active-item .trx-addons-rn-badge' => 'color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->add_control(
+			'sub_item_badge_border_color_active',
+			array(
+				'label'     => __( 'Border Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-submenu-item.trx-addons-active-item .trx-addons-submenu-link .trx-addons-sub-item-badge, {{WRAPPER}} .trx-addons-submenu-item.trx-addons-active-item .trx-addons-rn-badge' => 'border-color: {{VALUE}};',
+				),
+				'condition' => array(
+					'menu_type' => 'custom',
+				),
+			)
+		);
+
+		$this->end_controls_tab();
+
 		$this->end_controls_tabs();
 
 		$this->end_controls_section();
@@ -3637,7 +4193,7 @@ class NavMenuWidget extends BaseWidget {
 	private function register_style_toggle_menu_controls() {
 
 		$this->start_controls_section(
-			'toggle_mene_style_section',
+			'toggle_menu_style_section',
 			array(
 				'label' => __( 'Expand/Slide Menu Style', 'trx_addons' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
@@ -3652,113 +4208,56 @@ class NavMenuWidget extends BaseWidget {
 			)
 		);
 
-		$this->start_controls_tabs( 'ham_toggle_style_tabs' );
-
-		$this->start_controls_tab(
-			'ham_toggle_icon_tab',
-			array(
-				'label' => __( 'Icon', 'trx_addons' ),
-			)
-		);
-
 		$this->add_responsive_control(
-			'ham_toggle_icon_size',
+			'ham_toggle_width',
 			array(
-				'label'       => __( 'Size', 'trx_addons' ),
+				'label'       => __( 'Button Width', 'trx_addons' ),
 				'type'        => Controls_Manager::SLIDER,
-				'size_units'  => array( 'px', 'em', '%' ),
 				'label_block' => true,
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'range'       => array(
+					'px' => array(
+						'min' => 0,
+						'max' => 1000,
+					),
+				),
 				'selectors'   => array(
-					'{{WRAPPER}} .trx-addons-hamburger-toggle i' => 'font-size: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .trx-addons-hamburger-toggle svg' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
-				),
-			)
-		);
-
-		$this->add_control(
-			'ham_toggle_color',
-			array(
-				'label'     => __( 'Color', 'trx_addons' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-hamburger-toggle i' => 'color: {{VALUE}};',
-					'{{WRAPPER}} .trx-addons-hamburger-toggle svg, {{WRAPPER}} .trx-addons-hamburger-toggle svg path' => 'fill: {{VALUE}};',
-				),
-			)
-		);
-
-		$this->add_control(
-			'ham_toggle_color_hover',
-			array(
-				'label'     => __( 'Hover Color', 'trx_addons' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-hamburger-toggle:hover i' => 'color: {{VALUE}};',
-					'{{WRAPPER}} .trx-addons-hamburger-toggle:hover svg, {{WRAPPER}} .trx-addons-hamburger-toggle:hover svg path' => 'fill: {{VALUE}};',
-				),
-			)
-		);
-
-		$this->end_controls_tab();
-
-		$this->start_controls_tab(
-			'ham_toggle_label_tab',
-			array(
-				'label' => __( 'Text', 'trx_addons' ),
-			)
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'ham_toggle_txt_typo',
-				'selector' => '{{WRAPPER}} .trx-addons-hamburger-toggle .trx-addons-toggle-text, {{WRAPPER}}.trx-addons-ham-dropdown .trx-addons-hamburger-toggle .trx-addons-toggle-close',
-			)
-		);
-
-		$this->add_control(
-			'ham_toggle_txt_color',
-			array(
-				'label'     => __( 'Color', 'trx_addons' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-hamburger-toggle .trx-addons-toggle-text, {{WRAPPER}}.trx-addons-ham-dropdown .trx-addons-hamburger-toggle .trx-addons-toggle-close' => 'color: {{VALUE}};',
-				),
-			)
-		);
-
-		$this->add_control(
-			'ham_toggle_txt_color_hover',
-			array(
-				'label'     => __( 'Hover Color', 'trx_addons' ),
-				'type'      => Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-hamburger-toggle:hover .trx-addons-toggle-text, {{WRAPPER}}.trx-addons-ham-dropdown .trx-addons-hamburger-toggle:hover .trx-addons-toggle-close' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .trx-addons-hamburger-toggle' => 'width: {{SIZE}}{{UNIT}};',
 				),
 			)
 		);
 
 		$this->add_responsive_control(
-			'ham_toggle_txt_margin',
+			'ham_toggle_align',
 			array(
-				'label'      => __( 'Margin', 'trx_addons' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
-				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-hamburger-toggle .trx-addons-toggle-text, {{WRAPPER}}.trx-addons-ham-dropdown .trx-addons-hamburger-toggle .trx-addons-toggle-close' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				'label'     => __( 'Button Alignment', 'trx_addons' ),
+				'type'      => Controls_Manager::CHOOSE,
+				'options'   => array(
+					'flex-start'    => array(
+						'title' => __( 'Left', 'trx_addons' ),
+						'icon'  => 'eicon-h-align-left',
+					),
+					'center'        => array(
+						'title' => __( 'Center', 'trx_addons' ),
+						'icon'  => 'eicon-h-align-center',
+					),
+					'flex-end'      => array(
+						'title' => __( 'Right', 'trx_addons' ),
+						'icon'  => 'eicon-h-align-right',
+					),
+				),
+				'default'   => 'center',
+				'toggle'    => false,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-hamburger-toggle' => 'align-self: {{VALUE}}',
 				),
 			)
 		);
-
-		$this->end_controls_tab();
-
-		$this->end_controls_tabs();
 
 		$this->add_control(
 			'ham_toggle_bg',
 			array(
 				'label'     => __( 'Background Color', 'trx_addons' ),
-				'separator' => 'before',
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
 					'{{WRAPPER}} .trx-addons-hamburger-toggle' => 'background-color: {{VALUE}};',
@@ -3798,7 +4297,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-hamburger-toggle' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				),
@@ -3810,7 +4309,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-hamburger-toggle' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -3822,13 +4321,128 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Margin', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-hamburger-toggle' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
 
+		$this->start_controls_tabs( 'ham_toggle_style_tabs' );
+
+		$this->start_controls_tab(
+			'ham_toggle_icon_tab',
+			array(
+				'label' => __( 'Icon', 'trx_addons' ),
+			)
+		);
+
+		$this->add_responsive_control(
+			'ham_toggle_icon_size',
+			array(
+				'label'       => __( 'Size', 'trx_addons' ),
+				'type'        => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'label_block' => true,
+				'selectors'   => array(
+					'{{WRAPPER}} .trx-addons-hamburger-toggle i' => 'font-size: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-hamburger-toggle svg' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'ham_toggle_color',
+			array(
+				'label'     => __( 'Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-hamburger-toggle i' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .trx-addons-hamburger-toggle svg, {{WRAPPER}} .trx-addons-hamburger-toggle svg path' => 'fill: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'ham_toggle_color_hover',
+			array(
+				'label'     => __( 'Hover Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-hamburger-toggle:hover i' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .trx-addons-hamburger-toggle:hover svg, {{WRAPPER}} .trx-addons-hamburger-toggle:hover svg path' => 'fill: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_responsive_control(
+			'ham_toggle_icon_margin',
+			array(
+				'label'      => __( 'Margin', 'trx_addons' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'selectors'  => array(
+					'{{WRAPPER}} .trx-addons-hamburger-toggle .trx-addons-toggle-text i, {{WRAPPER}}.trx-addons-nav-dropdown .trx-addons-hamburger-toggle .trx-addons-toggle-close i, {{WRAPPER}}.trx-addons-ham-dropdown .trx-addons-hamburger-toggle .trx-addons-toggle-close i' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'ham_toggle_label_tab',
+			array(
+				'label' => __( 'Text', 'trx_addons' ),
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'ham_toggle_txt_typo',
+				'selector' => '{{WRAPPER}} .trx-addons-hamburger-toggle .trx-addons-toggle-text, {{WRAPPER}}.trx-addons-nav-dropdown .trx-addons-hamburger-toggle .trx-addons-toggle-close, {{WRAPPER}}.trx-addons-ham-dropdown .trx-addons-hamburger-toggle .trx-addons-toggle-close',
+			)
+		);
+
+		$this->add_control(
+			'ham_toggle_txt_color',
+			array(
+				'label'     => __( 'Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-hamburger-toggle .trx-addons-toggle-text, {{WRAPPER}}.trx-addons-nav-dropdown .trx-addons-hamburger-toggle .trx-addons-toggle-close, {{WRAPPER}}.trx-addons-ham-dropdown .trx-addons-hamburger-toggle .trx-addons-toggle-close' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'ham_toggle_txt_color_hover',
+			array(
+				'label'     => __( 'Hover Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-hamburger-toggle:hover .trx-addons-toggle-text, {{WRAPPER}}.trx-addons-nav-dropdown .trx-addons-hamburger-toggle:hover .trx-addons-toggle-close, {{WRAPPER}}.trx-addons-ham-dropdown .trx-addons-hamburger-toggle:hover .trx-addons-toggle-close' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_responsive_control(
+			'ham_toggle_txt_margin',
+			array(
+				'label'      => __( 'Margin', 'trx_addons' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'selectors'  => array(
+					'{{WRAPPER}} .trx-addons-hamburger-toggle .trx-addons-toggle-text, {{WRAPPER}}.trx-addons-nav-dropdown .trx-addons-hamburger-toggle .trx-addons-toggle-close, {{WRAPPER}}.trx-addons-ham-dropdown .trx-addons-hamburger-toggle .trx-addons-toggle-close' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		// Toggle menu styles
 		$this->add_control(
 			'ham_menu_style',
 			array(
@@ -3888,8 +4502,8 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'name'     => 'ham_menu_shadow',
 				'selector' => '{{WRAPPER}}.trx-addons-ham-dropdown .trx-addons-mobile-menu,
-				 {{WRAPPER}}.trx-addons-nav-dropdown .trx-addons-mobile-menu,
-				  {{WRAPPER}} .trx-addons-mobile-menu-outer-container',
+								{{WRAPPER}}.trx-addons-nav-dropdown .trx-addons-mobile-menu,
+								{{WRAPPER}} .trx-addons-mobile-menu-outer-container',
 			)
 		);
 
@@ -3899,9 +4513,9 @@ class NavMenuWidget extends BaseWidget {
 				'name'     => 'ham_menu_background',
 				'types'    => array( 'classic', 'gradient' ),
 				'selector' => '{{WRAPPER}}.trx-addons-ham-dropdown .trx-addons-mobile-menu,
-				 {{WRAPPER}}.trx-addons-nav-dropdown .trx-addons-mobile-menu,
-				  {{WRAPPER}} .trx-addons-mobile-menu-outer-container,
-				  {{WRAPPER}}:not(.trx-addons-nav-slide):not(.trx-addons-ham-slide) .trx-addons-mobile-menu-container',
+								{{WRAPPER}}.trx-addons-nav-dropdown .trx-addons-mobile-menu,
+								{{WRAPPER}} .trx-addons-mobile-menu-outer-container,
+								{{WRAPPER}}:not(.trx-addons-nav-slide):not(.trx-addons-ham-slide) .trx-addons-mobile-menu',	//-container
 
 			)
 		);
@@ -3911,8 +4525,8 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'name'     => 'ham_menu_border',
 				'selector' => '{{WRAPPER}}.trx-addons-ham-dropdown .trx-addons-mobile-menu,
-				 {{WRAPPER}}.trx-addons-nav-dropdown .trx-addons-mobile-menu,
-				  {{WRAPPER}} .trx-addons-mobile-menu-outer-container',
+								{{WRAPPER}}.trx-addons-nav-dropdown .trx-addons-mobile-menu,
+								{{WRAPPER}} .trx-addons-mobile-menu-outer-container',
 			)
 		);
 
@@ -3921,7 +4535,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}}.trx-addons-ham-dropdown .trx-addons-mobile-menu,
 					 {{WRAPPER}}.trx-addons-nav-dropdown .trx-addons-mobile-menu' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
@@ -3937,11 +4551,11 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}}.trx-addons-ham-dropdown .trx-addons-mobile-menu,
 					 {{WRAPPER}}.trx-addons-nav-dropdown .trx-addons-mobile-menu,
-					  {{WRAPPER}} .trx-addons-mobile-menu-outer-container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					 {{WRAPPER}} .trx-addons-mobile-menu-outer-container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -3989,7 +4603,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'       => __( 'Size', 'trx_addons' ),
 				'type'        => Controls_Manager::SLIDER,
-				'size_units'  => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'label_block' => true,
 				'selectors'   => array(
 					'{{WRAPPER}} .trx-addons-mobile-menu-outer-container .trx-addons-mobile-menu-close i' => 'font-size: {{SIZE}}{{UNIT}};',
@@ -4066,7 +4680,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Margin', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-mobile-menu-outer-container .trx-addons-mobile-menu-close .trx-addons-toggle-close' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -4121,7 +4735,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-mobile-menu-outer-container .trx-addons-mobile-menu-close' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				),
@@ -4133,7 +4747,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-mobile-menu-outer-container .trx-addons-mobile-menu-close' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -4145,7 +4759,7 @@ class NavMenuWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Margin', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-mobile-menu-outer-container .trx-addons-mobile-menu-close' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -4155,6 +4769,16 @@ class NavMenuWidget extends BaseWidget {
 		$this->end_controls_section();
 	}
 
+	
+	/*-----------------------------------------------------------------------------------*/
+	/*	RENDER
+	/*-----------------------------------------------------------------------------------*/
+
+	/**
+	 * Render a widget output in the frontend.
+	 *
+	 * @access protected
+	 */
 	protected function render() {
 
 		$settings = $this->get_settings_for_display();
@@ -4178,9 +4802,20 @@ class NavMenuWidget extends BaseWidget {
 			}
 		}
 
-		$break_point = 'custom' === $settings['mobile_menu_breakpoint'] ? $settings['custom_breakpoint'] : $settings['mobile_menu_breakpoint'];
-
-		$break_point = '' === $break_point ? '1025' : $break_point;
+		$breakpoint = '';
+		if ( 'custom' === $settings['mobile_menu_breakpoint'] ) {
+			$breakpoint = $settings['custom_breakpoint'];
+		} else if ( (int)$settings['mobile_menu_breakpoint'] > 0 ) {
+			$breakpoint = (int)$settings['mobile_menu_breakpoint'];
+		} else {
+			$breakpoints = trx_addons_elm_get_breakpoints();
+			if ( ! empty( $breakpoints[ $settings['mobile_menu_breakpoint'] ] ) ) {
+				$breakpoint = $breakpoints[ $settings['mobile_menu_breakpoint'] ];
+			}
+		}
+		if ( empty( $breakpoint ) ) {
+			$breakpoint = '1025';
+		}
 
 		$stretch_dropdown = 'yes' === $settings['toggle_full'];
 
@@ -4202,7 +4837,7 @@ class NavMenuWidget extends BaseWidget {
 		$div_end = '';
 
 		$menu_settings = array(
-			'breakpoint'      => (int) $break_point,
+			'breakpoint'      => (int)$breakpoint,
 			'mobileLayout'    => $settings['mobile_menu_layout'],
 			'mainLayout'      => $settings['nav_menu_layout'],
 			'stretchDropdown' => $stretch_dropdown,
@@ -4525,6 +5160,10 @@ class NavMenuWidget extends BaseWidget {
 
 					$this->add_render_attribute( 'menu-item-' . $index, 'class', 'trx-addons-submenu-item' );
 
+					if ( strpos( $item['link']['url'], trx_addons_get_current_url() ) !== false ) {
+						$this->add_render_attribute( 'menu-item-' . $index, 'class', 'trx-addons-active-item' );
+					}
+	
 					if ( 'yes' === $item['badge_switcher'] ) {
 						$this->add_render_attribute( 'menu-item-' . $index, 'class', 'has-trx-addons-badge' );
 
@@ -4539,7 +5178,7 @@ class NavMenuWidget extends BaseWidget {
 
 					$html_output .= $this->get_icon_html( $item, 'sub-' );
 
-					$html_output .= esc_html( $item['text'] );
+					$html_output .= '<span class="trx-addons-menu-link-text trx-addons-submenu-link-text">' . esc_html( $item['text'] ) . ' </span>';
 
 					$html_output .= $this->get_badge_html( $item, 'sub-' );
 
@@ -4601,8 +5240,13 @@ class NavMenuWidget extends BaseWidget {
 					$this->add_render_attribute( 'menu-item-' . $index, 'class', 'has-trx-addons-badge' );
 				}
 
+				if ( strpos( $item['link']['url'], trx_addons_get_current_url() ) !== false ) {
+					$this->add_render_attribute( 'menu-item-' . $index, 'class', 'trx-addons-active-item' );
+				}
+
 				if ( 'yes' === $item['section_full_width'] ) {
 					$this->add_render_attribute( 'menu-item-' . $index, 'data-full-width', 'true' );
+					$this->add_render_attribute( 'menu-item-' . $index, 'class', 'trx_addons_stretch_' . ( ! empty( $item['section_full_width_wrapper'] ) ? $item['section_full_width_wrapper'] : 'content' ) );
 				}
 
 				if ( $next_item_exists ) {
@@ -4629,9 +5273,9 @@ class NavMenuWidget extends BaseWidget {
 
 				$html_output .= '<a ' . $this->get_render_attribute_string( $item_link ) . " class='trx-addons-menu-link trx-addons-menu-link-parent'>";
 
-					$html_output .= $this->get_icon_html( $item );
+				$html_output .= $this->get_icon_html( $item );
 
-					$html_output .= esc_html( $item['text'] );
+				$html_output .= '<span class="trx-addons-menu-link-text">' . esc_html( $item['text'] ) . '</span>';
 
 				if ( array_key_exists( $index + 1, $menu_items ) ) {
 					$has_icon = ! empty( $settings['submenu_icon']['value'] );
@@ -4677,7 +5321,7 @@ class NavMenuWidget extends BaseWidget {
 
 		} elseif ( 'image' === $item['icon_type'] ) {
 
-			$html .= '<img class="' . esc_attr( $class ) . '" src="' . esc_attr( $item['item_image']['url'] ) . '" alt="' . esc_attr( Control_Media::get_image_alt( $item['item_image'] ) ) . '">';
+			$html .= '<img class="' . esc_attr( $class ) . ' trx-addons-' . esc_attr( $type ) . 'item-image" src="' . esc_attr( $item['item_image']['url'] ) . '" alt="' . esc_attr( Control_Media::get_image_alt( $item['item_image'] ) ) . '">';
 
 		} else {
 

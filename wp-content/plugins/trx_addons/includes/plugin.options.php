@@ -409,7 +409,10 @@ if ( ! function_exists( 'trx_addons_init_options' ) ) {
 					"std" => "0",
 					"type" => "switch"
 				),
+			),
 
+			! apply_filters( 'trx_addons_filter_allow_menu_and_search', true ) ? array() :
+			array(
 				'general_section_menu' => array(
 					"title" => esc_html__('Menu & Search', 'trx_addons'),
 					'icon' => 'trx_addons_icon-menu',
@@ -446,7 +449,6 @@ if ( ! function_exists( 'trx_addons_init_options' ) ) {
 					"std" => 3,
 					"type" => "text"
 				),
-
 				'search_info' => array(
 					"title" => esc_html__('Search enchance', 'trx_addons'),
 					"desc" => wp_kses_data( __("Additional Keyword Search Options in WordPress", 'trx_addons') ),
@@ -460,6 +462,9 @@ if ( ! function_exists( 'trx_addons_init_options' ) ) {
 					"std" => "0",
 					"type" => "switch"
 				),
+			),
+
+			array(
 
 				'general_section_end' => array(
 					"type" => "panel_end"
@@ -828,6 +833,7 @@ if ( ! function_exists( 'trx_addons_init_options' ) ) {
 				)
 			),
 			
+			! apply_filters( 'trx_addons_filter_allow_facebook_app_id', true ) ? array() :
 			array(
 				'api_section_fb' => array(
 					"title" => esc_html__('Facebook', 'trx_addons'),
@@ -959,6 +965,11 @@ if ( ! function_exists( 'trx_addons_init_options' ) ) {
 					'icon' => 'trx_addons_icon-share-2',
 					"type" => "panel"
 				),
+			),
+
+			! trx_addons_components_is_allowed('sc', 'socials') && ! trx_addons_components_is_allowed('widgets', 'socials') ? array() :
+			array(
+				// Section 'Socials'
 				'socials_section_profiles' => array(
 					"title" => esc_html__('Social Profiles', 'trx_addons'),
 					'icon' => 'trx_addons_icon-users-group',
@@ -1009,7 +1020,10 @@ if ( ! function_exists( 'trx_addons_init_options' ) ) {
 						),
 					)
 				),
+			),
 
+			array(
+				// Section 'Share'
 				'socials_section_share' => array(
 					"title" => esc_html__('Share posts', 'trx_addons'),
 					'icon' => 'trx_addons_icon-share-2',
@@ -1076,7 +1090,11 @@ if ( ! function_exists( 'trx_addons_init_options' ) ) {
 					"std" => "1",
 					"type" => "switch"
 				),
-				
+			),
+
+			! apply_filters( 'trx_addons_filter_allow_emotions_settings', true ) ? array() :
+			array(
+				// Section 'Emotions'
 				'socials_section_emotions' => array(
 					"title" => esc_html__('Emotions', 'trx_addons'),
 					'icon' => 'trx_addons_icon-thumbs-up',
@@ -1122,15 +1140,17 @@ if ( ! function_exists( 'trx_addons_init_options' ) ) {
 						),
 					)
 				),
+			),
+
+			array(
 				'socials_section_end' => array(
 					"type" => "panel_end"
 				),
 			),
 			
-			trx_addons_banners_params( 'options' ),
+			apply_filters( 'trx_addons_filter_allow_post_banners', true ) ? trx_addons_banners_params( 'options' ) : array(),
 
 			array(
-
 				// Section 'Shortcodes'
 				'sc_section' => array(
 					"title" => esc_html__('Shortcodes', 'trx_addons'),
@@ -1138,6 +1158,10 @@ if ( ! function_exists( 'trx_addons_init_options' ) ) {
 					'icon' => 'trx_addons_icon-editor-code',
 					"type" => "section"
 				),
+			),
+			
+			! trx_addons_components_is_allowed( 'sc', 'anchor') ? array() :
+			array(
 				'sc_anchor_info' => array(
 					"title" => esc_html__('Anchor', 'trx_addons'),
 					"desc" => wp_kses_data( __("Settings of the 'Anchor' shortcode", 'trx_addons') ),
@@ -1155,6 +1179,10 @@ if ( ! function_exists( 'trx_addons_init_options' ) ) {
 					"std" => "0",
 					"type" => "switch"
 				),
+			),
+			
+			! apply_filters( 'trx_addons_filter_allow_input_hover', true ) ? array() :
+			array(
 				'sc_form_info' => array(
 					"title" => esc_html__('Form fields', 'trx_addons'),
 					"desc" => wp_kses_data( __("Settings of the hover effects on the Form fields and post comments", 'trx_addons') ),
@@ -1167,6 +1195,9 @@ if ( ! function_exists( 'trx_addons_init_options' ) ) {
 					"options" => trx_addons_get_list_input_hover(),
 					"type" => "select"
 				),
+			),
+			
+			array(
 				'sc_ids_info' => array(
 					"title" => esc_html__('Posts selector', 'trx_addons'),
 					"desc" => wp_kses_data( __("Settings of the posts selector for some shortcodes like Blogger, Services, Team, etc.", 'trx_addons') ),
@@ -1427,6 +1458,8 @@ if ( ! function_exists( 'trx_addons_init_settings' ) ) {
 			'modify_gutenberg_blocks'   => true,                    // Modify core blocks - add our parameters and classes
 
 			'allow_gutenberg_blocks'    => true,                    // Allow our shortcodes and widgets as blocks in the Gutenberg
+
+			'add_gap_to_elementor_containers' => false,             // Add gap to the Elementor 3.16+ flexbox containers
 
 			'allow_upload_svg'          => false,                   // Allow upload SVG (disabled by default for security reasons)
 			

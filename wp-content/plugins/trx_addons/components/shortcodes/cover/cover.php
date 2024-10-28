@@ -67,15 +67,14 @@ if ( !function_exists( 'trx_addons_sc_cover_check_in_html_output' ) ) {
 */
 if (!function_exists('trx_addons_sc_cover')) {	
 	function trx_addons_sc_cover($atts, $content = ''){
-		$atts = trx_addons_sc_prepare_atts('trx_sc_cover', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_cover', $atts, trx_addons_sc_common_atts( 'trx_sc_cover', 'id', array(
 			// Individual params
 			"type" => "default",
 			"place" => "row",	// "row" - cover the parent row
 								// "column" - cover the parent column
 								// "pN" - cover the N-level parent tag (where N is equals to 1, 2 or 3)
 			"url" => ""
-			))
-		);
+		) ) );
 		// Load shortcode-specific  scripts and styles
 		trx_addons_sc_cover_load_scripts_front( true );
 		// Load template

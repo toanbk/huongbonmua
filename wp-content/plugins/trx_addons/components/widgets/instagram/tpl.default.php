@@ -55,75 +55,69 @@ $resp = trx_addons_widget_instagram_get_recent_photos(array(
 			$total = 0;
 			foreach( $resp['data'] as $v ) {
 				$total++;
-				if ( empty($user) && !empty($v['user']['username']) ) {
+				if ( empty( $user ) && ! empty( $v['user']['username'] ) ) {
 					$user = $v['user']['username'];
 				}
 				$class = trx_addons_add_inline_css_class(
-								'width:'.round(100/$columns, 4).'%;'
+								'width:' . round( 100 / $columns, 4 ) . '%;'
 								. ( ! empty( $columns_gap )
 									? 'padding: 0 ' . trx_addons_prepare_css_value( $columns_gap ) . ' ' . trx_addons_prepare_css_value( $columns_gap ) . ' 0;'
 									: ''
 									)
 								);
-				$thumb_size = apply_filters( 'trx_addons_filter_instagram_thumb_size', 'standard_resolution' );
+				$thumb_size   = apply_filters( 'trx_addons_filter_instagram_thumb_size', 'standard_resolution' );
+				$video_url    = $v['type'] == 'video' && ! empty( $v['videos'][$thumb_size]['url'] ) ? $v['videos'][$thumb_size]['url'] : '';
+				$thumb_url    = ! empty( $v['images'][$thumb_size]['url'] ) ? $v['images'][$thumb_size]['url'] : '';
+				$thumb_width  = ! empty( $v['images'][$thumb_size]['width'] ) ? $v['images'][$thumb_size]['width'] : '';
+				$thumb_height = ! empty( $v['images'][$thumb_size]['height'] ) ? $v['images'][$thumb_size]['height'] : '';
+				$thumb_alt    = ! empty( $v['caption']['text'] ) ? esc_attr( $v['caption']['text'] ) : '';
+				$thumb_link   = empty( $demo ) && $links == 'instagram' ? $v['link'] : $thumb_url;
 				$thumb_layout = apply_filters( 'trx_addons_filter_instagram_thumb_item',
-					sprintf(
-						'<div class="widget_instagram_images_item_wrap %6$s">'
-							. ( $links != 'none' && ( $v['type'] != 'video' || $links == 'instagram' )
-								? '<a href="%5$s"' . ( $links == 'instagram' ? ' target="_blank"' : '' )
-								: '<div'
+					'<div class="widget_instagram_images_item_wrap ' . esc_attr( $class ) . '">'
+						. ( $links != 'none' && ( $v['type'] != 'video' || $links == 'instagram' )
+							? '<a href="' . esc_url( $thumb_link ) . '"' . ( $links == 'instagram' ? ' target="_blank"' : '' )
+							: '<div'
+							)
+						. ' title="' . esc_attr( $thumb_alt ) . '"'
+						. ' rel="magnific"'
+						. ' class="widget_instagram_images_item widget_instagram_images_item_type_'.esc_attr($v['type'])
+							. ( ! empty( $thumb_url ) && ( $v['type'] == 'video' || $ratio != 'none' ) 	// && $links != 'none'
+									? ' ' . trx_addons_add_inline_css_class('background-image:url(' . $thumb_url . ');') // esc_url() is damage url from Instagram
+									: ''
 								)
-							. ' title="%4$s"'
-							. ' rel="magnific"'
-							. ' class="widget_instagram_images_item widget_instagram_images_item_type_'.esc_attr($v['type'])
-								. ( ! empty( $v['images'][$thumb_size]['url'] ) && ( $v['type'] == 'video' || $ratio != 'none' ) 	// && $links != 'none'
-										? ' ' . trx_addons_add_inline_css_class('background-image:url(' . $v['images'][$thumb_size]['url'] . ');') // esc_url() is damage url from Instagram
-										: ''
+							. '"'
+						. ( $ratio != 'none' ? ' data-ratio="' . esc_attr( $ratio ) . '"' : '')
+					. '>'
+							. ( $v['type'] == 'video' && ! empty( $v['videos'] )
+								? trx_addons_get_video_layout( apply_filters( 'trx_addons_filter_get_video_layout_args', array(
+										'link' => $video_url,
+										'cover' => ! empty( $thumb_url ) && $links != 'none' ? $thumb_url : '',
+										'show_cover' => false,	//$links != 'none',
+										'popup' => $links == 'popup'
+									), 'instagram.default' ) )
+								: ( $ratio == 'none'
+									? '<img src="' . esc_url( $thumb_url ) . '" width="' . esc_attr( $thumb_width ) . '" height="' . esc_attr( $thumb_height ) . '" alt="' . esc_attr( $thumb_alt ) . '">'
+									: ''
 									)
-								. '"'
-							. ( $ratio != 'none' ? ' data-ratio="' . esc_attr( $ratio ) . '"' : '')
-						. '>'
-								. ( $v['type'] == 'video' && ! empty( $v['videos'] )
-									? trx_addons_get_video_layout( apply_filters( 'trx_addons_filter_get_video_layout_args', array(
-											'link' => ! empty( $v['videos'][$thumb_size]['url'] ) ? $v['videos'][$thumb_size]['url'] : '',
-											'cover' => ! empty( $v['images'][$thumb_size]['url'] ) && $links != 'none'
-															? $v['images'][$thumb_size]['url']
-															: '',
-											'show_cover' => false,	//$links != 'none',
-											'popup' => $links == 'popup'
-										), 'instagram.default' ) )
-									: ( $ratio == 'none' ? '<img src="%1$s" width="%2$d" height="%3$d" alt="%4$s">' : '' )
-									)
-								. '<span class="widget_instagram_images_item_counters">'
-									. ( isset( $v['likes']['count'] ) && $v['likes']['count'] >= 0
-										? '<span class="widget_instagram_images_item_counter_likes trx_addons_icon-heart' . (empty($v['likes']['count']) ? '-empty' : '') . '">'
-											. esc_attr($v['likes']['count'])
-											. '</span>'
-										: '' )
-									. ( isset( $v['comments']['count'] ) && $v['comments']['count'] >= 0
-										? '<span class="widget_instagram_images_item_counter_comments trx_addons_icon-comment' . (empty($v['comments']['count']) ? '-empty' : '') . '">'
-											. esc_attr($v['comments']['count'])
-											. '</span>'
-										: '' )
-								. '</span>'
-							. ( $links != 'none' && ( $v['type'] != 'video' || $links == 'instagram' )
-								? '</a>'
-								: '</div>'
 								)
-						. '</div>',
-						! empty( $v['images'][$thumb_size]['url'] ) ? esc_url($v['images'][$thumb_size]['url']) : '',
-						! empty( $v['images'][$thumb_size]['width'] ) ? $v['images'][$thumb_size]['width'] : '',
-						! empty( $v['images'][$thumb_size]['height'] ) ? $v['images'][$thumb_size]['height'] : '',
-						! empty( $v['caption']['text'] ) ? esc_attr( $v['caption']['text'] ) : '',
-						empty( $demo ) && $links == 'instagram'
-							? esc_url( $v['link'] )
-							: ( ! empty( $v['images'][$thumb_size]['url'] )
-								? $v['images'][$thumb_size]['url']
-								: '' ),
-						$class
-					),
-					$v,
-					$args
+							. '<span class="widget_instagram_images_item_counters">'
+								. ( isset( $v['likes']['count'] ) && $v['likes']['count'] >= 0
+									? '<span class="widget_instagram_images_item_counter_likes trx_addons_icon-heart' . (empty($v['likes']['count']) ? '-empty' : '') . '">'
+										. esc_attr($v['likes']['count'])
+										. '</span>'
+									: '' )
+								. ( isset( $v['comments']['count'] ) && $v['comments']['count'] >= 0
+									? '<span class="widget_instagram_images_item_counter_comments trx_addons_icon-comment' . (empty($v['comments']['count']) ? '-empty' : '') . '">'
+										. esc_attr($v['comments']['count'])
+										. '</span>'
+									: '' )
+							. '</span>'
+						. ( $links != 'none' && ( $v['type'] != 'video' || $links == 'instagram' )
+							? '</a>'
+							: '</div>'
+							)
+					. '</div>',
+					$v, $args
 				);
 				if ( $v['type'] == 'video' && ! empty( $v['videos'] ) ) {
 					// Prevent a script Media Elements to be inited on the video

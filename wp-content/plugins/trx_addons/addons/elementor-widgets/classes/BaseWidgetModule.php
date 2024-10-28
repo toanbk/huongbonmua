@@ -42,6 +42,11 @@ abstract class BaseWidgetModule extends BaseModule {
 		// Enqueue scripts and styles
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts_front' ), TRX_ADDONS_ENQUEUE_SCRIPTS_PRIORITY );
 		add_action( 'trx_addons_action_pagebuilder_preview_scripts', array( $this, 'load_scripts_front' ), 10, 1 );
+		// Check widget in the html output
+		// add_filter( 'trx_addons_filter_get_menu_cache_html', array( $this, 'check_in_html_output' ), 10, 1 );
+		// add_action( 'trx_addons_action_show_layout_from_cache', array( $this, 'check_in_html_output' ), 10, 1 );
+		add_action( 'trx_addons_action_check_page_content', array( $this, 'check_in_html_output' ), 10, 1 );
+
 		// Merge styles to the single stylesheet
 		add_filter( 'trx_addons_filter_merge_styles', array( $this, 'merge_styles' ) );
 		// Merge scripts to the single file
@@ -117,6 +122,29 @@ abstract class BaseWidgetModule extends BaseModule {
 		trx_addons_enqueue_optimized( $this->widget_name, $force, $assets );
 	}
 
+	/**
+	 * Load styles and scripts if present in the cache of the menu or layouts or finally in the whole page output
+	 * 
+	 * @hooked trx_addons_filter_get_menu_cache_html
+	 * @hooked trx_addons_action_show_layout_from_cache
+	 * @hooked trx_addons_action_check_page_content
+	 * 
+	 * @param string $content  HTML content to check
+	 * 
+	 * @return string  HTML content
+	 */
+	public function check_in_html_output( $content = '' ) {
+		$args = array(
+			'check' => array(
+				'data-widget_type="' . $this->widget_name
+			)
+		);
+		if ( trx_addons_check_in_html_output( $this->widget_name, $content, $args ) ) {
+			$this->load_scripts_front( true );
+		}
+		return $content;
+	}
+	
 	/**
 	 * Merge styles to the single stylesheet
 	 * 

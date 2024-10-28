@@ -1791,8 +1791,8 @@
 		return check;
 	};
 
-	window.hot_coffee_browser_is_ios = function() {
-		return navigator.userAgent.match( /iPad|iPhone|iPod/i ) != null;
+	window.hot_coffee_browser_is_ios = function( with_mac ) {
+		return navigator.userAgent.match( /iPad|iPhone|iPod/i ) != null || ( with_mac && navigator.userAgent.match( /Macintosh/i ) != null );
 	};
 
 	window.hot_coffee_is_retina = function() {

@@ -148,7 +148,7 @@ if ( ! function_exists( 'trx_addons_charts_list_border_join_styles' ) ) {
 */
 if ( ! function_exists( 'trx_addons_sc_charts' ) ) {
 	function trx_addons_sc_charts( $atts, $content = '' ){	
-		$defa = trx_addons_sc_common_atts( 'id,title', array(
+		$defa = trx_addons_sc_common_atts( 'trx_sc_charts', 'id,title', array(
 			// Individual params
 			"type" => "line",
 			"legend" => 'top',

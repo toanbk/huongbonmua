@@ -503,6 +503,7 @@ class AccordionWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Items Gaps', 'trx_addons' ),
 				'type'                  => Controls_Manager::SLIDER,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px'    => [
 						'min' => 0,
@@ -527,62 +528,28 @@ class AccordionWidget extends BaseWidget {
 			]
 		);
 
-		$this->add_control(
-			'accordion_items_border_border',
-			[
-				'label'                 => esc_html__( 'Border Type', 'trx_addons' ),
-				'type'                  => Controls_Manager::SELECT,
-				'default'               => 'solid',
-				'options'               => [
-					''          => __( 'None', 'trx_addons' ),
-					'solid'     => __( 'Solid', 'trx_addons' ),
-					'double'    => __( 'Double', 'trx_addons' ),
-					'dotted'    => __( 'Dotted', 'trx_addons' ),
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			array(
+				'name'        => 'accordion_items_border',
+				'label'       => __( 'Border', 'trx_addons' ),
+				'placeholder' => '1px',
+				'fields_options' => [
+					'border' => [
+						'default' => 'solid',
+					],
+					'width' => [
+						'default' => [
+							'top' => 1,
+							'right' => 1,
+							'bottom' => 1,
+							'left' => 1,
+							'unit' => 'px',
+						],
+					],
 				],
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-accordion-item' => 'border-style: {{VALUE}};',
-				],
-			]
-		);
-
-		$this->add_responsive_control(
-			'accordion_items_border_width',
-			[
-				'label'                 => esc_html__( 'Border Width', 'trx_addons' ),
-				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px' ],
-				'default'               => [
-					'top'       => 1,
-					'right'     => 1,
-					'bottom'    => 1,
-					'left'      => 1,
-					'isLinked'  => true,
-				],
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-accordion-item' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-				'condition'             => [
-					'accordion_items_border_border!' => '',
-				],
-			]
-		);
-
-		$this->add_control(
-			'accordion_items_border_color',
-			[
-				'label'                 => esc_html__( 'Border Color', 'trx_addons' ),
-				'type'                  => Controls_Manager::COLOR,
-				'global'                => [
-					'default' => Global_Colors::COLOR_TEXT,
-				],
-				'default'               => '#d4d4d4',
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-accordion-item' => 'border-color: {{VALUE}};',
-				],
-				'condition'             => [
-					'accordion_items_border_border!' => '',
-				],
-			]
+				'selector'    => '{{WRAPPER}} .trx-addons-accordion-item',
+			)
 		);
 
 		$this->add_responsive_control(
@@ -590,9 +557,21 @@ class AccordionWidget extends BaseWidget {
 			[
 				'label'                 => esc_html__( 'Border Radius', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-accordion-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'accordion_items_padding',
+			[
+				'label'                 => esc_html__( 'Padding', 'trx_addons' ),
+				'type'                  => Controls_Manager::DIMENSIONS,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-accordion-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -623,9 +602,9 @@ class AccordionWidget extends BaseWidget {
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-accordion-item:hover' => 'border-color: {{VALUE}};',
 				],
-				'condition'             => [
-					'accordion_items_border_border!' => '',
-				],
+				// 'condition'             => [
+				// 	'accordion_items_border_border!' => '',
+				// ],
 			]
 		);
 
@@ -655,9 +634,9 @@ class AccordionWidget extends BaseWidget {
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-accordion-item.trx-addons-accordion-item-active' => 'border-color: {{VALUE}};',
 				],
-				'condition'             => [
-					'accordion_items_border_border!' => '',
-				],
+				// 'condition'             => [
+				// 	'accordion_items_border_border!' => '',
+				// ],
 			]
 		);
 
@@ -670,20 +649,8 @@ class AccordionWidget extends BaseWidget {
 		);
 
 		$this->end_controls_tab();
-		$this->end_controls_tabs();
 
-		$this->add_responsive_control(
-			'accordion_items_padding',
-			[
-				'label'                 => esc_html__( 'Padding', 'trx_addons' ),
-				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
-				'separator'             => 'before',
-				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-accordion-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
-		);
+		$this->end_controls_tabs();
 
 		$this->end_controls_section();
 	}
@@ -708,6 +675,7 @@ class AccordionWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Bottom Spacing', 'trx_addons' ),
 				'type'                  => Controls_Manager::SLIDER,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px'    => [
 						'min' => 0,
@@ -740,6 +708,22 @@ class AccordionWidget extends BaseWidget {
 				'default'               => '',
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-title' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-title svg' => 'fill: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'tab_title_icon_color',
+			[
+				'label'                 => esc_html__( 'Icon Color', 'trx_addons' ),
+				'type'                  => Controls_Manager::COLOR,
+				'global'                => [
+					'default' => Global_Colors::COLOR_PRIMARY,
+				],
+				'default'               => '',
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-icon' => 'color: {{VALUE}};',
 					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-title svg' => 'fill: {{VALUE}};',
 				],
 			]
@@ -782,7 +766,7 @@ class AccordionWidget extends BaseWidget {
 			[
 				'label'                 => esc_html__( 'Border Radius', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-title' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -794,7 +778,7 @@ class AccordionWidget extends BaseWidget {
 			[
 				'label'                 => esc_html__( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-title' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -818,6 +802,23 @@ class AccordionWidget extends BaseWidget {
 				'default'               => '',
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-title:hover' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-title:hover .trx-addons-accordion-tab-icon' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-title:hover svg' => 'fill: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'tab_title_icon_color_hover',
+			[
+				'label'                 => esc_html__( 'Icon Color', 'trx_addons' ),
+				'type'                  => Controls_Manager::COLOR,
+				'global'                => [
+					'default' => Global_Colors::COLOR_PRIMARY,
+				],
+				'default'               => '',
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-title:hover .trx-addons-accordion-tab-icon' => 'color: {{VALUE}};',
 					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-title:hover svg' => 'fill: {{VALUE}};',
 				],
 			]
@@ -867,6 +868,23 @@ class AccordionWidget extends BaseWidget {
 				'default'               => '',
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-title.trx-addons-accordion-tab-active' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-title.trx-addons-accordion-tab-active .trx-addons-accordion-tab-icon' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-title.trx-addons-accordion-tab-active svg' => 'fill: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'tab_title_icon_color_active',
+			[
+				'label'                 => esc_html__( 'Icon Color', 'trx_addons' ),
+				'type'                  => Controls_Manager::COLOR,
+				'global'                => [
+					'default' => Global_Colors::COLOR_ACCENT,
+				],
+				'default'               => '',
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-title.trx-addons-accordion-tab-active .trx-addons-accordion-tab-icon' => 'color: {{VALUE}};',
 					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-title.trx-addons-accordion-tab-active svg' => 'fill: {{VALUE}};',
 				],
 			]
@@ -918,7 +936,7 @@ class AccordionWidget extends BaseWidget {
 					'size'  => 16,
 					'unit'  => 'px',
 				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px'        => [
 						'min'   => 0,
@@ -940,7 +958,7 @@ class AccordionWidget extends BaseWidget {
 					'size'  => 10,
 					'unit'  => 'px',
 				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px'    => [
 						'min'   => 0,
@@ -959,7 +977,7 @@ class AccordionWidget extends BaseWidget {
 			[
 				'label'     => __( 'Vertical Offset', 'trx_addons' ),
 				'type'      => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em' ],
+				'size_units'=> [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'     => [
 					'px' => [
 						'min' => -100,
@@ -1035,7 +1053,7 @@ class AccordionWidget extends BaseWidget {
 			[
 				'label'                 => esc_html__( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-item .trx-addons-accordion-tab-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1088,6 +1106,7 @@ class AccordionWidget extends BaseWidget {
 			[
 				'label'     => __( 'Vertical offset', 'trx_addons' ),
 				'type'      => Controls_Manager::SLIDER,
+				'size_units'=> [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'     => [
 					'px' => [
 						'min' => -100,
@@ -1105,6 +1124,7 @@ class AccordionWidget extends BaseWidget {
 			[
 				'label'     => __( 'Spacing', 'trx_addons' ),
 				'type'      => Controls_Manager::SLIDER,
+				'size_units'=> [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'     => [
 					'px' => [
 						'min' => 0,
@@ -1127,7 +1147,7 @@ class AccordionWidget extends BaseWidget {
 					'size'  => 16,
 					'unit'  => 'px',
 				],
-				'size_units' => [ 'px' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'      => [
 					'px'    => [
 						'min'   => 0,
@@ -1136,7 +1156,7 @@ class AccordionWidget extends BaseWidget {
 					],
 				],
 				'selectors'  => [
-					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-title .trx-addons-accordion-toggle-icon' => 'font-size: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-title .trx-addons-accordion-toggle-icon .trx-addons-icon' => 'font-size: {{SIZE}}{{UNIT}};',
 				],
 				'condition'  => [
 					'toggle_icon_show' => 'yes',
@@ -1201,7 +1221,7 @@ class AccordionWidget extends BaseWidget {
 			[
 				'label'                 => esc_html__( 'Border Radius', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-title .trx-addons-accordion-toggle-icon' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1213,7 +1233,7 @@ class AccordionWidget extends BaseWidget {
 			[
 				'label'                 => esc_html__( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-accordion .trx-addons-accordion-tab-title .trx-addons-accordion-toggle-icon' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1340,56 +1360,15 @@ class AccordionWidget extends BaseWidget {
 		$this->end_controls_section();
 	}
 
+	/*-----------------------------------------------------------------------------------*/
+	/*	RENDER
+	/*-----------------------------------------------------------------------------------*/
+
 	/**
-	 * Render accordion content.
+	 * Render a widget output in the frontend.
 	 *
-	 * @since 2.3.2
+	 * @access protected
 	 */
-	protected function get_accordion_content( $tab ) {
-		$settings     = $this->get_settings_for_display();
-		$content_type = $tab['content_type'];
-		$output       = '';
-
-		switch ( $content_type ) {
-			case 'content':
-				$output = do_shortcode( $tab['accordion_content'] );
-				break;
-
-			case 'image':
-				$image_url = Group_Control_Image_Size::get_attachment_image_src( $tab['image']['id'], 'image', $tab );
-
-				if ( ! $image_url ) {
-					$image_url = $tab['image']['url'];
-				}
-
-				$image_html = '<div class="trx-addons-showcase-preview-image">';
-
-				$image_html .= '<img src="' . esc_url( $image_url ) . '" alt="' . esc_attr( Control_Media::get_image_alt( $tab['image'] ) ) . '">';
-
-				$image_html .= '</div>';
-
-				$output = $image_html;
-				break;
-
-			case 'section':
-				$output = \Elementor\Plugin::$instance->frontend->get_builder_content_for_display( $tab['saved_section'] );
-				break;
-
-			case 'template':
-				$output = \Elementor\Plugin::$instance->frontend->get_builder_content_for_display( $tab['templates'] );
-				break;
-
-			case 'widget':
-				$output = \Elementor\Plugin::$instance->frontend->get_builder_content_for_display( $tab['saved_widget'] );
-				break;
-
-			default:
-				return;
-		}
-
-		return $output;
-	}
-
 	protected function render() {
 		$settings   = $this->get_settings_for_display();
 		$id_int     = substr( $this->get_id_int(), 0, 3 );
@@ -1553,5 +1532,53 @@ class AccordionWidget extends BaseWidget {
 			<?php endforeach; ?>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Render accordion content.
+	 */
+	protected function get_accordion_content( $tab ) {
+		$settings     = $this->get_settings_for_display();
+		$content_type = $tab['content_type'];
+		$output       = '';
+
+		switch ( $content_type ) {
+			case 'content':
+				$output = do_shortcode( $tab['accordion_content'] );
+				break;
+
+			case 'image':
+				$image_url = Group_Control_Image_Size::get_attachment_image_src( $tab['image']['id'], 'image', $tab );
+
+				if ( ! $image_url ) {
+					$image_url = $tab['image']['url'];
+				}
+
+				$image_html = '<div class="trx-addons-showcase-preview-image">';
+
+				$image_html .= '<img src="' . esc_url( $image_url ) . '" alt="' . esc_attr( Control_Media::get_image_alt( $tab['image'] ) ) . '">';
+
+				$image_html .= '</div>';
+
+				$output = $image_html;
+				break;
+
+			case 'section':
+				$output = \Elementor\Plugin::$instance->frontend->get_builder_content_for_display( $tab['saved_section'] );
+				break;
+
+			case 'template':
+				$output = \Elementor\Plugin::$instance->frontend->get_builder_content_for_display( $tab['templates'] );
+				break;
+
+			case 'widget':
+				$output = \Elementor\Plugin::$instance->frontend->get_builder_content_for_display( $tab['saved_widget'] );
+				break;
+
+			default:
+				return;
+		}
+
+		return $output;
 	}
 }

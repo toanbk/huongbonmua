@@ -501,9 +501,9 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 				'label'     => __( 'Terms Separator', 'trx_addons' ),
 				'type'      => Controls_Manager::TEXT,
 				'default'   => ',',
-				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-post-terms > .trx-addons-post-term:not(:last-child):after' => 'content: "{{UNIT}}";',
-				),
+				// 'selectors' => array(
+				// 	'{{WRAPPER}} .trx-addons-posts-item-terms > .trx-addons-posts-item-term:not(:last-child):after' => 'content: "{{UNIT}}";',
+				// ),
 				'condition' => array(
 					$this->get_control_id( 'post_terms' ) => 'yes',
 				),
@@ -602,7 +602,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 					),
 				),
 				'selectors'      => array(
-					'{{WRAPPER}} .trx-addons-posts-container .trx-addons-post-thumbnail-wrap' => 'padding-bottom: calc( {{SIZE}} * 100% );',
+					'{{WRAPPER}} .trx-addons-posts-container .trx-addons-posts-item-thumbnail-wrap' => 'padding-bottom: calc( {{SIZE}} * 100% );',
 				),
 				'condition'      => array(
 					$this->get_control_id( 'show_thumbnail' ) => 'yes',
@@ -728,7 +728,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'label'     => __( 'HTML Tag', 'trx_addons' ),
 				'type'      => Controls_Manager::SELECT,
-				'default'   => 'h2',
+				'default'   => 'h5',
 				'options'   => array(
 					'h1'   => __( 'H1', 'trx_addons' ),
 					'h2'   => __( 'H2', 'trx_addons' ),
@@ -868,9 +868,9 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 				'label'     => __( 'Post Meta Separator', 'trx_addons' ),
 				'type'      => Controls_Manager::TEXT,
 				'default'   => '-',
-				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-post-meta .trx-addons-meta-separator:not(:last-child):after' => 'content: "{{UNIT}}";',
-				),
+				// 'selectors' => array(
+				// 	'{{WRAPPER}} .trx-addons-posts-item-meta .trx-addons-meta-separator:not(:last-child):after' => 'content: "{{UNIT}}";',
+				// ),
 				'condition' => array(
 					$this->get_control_id( 'post_meta' ) => 'yes',
 				),
@@ -921,11 +921,15 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 		);
 
 		$this->add_control(
-			'author_icon',
+			'select_author_icon',
 			array(
 				'label'     => __( 'Author Icon', 'trx_addons' ),
-				'type'      => Controls_Manager::ICON,
-				'default'   => '',
+				'type'      => Controls_Manager::ICONS,
+				'fa4compatibility' => 'author_icon',
+				'default'          => array(
+					'value'   => 'fas fa-user-edit',
+					'library' => 'fa-solid',
+				),
 				'condition' => array(
 					$this->get_control_id( 'post_meta' )   => 'yes',
 					$this->get_control_id( 'show_author' ) => 'yes',
@@ -1048,11 +1052,15 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 		);
 
 		$this->add_control(
-			'date_icon',
+			'select_date_icon',
 			array(
 				'label'     => __( 'Date Icon', 'trx_addons' ),
-				'type'      => Controls_Manager::ICON,
-				'default'   => '',
+				'type'      => Controls_Manager::ICONS,
+				'fa4compatibility' => 'date_icon',
+				'default'          => array(
+					'value'   => 'far fa-calendar-check',
+					'library' => 'fa-regular',
+				),
 				'condition' => array(
 					$this->get_control_id( 'post_meta' ) => 'yes',
 					$this->get_control_id( 'show_date' ) => 'yes',
@@ -1117,11 +1125,15 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 		);
 
 		$this->add_control(
-			'comments_icon',
+			'select_comments_icon',
 			array(
 				'label'     => __( 'Comments Icon', 'trx_addons' ),
-				'type'      => Controls_Manager::ICON,
-				'default'   => '',
+				'type'      => Controls_Manager::ICONS,
+				'fa4compatibility' => 'comments_icon',
+				'default'          => array(
+					'value'   => 'fas fa-comments',
+					'library' => 'fa-solid',
+				),
 				'condition' => array(
 					$this->get_control_id( 'post_meta' ) => 'yes',
 					$this->get_control_id( 'show_comments' ) => 'yes',
@@ -1248,28 +1260,11 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 					'none'                  => __( 'None', 'trx_addons' ),
 					'numbers'               => __( 'Numbers', 'trx_addons' ),
 					'numbers_and_prev_next' => __( 'Numbers', 'trx_addons' ) . ' + ' . __( 'Previous/Next', 'trx_addons' ),
-					'load_more'             => __( 'Load More Button', 'trx_addons' ),
-					'infinite'              => __( 'Infinite', 'trx_addons' ),
+					// 'load_more'             => __( 'Load More Button', 'trx_addons' ),
+					// 'infinite'              => __( 'Infinite', 'trx_addons' ),
 				),
 				'condition' => array(
 					$this->get_control_id( 'layout!' ) => 'carousel',
-				),
-			)
-		);
-
-		$this->add_control(
-			'pagination_notice',
-			array(
-				'label'           => '',
-				'type'            => Controls_Manager::RAW_HTML,
-				'raw'             => __( 'This pagination option is available in PowerPack Pro.', 'trx_addons' ) . ' ' . apply_filters( 'upgrade_powerpack_message', sprintf( __( 'Upgrade to %1$s Pro Version %2$s for 70+ widgets, exciting extensions and advanced features.', 'trx_addons' ), '<a href="#" target="_blank" rel="noopener">', '</a>' ) ),
-				'content_classes' => 'upgrade-powerpack-notice elementor-panel-alert elementor-panel-alert-info',
-				'condition'       => array(
-					$this->get_control_id( 'layout!' ) => 'carousel',
-					$this->get_control_id( 'pagination_type' ) => array(
-						'load_more',
-						'infinite',
-					),
 				),
 			)
 		);
@@ -1312,22 +1307,6 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 		);
 
 		$this->add_control(
-			'pagination_page_limit',
-			array(
-				'label'     => __( 'Page Limit', 'trx_addons' ),
-				'type'      => Controls_Manager::NUMBER,
-				'default'   => 5,
-				'condition' => array(
-					$this->get_control_id( 'layout!' ) => 'carousel',
-					$this->get_control_id( 'pagination_type' ) => array(
-						'numbers',
-						'numbers_and_prev_next',
-					),
-				),
-			)
-		);
-
-		$this->add_control(
 			'pagination_numbers_shorten',
 			array(
 				'label'     => __( 'Shorten', 'trx_addons' ),
@@ -1339,6 +1318,23 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 						'numbers',
 						'numbers_and_prev_next',
 					),
+				),
+			)
+		);
+
+		$this->add_control(
+			'pagination_page_limit',
+			array(
+				'label'     => __( 'Page Limit', 'trx_addons' ),
+				'type'      => Controls_Manager::NUMBER,
+				'default'   => 5,
+				'condition' => array(
+					$this->get_control_id( 'layout!' ) => 'carousel',
+					$this->get_control_id( 'pagination_type' ) => array(
+						'numbers',
+						'numbers_and_prev_next',
+					),
+					$this->get_control_id( 'pagination_numbers_shorten' ) => 'yes',
 				),
 			)
 		);
@@ -1502,20 +1498,20 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			)
 		);
 
-		$this->add_control(
-			'button_order',
-			array(
-				'label'     => __( 'Read More Button', 'trx_addons' ),
-				'type'      => Controls_Manager::NUMBER,
-				'default'   => 1,
-				'min'       => 1,
-				'max'       => 10,
-				'step'      => 1,
-				'condition' => array(
-					$this->get_control_id( 'show_button' ) => 'yes',
-				),
-			)
-		);
+		// $this->add_control(
+		// 	'button_order',
+		// 	array(
+		// 		'label'     => __( 'Read More Button', 'trx_addons' ),
+		// 		'type'      => Controls_Manager::NUMBER,
+		// 		'default'   => 1,
+		// 		'min'       => 1,
+		// 		'max'       => 10,
+		// 		'step'      => 1,
+		// 		'condition' => array(
+		// 			$this->get_control_id( 'show_button' ) => 'yes',
+		// 		),
+		// 	)
+		// );
 
 		$this->add_control(
 			'meta_order_heading',
@@ -1608,11 +1604,12 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 						'max' => 100,
 					),
 				),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'default'   => array(
 					'size' => 25,
 				),
 				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-post-wrap' => 'padding-left: calc( {{SIZE}}{{UNIT}}/2 ); padding-right: calc( {{SIZE}}{{UNIT}}/2 );',
+					'{{WRAPPER}} .trx-addons-posts-item-wrap' => 'padding-left: calc( {{SIZE}}{{UNIT}}/2 ); padding-right: calc( {{SIZE}}{{UNIT}}/2 );',
 					'{{WRAPPER}} .trx-addons-posts'     => 'margin-left: calc( -{{SIZE}}{{UNIT}}/2 ); margin-right: calc( -{{SIZE}}{{UNIT}}/2 );',
 				),
 			)
@@ -1629,6 +1626,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 						'max' => 100,
 					),
 				),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'default'   => array(
 					'size' => 25,
 				),
@@ -1672,7 +1670,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '',
 				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-post' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .trx-addons-posts-item' => 'background-color: {{VALUE}};',
 				),
 			)
 		);
@@ -1684,7 +1682,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 				'label'       => __( 'Border', 'trx_addons' ),
 				'placeholder' => '1px',
 				'default'     => '1px',
-				'selector'    => '{{WRAPPER}} .trx-addons-post',
+				'selector'    => '{{WRAPPER}} .trx-addons-posts-item',
 			)
 		);
 
@@ -1693,9 +1691,9 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-post' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-posts-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -1705,9 +1703,9 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-post' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-posts-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -1716,7 +1714,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			Group_Control_Box_Shadow::get_type(),
 			array(
 				'name'     => 'post_box_shadow',
-				'selector' => '{{WRAPPER}} .trx-addons-post',
+				'selector' => '{{WRAPPER}} .trx-addons-posts-item',
 			)
 		);
 
@@ -1801,7 +1799,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 				),
 				'default'     => '',
 				'selectors'   => array(
-					'{{WRAPPER}} .trx-addons-post-content' => 'text-align: {{VALUE}};',
+					'{{WRAPPER}} .trx-addons-posts-item-content' => 'text-align: {{VALUE}};',
 				),
 			)
 		);
@@ -1813,7 +1811,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '',
 				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-post-content' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .trx-addons-posts-item-content' => 'background-color: {{VALUE}};',
 				),
 			)
 		);
@@ -1823,9 +1821,9 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-post-content' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-posts-item-content' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -1835,9 +1833,9 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-post-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-posts-item-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -1865,9 +1863,9 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-post-thumbnail, {{WRAPPER}} .trx-addons-post-thumbnail img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-posts-item-thumbnail, {{WRAPPER}} .trx-addons-posts-item-thumbnail img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 				'condition'  => array(
 					$this->get_control_id( 'show_thumbnail' ) => 'yes',
@@ -1885,11 +1883,12 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 						'max' => 100,
 					),
 				),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'default'   => array(
 					'size' => 20,
 				),
 				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-post-thumbnail' => 'margin-bottom: {{SIZE}}{{UNIT}}',
+					'{{WRAPPER}} .trx-addons-posts-item-thumbnail' => 'margin-bottom: {{SIZE}}{{UNIT}}',
 				),
 				'condition' => array(
 					$this->get_control_id( 'show_thumbnail' ) => 'yes',
@@ -1913,7 +1912,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			Group_Control_Box_Shadow::get_type(),
 			array(
 				'name'     => 'image_box_shadow',
-				'selector' => '{{WRAPPER}} .trx-addons-post-thumbnail img',
+				'selector' => '{{WRAPPER}} .trx-addons-posts-item-thumbnail img',
 				'condition' => array(
 					$this->get_control_id( 'show_thumbnail' ) => 'yes',
 				),
@@ -1924,7 +1923,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			Group_Control_Css_Filter::get_type(),
 			array(
 				'name'      => 'thumbnail_filters',
-				'selector'  => '{{WRAPPER}} .trx-addons-post-thumbnail img',
+				'selector'  => '{{WRAPPER}} .trx-addons-posts-item-thumbnail img',
 				'condition' => array(
 					$this->get_control_id( 'show_thumbnail' ) => 'yes',
 				),
@@ -1935,7 +1934,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			TransitionControl::get_type(),
 			array(
 				'name'      => 'image_transition',
-				'selector'  => '{{WRAPPER}} .trx-addons-post-thumbnail img',
+				'selector'  => '{{WRAPPER}} .trx-addons-posts-item-thumbnail img',
 				'separator' => '',
 				'condition' => array(
 					$this->get_control_id( 'show_thumbnail' ) => 'yes',
@@ -1959,7 +1958,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			Group_Control_Box_Shadow::get_type(),
 			array(
 				'name'     => 'image_box_shadow_hover',
-				'selector' => '{{WRAPPER}} .trx-addons-post-thumbnail img',
+				'selector' => '{{WRAPPER}} .trx-addons-posts-item:hover .trx-addons-posts-item-thumbnail img',
 				'condition' => array(
 					$this->get_control_id( 'show_thumbnail' ) => 'yes',
 				),
@@ -1970,7 +1969,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			Group_Control_Css_Filter::get_type(),
 			array(
 				'name'      => 'thumbnail_hover_filters',
-				'selector'  => '{{WRAPPER}} .trx-addons-post:hover .trx-addons-post-thumbnail img',
+				'selector'  => '{{WRAPPER}} .trx-addons-posts-item:hover .trx-addons-posts-item-thumbnail img',
 				'condition' => array(
 					$this->get_control_id( 'show_thumbnail' ) => 'yes',
 				),
@@ -2008,7 +2007,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 					'default' => Global_Colors::COLOR_SECONDARY,
 				],
 				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-post-title, {{WRAPPER}} .trx-addons-post-title a' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-posts-item-title, {{WRAPPER}} .trx-addons-posts-item-title a' => 'color: {{VALUE}}',
 				),
 				'condition' => array(
 					$this->get_control_id( 'post_title' ) => 'yes',
@@ -2025,7 +2024,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 					'default' => Global_Colors::COLOR_SECONDARY,
 				],
 				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-post-title a:hover' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-posts-item-title a:hover' => 'color: {{VALUE}}',
 				),
 				'condition' => array(
 					$this->get_control_id( 'post_title' ) => 'yes',
@@ -2039,7 +2038,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'name'      => 'title_typography',
 				'label'     => __( 'Typography', 'trx_addons' ),
-				'selector'  => '{{WRAPPER}} .trx-addons-post-title',
+				'selector'  => '{{WRAPPER}} .trx-addons-posts-item-title',
 				'condition' => array(
 					$this->get_control_id( 'post_title' ) => 'yes',
 				),
@@ -2058,12 +2057,12 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 						'step' => 1,
 					),
 				),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'default'    => array(
 					'size' => 10,
 				),
-				'size_units' => array( 'px' ),
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-post-title' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-posts-item-title' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				),
 				'condition'  => array(
 					$this->get_control_id( 'post_title' ) => 'yes',
@@ -2089,7 +2088,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'name'      => 'title_separator_background',
 				'types'     => array( 'classic', 'gradient' ),
-				'selector'  => '{{WRAPPER}} .trx-addons-post-separator',
+				'selector'  => '{{WRAPPER}} .trx-addons-posts-item-separator',
 				'exclude'   => array(
 					'image',
 				),
@@ -2109,6 +2108,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 					'unit' => 'px',
 					'size' => 1,
 				),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'      => array(
 					'px' => array(
 						'min'  => 1,
@@ -2116,9 +2116,8 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 						'step' => 1,
 					),
 				),
-				'size_units' => array( 'px' ),
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-post-separator' => 'height: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-posts-item-separator' => 'height: {{SIZE}}{{UNIT}};',
 				),
 				'condition'  => array(
 					$this->get_control_id( 'post_title' ) => 'yes',
@@ -2136,6 +2135,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 					'unit' => '%',
 					'size' => 100,
 				),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'      => array(
 					'%'  => array(
 						'min'  => 1,
@@ -2148,9 +2148,8 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 						'step' => 1,
 					),
 				),
-				'size_units' => array( '%', 'px' ),
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-post-separator' => 'width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-posts-item-separator' => 'width: {{SIZE}}{{UNIT}};',
 				),
 				'condition'  => array(
 					$this->get_control_id( 'post_title' ) => 'yes',
@@ -2160,23 +2159,21 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 		);
 
 		$this->add_responsive_control(
-			'title_separator_margin_bottom',
+			'title_separator_margin',
 			array(
-				'label'      => __( 'Spacing', 'trx_addons' ),
-				'type'       => Controls_Manager::SLIDER,
+				'label'      => __( 'Margin', 'trx_addons' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'default'    => array(
-					'size' => 15,
+					'top'    => 0,
+					'right'  => 0,
+					'bottom' => 15,
+					'left'   => 0,
+					'unit'   => 'px',
+					'isLinked' => false,
 				),
-				'range'      => array(
-					'px' => array(
-						'min'  => 0,
-						'max'  => 50,
-						'step' => 1,
-					),
-				),
-				'size_units' => array( 'px' ),
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-post-separator-wrap' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-posts-item-separator-wrap' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 				'condition'  => array(
 					$this->get_control_id( 'post_title' ) => 'yes',
@@ -2208,7 +2205,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'name'      => 'terms_typography',
 				'label'     => __( 'Typography', 'trx_addons' ),
-				'selector'  => '{{WRAPPER}} .trx-addons-post-terms',
+				'selector'  => '{{WRAPPER}} .trx-addons-posts-item-terms',
 				'condition' => array(
 					$this->get_control_id( 'post_terms' ) => 'yes',
 				),
@@ -2230,9 +2227,9 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 						'step' => 1,
 					),
 				),
-				'size_units' => array( 'px' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-post-terms-wrap' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-posts-item-terms-wrap' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				),
 				'condition'  => array(
 					$this->get_control_id( 'post_terms' ) => 'yes',
@@ -2255,9 +2252,10 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 						'step' => 1,
 					),
 				),
-				'size_units' => array( 'px' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-post-terms .trx-addons-post-term:not(:last-child)' => 'margin-right: {{SIZE}}{{UNIT}};',
+					// '{{WRAPPER}} .trx-addons-posts-item-terms .trx-addons-posts-item-term:not(:last-child)' => 'margin-right: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-posts-item-terms .trx-addons-terms-separator' => 'margin-left: calc( {{SIZE}}{{UNIT}} / 2 ); margin-right: calc( {{SIZE}}{{UNIT}} / 2 );',
 				),
 				'condition'  => array(
 					$this->get_control_id( 'post_terms' ) => 'yes',
@@ -2280,7 +2278,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 				'label'     => __( 'Background Color', 'trx_addons' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-post-terms' => 'background: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-posts-item-term' => 'background: {{VALUE}}',
 				),
 				'condition' => array(
 					$this->get_control_id( 'post_terms' ) => 'yes',
@@ -2295,7 +2293,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '',
 				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-post-terms' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-posts-item-terms' => 'color: {{VALUE}}',
 				),
 				'condition' => array(
 					$this->get_control_id( 'post_terms' ) => 'yes',
@@ -2308,9 +2306,9 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-post-terms' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-posts-item-term' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 				'condition'  => array(
 					$this->get_control_id( 'post_terms' ) => 'yes',
@@ -2323,9 +2321,9 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-post-terms' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-posts-item-term' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 				'condition'  => array(
 					$this->get_control_id( 'post_terms' ) => 'yes',
@@ -2348,7 +2346,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 				'label'     => __( 'Background Color', 'trx_addons' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-post-terms:hover' => 'background: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-posts-item-term:hover' => 'background: {{VALUE}}',
 				),
 				'condition' => array(
 					$this->get_control_id( 'post_terms' ) => 'yes',
@@ -2363,7 +2361,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '',
 				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-post-terms a:hover' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-posts-item-terms a:hover' => 'color: {{VALUE}}',
 				),
 				'condition' => array(
 					$this->get_control_id( 'post_terms' ) => 'yes',
@@ -2401,7 +2399,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 					'default' => Global_Colors::COLOR_SECONDARY,
 				],
 				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-post-excerpt' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-posts-item-excerpt' => 'color: {{VALUE}}',
 				),
 				'condition' => array(
 					$this->get_control_id( 'show_excerpt' ) => 'yes',
@@ -2414,7 +2412,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'name'      => 'excerpt_typography',
 				'label'     => __( 'Typography', 'trx_addons' ),
-				'selector'  => '{{WRAPPER}} .trx-addons-post-excerpt',
+				'selector'  => '{{WRAPPER}} .trx-addons-posts-item-excerpt',
 				'condition' => array(
 					$this->get_control_id( 'show_excerpt' ) => 'yes',
 				),
@@ -2436,9 +2434,9 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 				'default'    => array(
 					'size' => 20,
 				),
-				'size_units' => array( 'px' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-post-excerpt' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-posts-item-excerpt' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				),
 				'condition'  => array(
 					$this->get_control_id( 'show_excerpt' ) => 'yes',
@@ -2472,7 +2470,22 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '',
 				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-post-meta' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-posts-item-meta' => 'color: {{VALUE}}',
+				),
+				'condition' => array(
+					$this->get_control_id( 'post_meta' ) => 'yes',
+				),
+			)
+		);
+
+		$this->add_control(
+			'meta_icons_color',
+			array(
+				'label'     => __( 'Icons Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '',
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-posts-item-meta .trx-addons-icon' => 'color: {{VALUE}}',
 				),
 				'condition' => array(
 					$this->get_control_id( 'post_meta' ) => 'yes',
@@ -2487,7 +2500,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '',
 				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-post-meta a' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-posts-item-meta a' => 'color: {{VALUE}}',
 				),
 				'condition' => array(
 					$this->get_control_id( 'post_meta' ) => 'yes',
@@ -2502,7 +2515,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '',
 				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-post-meta a:hover' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-posts-item-meta a:hover' => 'color: {{VALUE}}',
 				),
 				'condition' => array(
 					$this->get_control_id( 'post_meta' ) => 'yes',
@@ -2515,8 +2528,31 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'name'      => 'meta_typography',
 				'label'     => __( 'Typography', 'trx_addons' ),
-				'selector'  => '{{WRAPPER}} .trx-addons-post-meta, {{WRAPPER}} .trx-addons-post-meta a',
+				'selector'  => '{{WRAPPER}} .trx-addons-posts-item-meta, {{WRAPPER}} .trx-addons-posts-item-meta a',
 				'condition' => array(
+					$this->get_control_id( 'post_meta' ) => 'yes',
+				),
+			)
+		);
+
+		$this->add_responsive_control(
+			'meta_icons_spacing',
+			array(
+				'label'      => __( 'Meta Icons Spacing', 'trx_addons' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'default'    => array(
+					'top'    => 0,
+					'right'  => 5,
+					'bottom' => 0,
+					'left'   => 0,
+					'unit'   => 'px',
+					'isLinked' => false,
+				),
+				'selectors'  => array(
+					'{{WRAPPER}} .trx-addons-posts-item-meta .trx-addons-icon' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				),
+				'condition'  => array(
 					$this->get_control_id( 'post_meta' ) => 'yes',
 				),
 			)
@@ -2537,9 +2573,9 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 				'default'    => array(
 					'size' => 5,
 				),
-				'size_units' => array( 'px' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-post-meta .trx-addons-meta-separator:not(:last-child)' => 'margin-left: calc({{SIZE}}{{UNIT}} / 2); margin-right: calc({{SIZE}}{{UNIT}} / 2);',
+					'{{WRAPPER}} .trx-addons-posts-item-meta .trx-addons-meta-separator:not(:last-child)' => 'margin-left: calc({{SIZE}}{{UNIT}} / 2); margin-right: calc({{SIZE}}{{UNIT}} / 2);',
 				),
 				'condition'  => array(
 					$this->get_control_id( 'post_meta' ) => 'yes',
@@ -2562,9 +2598,9 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 				'default'    => array(
 					'size' => 20,
 				),
-				'size_units' => array( 'px' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-post-meta' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-posts-item-meta' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				),
 				'condition'  => array(
 					$this->get_control_id( 'post_meta' ) => 'yes',
@@ -2593,17 +2629,32 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 		);
 
 		$this->add_control(
-			'button_size',
+			'button_h_alignment',
 			array(
-				'label'     => __( 'Size', 'trx_addons' ),
-				'type'      => Controls_Manager::SELECT,
-				'default'   => 'sm',
+				'label'     => __( 'Alignment', 'trx_addons' ),
+				'type'      => Controls_Manager::CHOOSE,
 				'options'   => array(
-					'xs' => __( 'Extra Small', 'trx_addons' ),
-					'sm' => __( 'Small', 'trx_addons' ),
-					'md' => __( 'Medium', 'trx_addons' ),
-					'lg' => __( 'Large', 'trx_addons' ),
-					'xl' => __( 'Extra Large', 'trx_addons' ),
+					'left'   => array(
+						'title' => __( 'Left', 'trx_addons' ),
+						'icon'  => 'fa fa-align-left',
+					),
+					'center' => array(
+						'title' => __( 'Center', 'trx_addons' ),
+						'icon'  => 'fa fa-align-center',
+					),
+					'right'  => array(
+						'title' => __( 'Right', 'trx_addons' ),
+						'icon'  => 'fa fa-align-right',
+					),
+				),
+				'default'   => '',
+				'selectors_dictionary'  => [
+					'left'   => 'flex-start',
+					'center' => 'center',
+					'right'  => 'flex-end',
+				],
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-posts-button' => 'align-self: {{VALUE}};',
 				),
 				'condition' => array(
 					$this->get_control_id( 'show_button' ) => 'yes',
@@ -2687,7 +2738,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-posts-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2702,7 +2753,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'label'      => __( 'Margin', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-posts-button' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2717,7 +2768,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-posts-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -2751,25 +2802,26 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			)
 		);
 
-		$this->add_control(
-			'button_icon_spacing',
-			array(
-				'label'     => __( 'Icon Spacing', 'trx_addons' ),
-				'type'      => Controls_Manager::SLIDER,
-				'range'     => array(
-					'px' => array(
-						'max' => 50,
-					),
-				),
-				'selectors' => array(
-					'{{WRAPPER}} .elementor-align-icon-right' => 'margin-left: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .elementor-align-icon-left' => 'margin-right: {{SIZE}}{{UNIT}};',
-				),
-				'condition' => array(
+		$this->add_responsive_control(
+			'button_icon_margin',
+			[
+				'label'                 => __( 'Margin', 'trx_addons' ),
+				'type'                  => Controls_Manager::DIMENSIONS,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'placeholder'       => [
+					'top'      => '',
+					'right'    => '',
+					'bottom'   => '',
+					'left'     => '',
+				],
+				'condition'             => [
 					$this->get_control_id( 'show_button' ) => 'yes',
 					$this->get_control_id( 'select_button_icon[value]!' ) => '',
-				),
-			)
+				],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-posts-button .trx-addons-button-icon' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
 		);
 
 		$this->end_controls_tab();
@@ -2924,7 +2976,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 						'step' => 1,
 					),
 				),
-				'size_units' => array( 'px' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-slider-arrow' => 'font-size: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}};',
 				),
@@ -2938,21 +2990,53 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 		$this->add_responsive_control(
 			'arrows_position',
 			array(
-				'label'      => __( 'Align Arrows', 'trx_addons' ),
+				'label'      => __( 'Arrows Position', 'trx_addons' ),
 				'type'       => Controls_Manager::SLIDER,
-				'range'      => array(
-					'px' => array(
-						'min'  => -100,
-						'max'  => 50,
-						'step' => 1,
-					),
-				),
-				'size_units' => array( 'px' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-arrow-next' => 'right: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}} .trx-addons-arrow-prev' => 'left: {{SIZE}}{{UNIT}};',
 				),
 				'condition'  => array(
+					$this->get_control_id( 'layout' ) => 'carousel',
+					$this->get_control_id( 'arrows' ) => 'yes',
+				),
+			)
+		);
+
+		$this->add_control(
+			'arrows_show_on_hover',
+			array(
+				'label'        => __( 'Show on hover', 'trx_addons' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'default'      => '',
+				'label_on'     => __( 'Yes', 'trx_addons' ),
+				'label_off'    => __( 'No', 'trx_addons' ),
+				'return_value' => 'yes',
+				'prefix_class' => 'trx-addons-slider-arrows-show-on-hover-',
+				'render_type'  => 'template',
+				'condition'    => array(
+					$this->get_control_id( 'layout' ) => 'carousel',
+					$this->get_control_id( 'arrows' ) => 'yes',
+				),
+			)
+		);
+
+		$this->add_control(
+			'arrows_hide_on',
+			array(
+				'label'        => __( 'Hide on', 'trx_addons' ),
+				'label_block'  => false,
+				'type'         => Controls_Manager::SELECT,
+				'options'      => array(
+					''       => __( 'No hide', 'trx_addons' ),
+					'tablet' => __( 'Tablet', 'trx_addons' ),
+					'mobile' => __( 'Mobile', 'trx_addons' ),
+				),
+				'default'      => '',
+				'prefix_class' => 'trx-addons-slider-arrows-hide-on-',
+				'render_type'  => 'template',
+				'condition'    => array(
 					$this->get_control_id( 'layout' ) => 'carousel',
 					$this->get_control_id( 'arrows' ) => 'yes',
 				),
@@ -3024,7 +3108,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-slider-arrow' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -3105,7 +3189,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-slider-arrow' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -3162,7 +3246,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 						'step' => 1,
 					),
 				),
-				'size_units' => '',
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .swiper-container-wrap .swiper-pagination-bullet' => 'height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}}',
 				),
@@ -3185,7 +3269,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 						'step' => 1,
 					),
 				),
-				'size_units' => '',
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .swiper-container-wrap .swiper-pagination-bullet' => 'margin-left: {{SIZE}}{{UNIT}}; margin-right: {{SIZE}}{{UNIT}}',
 				),
@@ -3245,7 +3329,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .swiper-container-wrap .swiper-pagination-bullet' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -3261,7 +3345,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'label'              => __( 'Margin', 'trx_addons' ),
 				'type'               => Controls_Manager::DIMENSIONS,
-				'size_units'         => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'allowed_dimensions' => 'vertical',
 				'placeholder'        => array(
 					'top'    => '',
@@ -3403,6 +3487,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 						'max' => 100,
 					),
 				),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors' => array(
 					'{{WRAPPER}} .trx-addons-posts-pagination-top .trx-addons-posts-pagination' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}} .trx-addons-posts-pagination-bottom .trx-addons-posts-pagination' => 'margin-top: {{SIZE}}{{UNIT}};',
@@ -3493,7 +3578,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-posts-pagination .page-numbers, {{WRAPPER}} .trx-addons-posts-pagination a' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -3509,7 +3594,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-posts-pagination .page-numbers, {{WRAPPER}} .trx-addons-posts-pagination a' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -3693,6 +3778,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 						'max' => 100,
 					),
 				),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors' => array(
 					'body:not(.rtl) {{WRAPPER}} .trx-addons-posts-pagination .page-numbers:not(:first-child)' => 'margin-left: calc( {{SIZE}}{{UNIT}}/2 );',
 					'body:not(.rtl) {{WRAPPER}} .trx-addons-posts-pagination .page-numbers:not(:last-child)' => 'margin-right: calc( {{SIZE}}{{UNIT}}/2 );',
@@ -3749,7 +3835,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 				'default'    => array(
 					'size' => 46,
 				),
-				'size_units' => array( 'px' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-posts-loader' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
 				),
@@ -3812,171 +3898,6 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 		}
 
 		return implode( ' ', $class );
-	}
-
-	/**
-	 * Render post terms output on the frontend.
-	 *
-	 * Written in PHP and used to generate the final HTML.
-	 *
-	 * @access protected
-	 */
-	protected function render_terms() {
-		$settings   = $this->parent->get_settings_for_display();
-		$post_terms = $this->get_instance_value( 'post_terms' );
-		$query_type = $settings['query_type'];
-
-		if ( 'yes' !== $post_terms ) {
-			return;
-		}
-
-		$post_type = $settings['post_type'];
-
-		if ( 'related' === $settings['post_type'] || 'main' === $query_type ) {
-			$post_type = get_post_type();
-		}
-
-		$taxonomies = $this->get_instance_value( 'tax_badge_' . $post_type );
-
-		$terms = array();
-
-		if ( is_array( $taxonomies ) ) {
-			foreach ( $taxonomies as $taxonomy ) {
-				$terms_tax = wp_get_post_terms( get_the_ID(), $taxonomy );
-				$terms     = array_merge( $terms, $terms_tax );
-			}
-		} else {
-			$terms = wp_get_post_terms( get_the_ID(), $taxonomies );
-		}
-
-		if ( empty( $terms ) || is_wp_error( $terms ) ) {
-			return;
-		}
-
-		$max_terms = $this->get_instance_value( 'max_terms' );
-
-		if ( $max_terms ) {
-			$terms = array_slice( $terms, 0, $max_terms );
-		}
-
-		$terms = apply_filters( 'trx_addons_filter_elementor_widgets_posts_posts_terms', $terms );
-
-		$link_terms = $this->get_instance_value( 'post_taxonomy_link' );
-
-		if ( 'yes' === $link_terms ) {
-			$format = '<span class="trx-addons-post-term"><a href="%2$s">%1$s</a></span>';
-		} else {
-			$format = '<span class="trx-addons-post-term">%1$s</span>';
-		}
-		?>
-		<?php do_action( 'trx_addons_action_elementor_widgets_posts_before_single_post_terms', get_the_ID(), $settings ); ?>
-		<div class="trx-addons-post-terms-wrap">
-			<span class="trx-addons-post-terms">
-				<?php
-				foreach ( $terms as $term ) {
-					printf( wp_kses_post( $format ), esc_attr( $term->name ), esc_url( get_term_link( (int) $term->term_id ) ) );
-				}
-
-				do_action( 'trx_addons_action_elementor_widgets_posts_single_post_terms', get_the_ID(), $settings );
-				?>
-			</span>
-		</div>
-		<?php do_action( 'trx_addons_action_elementor_widgets_posts_after_single_post_terms', get_the_ID(), $settings ); ?>
-		<?php
-	}
-
-	/**
-	 * Render post meta output on the frontend.
-	 *
-	 * Written in PHP and used to generate the final HTML.
-	 *
-	 * @access protected
-	 */
-	protected function render_meta_item( $item_type = '' ) {
-		$skin     = $this->get_id();
-		$settings = $this->parent->get_settings_for_display();
-
-		if ( '' === $item_type ) {
-			return;
-		}
-
-		$show_item           = $this->get_instance_value( 'show_' . $item_type );
-		$item_link           = $this->get_instance_value( $item_type . '_link' );
-		$item_prefix         = $this->get_instance_value( $item_type . '_prefix' );
-		$hide_empty_comments = $this->get_instance_value( 'hide_empty_comments' );
-
-		if ( 'yes' !== $show_item ) {
-			return;
-		}
-
-		if ( 'comments' === $item_type && 'yes' === $hide_empty_comments && '0' === get_comments_number() ) {
-			return;
-		}
-
-		$item_icon        = $this->get_instance_value( $item_type . '_icon' );
-		$select_item_icon = $this->get_instance_value( 'select_' . $item_type . '_icon' );
-
-		$migrated = isset( $settings['__fa4_migrated'][ $skin . '_select_' . $item_type . '_icon' ] );
-		$is_new   = empty( $settings[ $skin . '_' . $item_type . '_icon' ] ) && Icons_Manager::is_migration_allowed();
-		?>
-		<?php do_action( 'trx_addons_action_elementor_widgets_posts_before_single_post_' . $item_type, get_the_ID(), $settings ); ?>
-		<span class="trx-addons-post-<?php echo esc_attr( $item_type ); ?>">
-			<?php
-			if ( $item_icon || $select_item_icon ) { ?>
-				<span class="trx-addons-icon">
-				<?php
-				if ( $is_new || $migrated ) {
-					Icons_Manager::render_icon( $select_item_icon, array( 'class' => 'trx-addons-meta-icon', 'aria-hidden' => 'true' ) );
-				} else { ?>
-					<span class="trx-addons-meta-icon <?php echo esc_attr( $item_icon ); ?>" aria-hidden="true"></span>
-					<?php
-				} ?>
-				</span>
-				<?php
-			}
-
-			if ( $item_prefix ) {
-				?>
-				<span class="trx-addons-meta-prefix">
-				<?php
-					echo esc_attr( $item_prefix );
-				?>
-				</span>
-				<?php
-			}
-			?>
-			<span class="trx-addons-meta-text">
-				<?php
-				if ( 'author' === $item_type ) {
-					echo wp_kses_post( $this->get_post_author( $item_link ) );
-				} elseif ( 'date' === $item_type ) {
-					if ( TrxAddonsUtils::is_tribe_events_post( get_the_ID() ) && function_exists( 'tribe_get_start_date' ) ) {
-						$date_format = $this->get_instance_value( 'date_format_select' );
-						$date_custom_format = $this->get_instance_value( 'date_custom_format' );
-
-						if ( 'custom' === $date_format && $date_custom_format ) {
-							$date_format = $date_custom_format;
-						}
-
-						$post_date = tribe_get_start_time( get_the_ID(), $date_format );
-					} else {
-						$post_date = $this->get_post_date();
-					}
-
-					if ( 'yes' === $item_link ) {
-						echo '<a href="' . esc_url( get_permalink() ) . '">' . wp_kses_post( $post_date ) . '</a>';
-					} else {
-						echo wp_kses_post( $post_date );
-					}
-				} elseif ( 'comments' === $item_type ) {
-					echo wp_kses_post( $this->get_post_comments() );
-				}
-				?>
-			</span>
-		</span>
-		<span class="trx-addons-meta-separator"></span>
-		<?php do_action( 'trx_addons_action_elementor_widgets_posts_after_single_post_' . $item_type, get_the_ID(), $settings ); ?>
-		<?php
 	}
 
 	/**
@@ -4103,6 +4024,746 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 	}
 
 	/**
+	 * Get post excerpt length.
+	 *
+	 * Returns the length of post excerpt.
+	 *
+	 * @access public
+	 */
+	public function excerpt_length_filter() {
+		return $this->get_instance_value( 'excerpt_length' );
+	}
+
+	/**
+	 * Get post excerpt with limited words.
+	 *
+	 * Returns the excerpt with limit.
+	 *
+	 * @access public
+	 */
+	public function post_excerpt() {
+		$limit = (int) $this->excerpt_length_filter();
+		$excerpt = explode( ' ', get_the_excerpt(), $limit + 1 );
+		$excerpt_more = apply_filters( 'excerpt_more', 20 );
+		if ( count( $excerpt ) >= $limit ) {
+			array_pop( $excerpt );
+			$excerpt = implode( ' ', $excerpt ) . $excerpt_more;
+		} else {
+			$excerpt = implode( ' ', $excerpt );
+		}
+		$excerpt = preg_replace( '`\[[^\]]*\]`', '', $excerpt );
+		return $excerpt;
+	}
+
+	/**
+	 * Get post excerpt end text.
+	 *
+	 * Returns the string to append to post excerpt.
+	 *
+	 * @param string $more returns string.
+	 *
+	 * @access public
+	 */
+	public function excerpt_more_filter( $more ) {
+		return ' ...';
+	}
+
+	public function get_posts_outer_wrap_classes() {
+		$layout          = $this->get_instance_value( 'layout' );
+		$pagination_type = $this->get_instance_value( 'pagination_type' );
+		$dots_position   = $this->get_instance_value( 'dots_position' );
+
+		$classes = array(
+			'trx-addons-posts-container',
+		);
+
+		if ( 'carousel' === $layout ) {
+			$classes[] = 'swiper-container-wrap swiper';
+
+			if ( $dots_position ) {
+				$classes[] = 'swiper-container-wrap-dots-' . $dots_position;
+			}
+		}
+
+		if ( 'infinite' === $pagination_type ) {
+			$classes[] = 'trx-addons-posts-infinite-scroll';
+		}
+
+		return apply_filters( 'trx_addons_filter_elementor_widgets_posts_posts_outer_wrap_classes', $classes );
+	}
+
+	public function get_posts_wrap_classes() {
+		$layout = $this->get_instance_value( 'layout' );
+
+		$classes = array(
+			'trx-addons-posts',
+			'trx-addons-posts-skin-' . $this->get_id(),
+		);
+
+		if ( 'yes' === $this->get_instance_value( 'button_alignment' ) ) {
+			$classes[] = 'trx-addons-posts-align-buttons';
+		}
+
+		if ( 'carousel' === $layout ) {
+			$classes[] = 'trx-addons-posts-carousel';
+			$classes[] = 'trx-addons-swiper-slider';
+			$classes[] = 'swiper-container';
+		} else {
+			$classes[] = 'trx-addons-elementor-grid';
+			$classes[] = 'trx-addons-posts-grid';
+		}
+
+		return apply_filters( 'trx_addons_filter_elementor_widgets_posts_posts_wrap_classes', $classes );
+	}
+
+	public function get_item_wrap_classes() {
+		$layout = $this->get_instance_value( 'layout' );
+
+		$classes = array( 'trx-addons-posts-item-wrap' );
+
+		if ( 'carousel' === $layout ) {
+			$classes[] = 'trx-addons-carousel-item-wrap swiper-slide';
+		} else {
+			$classes[] = 'trx-addons-grid-item-wrap';
+		}
+
+		return implode( ' ', $classes );
+	}
+
+	public function get_item_classes() {
+		$layout = $this->get_instance_value( 'layout' );
+
+		$classes = array();
+
+		$classes[] = 'trx-addons-posts-item';
+
+		if ( 'carousel' === $layout ) {
+			$classes[] = 'trx-addons-carousel-item';
+		} else {
+			$classes[] = 'trx-addons-grid-item';
+		}
+
+		return implode( ' ', $classes );
+	}
+
+	public function get_ordered_items( $items ) {
+
+		if ( ! $items ) {
+			return;
+		}
+
+		$ordered_items = array();
+
+		foreach ( $items as $item ) {
+			$order = $this->get_instance_value( $item . '_order' );
+
+			$order = ( $order ) ? $order : 1;
+
+			$ordered_items[ $item ] = $order;
+		}
+
+		asort( $ordered_items );
+
+		return $ordered_items;
+	}
+
+	/**
+	 * Carousel Settings.
+	 *
+	 * @access public
+	 */
+	public function slider_settings() {
+		$skin            = $this->get_id();
+		$center_mode     = $this->get_instance_value( 'center_mode' );
+		$autoplay        = $this->get_instance_value( 'autoplay' );
+		$autoplay_speed  = $this->get_instance_value( 'autoplay_speed' );
+		$arrows          = $this->get_instance_value( 'arrows' );
+		$arrow           = $this->get_instance_value( 'arrow' );
+		$select_arrow    = $this->get_instance_value( 'select_arrow' );
+		$dots            = $this->get_instance_value( 'dots' );
+		$animation_speed = $this->get_instance_value( 'animation_speed' );
+		$infinite_loop   = $this->get_instance_value( 'infinite_loop' );
+		$pause_on_hover  = $this->get_instance_value( 'pause_on_hover' );
+		$adaptive_height = $this->get_instance_value( 'adaptive_height' );
+		$direction       = $this->get_instance_value( 'direction' );
+
+		$slides_to_show          = ( $this->get_instance_value( 'columns' ) !== '' ) ? absint( $this->get_instance_value( 'columns' ) ) : 3;
+		$slides_to_show_tablet   = ( $this->get_instance_value( 'columns_tablet' ) !== '' ) ? absint( $this->get_instance_value( 'columns_tablet' ) ) : 2;
+		$slides_to_show_mobile   = ( $this->get_instance_value( 'columns_mobile' ) !== '' ) ? absint( $this->get_instance_value( 'columns_mobile' ) ) : 2;
+		$slides_to_scroll        = ( $this->get_instance_value( 'slides_to_scroll' ) !== '' ) ? min( $slides_to_show, absint( $this->get_instance_value( 'slides_to_scroll' ) ) ) : 1;
+		$slides_to_scroll_tablet = ( $this->get_instance_value( 'slides_to_scroll_tablet' ) !== '' ) ? min( $slides_to_show_tablet, absint( $this->get_instance_value( 'slides_to_scroll_tablet' ) ) ) : 1;
+		$slides_to_scroll_mobile = ( $this->get_instance_value( 'slides_to_scroll_mobile' ) !== '' ) ? min( $slides_to_show_mobile, absint( $this->get_instance_value( 'slides_to_scroll_mobile' ) ) ) : 1;
+
+		/* if ( 'right' === $direction ) {
+			$slider_options['rtl'] = true;
+		} */
+
+		$slider_options = [
+			'direction'             => 'horizontal',
+			'speed'                 => ( $animation_speed ) ? absint( $animation_speed ) : 600,
+			'slidesPerView'         => $slides_to_show,
+			'slidesPerGroup'        => $slides_to_scroll,
+			'autoHeight'            => ( 'yes' === $adaptive_height ),
+			'watchSlidesVisibility' => true,
+			'centeredSlides'        => ( 'yes' === $center_mode ),
+			'loop'                  => ( 'yes' === $infinite_loop ),
+		];
+
+		if ( 'yes' === $autoplay ) {
+			$autoplay_speed = ( $autoplay_speed ) ? $autoplay_speed : 999999;
+		} else {
+			$autoplay_speed = 999999;
+		}
+
+		$slider_options['autoplay'] = [
+			'delay'                => $autoplay_speed,
+			'pauseOnHover'         => ( 'yes' === $pause_on_hover ),
+			'disableOnInteraction' => ( 'yes' === $pause_on_hover ),
+		];
+
+		if ( 'yes' === $dots ) {
+			$slider_options['pagination'] = [
+				'el'                 => '.swiper-pagination-' . esc_attr( $this->parent->get_id() ),
+				'clickable'          => true,
+			];
+		}
+
+		if ( 'yes' === $arrows ) {
+			$slider_options['navigation'] = [
+				'nextEl'             => '.swiper-button-next-' . esc_attr( $this->parent->get_id() ),
+				'prevEl'             => '.swiper-button-prev-' . esc_attr( $this->parent->get_id() ),
+			];
+		}
+
+		$elementor_bp_lg = get_option( 'elementor_viewport_lg' );
+		$elementor_bp_md = get_option( 'elementor_viewport_md' );
+		$bp_desktop      = ! empty( $elementor_bp_lg ) ? $elementor_bp_lg : 1025;
+		$bp_tablet       = ! empty( $elementor_bp_md ) ? $elementor_bp_md : 768;
+		$bp_mobile       = 320;
+
+		$items        = ( isset( $settings['items']['size'] ) && '' !== $settings['items']['size'] ) ? absint( $settings['items']['size'] ) : 3;
+		$items_tablet = ( isset( $settings['items_tablet']['size'] ) && '' !== $settings['items_tablet']['size'] ) ? absint( $settings['items_tablet']['size'] ) : 2;
+		$items_mobile = ( isset( $settings['items_mobile']['size'] ) && '' !== $settings['items_mobile']['size'] ) ? absint( $settings['items_mobile']['size'] ) : 1;
+
+		$margin        = ( isset( $settings['margin']['size'] ) && '' !== $settings['margin']['size'] ) ? absint( $settings['margin']['size'] ) : 10;
+		$margin_tablet = ( isset( $settings['margin_tablet']['size'] ) && '' !== $settings['margin_tablet']['size'] ) ? absint( $settings['margin_tablet']['size'] ) : 10;
+		$margin_mobile = ( isset( $settings['margin_mobile']['size'] ) && '' !== $settings['margin_mobile']['size'] ) ? absint( $settings['margin_mobile']['size'] ) : 10;
+
+		$slider_options['breakpoints'] = [
+			$bp_desktop => [
+				'slidesPerView'  => $slides_to_show,
+				'slidesPerGroup' => $slides_to_scroll,
+				//'spaceBetween' => $margin,
+			],
+			$bp_tablet  => [
+				'slidesPerView'  => $slides_to_show_tablet,
+				'slidesPerGroup' => $slides_to_scroll_tablet,
+				//'spaceBetween' => $margin_tablet,
+			],
+			$bp_mobile  => [
+				'slidesPerView'  => $slides_to_show_mobile,
+				'slidesPerGroup' => $slides_to_scroll_mobile,
+				//'spaceBetween' => $margin_mobile,
+			],
+		];
+
+		$this->parent->add_render_attribute(
+			'posts-wrap',
+			array(
+				'data-slider-settings' => wp_json_encode( $slider_options ),
+			)
+		);
+	}
+
+	
+	/*-----------------------------------------------------------------------------------*/
+	/*	RENDER
+	/*-----------------------------------------------------------------------------------*/
+
+	/**
+	 * Render posts grid widget output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @access protected
+	 */
+	public function render() {
+		$settings = $this->parent->get_settings_for_display();
+
+		$query_type          = $settings['query_type'];
+		$layout              = $this->get_instance_value( 'layout' );
+		$pagination_type     = $this->get_instance_value( 'pagination_type' );
+		$pagination_position = $this->get_instance_value( 'pagination_position' );
+		$equal_height        = $this->get_instance_value( 'equal_height' );
+		$direction           = $this->get_instance_value( 'direction' );
+		$skin                = $this->get_id();
+		$posts_outer_wrap    = $this->get_posts_outer_wrap_classes();
+		$posts_wrap          = $this->get_posts_wrap_classes();
+		$page_id             = '';
+		if ( null !== \Elementor\Plugin::$instance->documents->get_current() ) {
+			$page_id = \Elementor\Plugin::$instance->documents->get_current()->get_main_id();
+		}
+
+		$this->parent->add_render_attribute( 'posts-container', 'class', $posts_outer_wrap );
+
+		$this->parent->add_render_attribute( 'posts-wrap', 'class', $posts_wrap );
+
+		if ( 'carousel' === $layout ) {
+			if ( 'yes' === $equal_height ) {
+				$this->parent->add_render_attribute( 'posts-wrap', 'data-equal-height', 'yes' );
+			}
+			if ( 'right' === $direction ) {
+				$this->parent->add_render_attribute( 'posts-wrap', 'dir', 'rtl' );
+			}
+		}
+
+		$this->parent->add_render_attribute(
+			'posts-wrap',
+			array(
+				'data-query-type' => $query_type,
+				'data-layout'     => $layout,
+				'data-page'       => $page_id,
+				'data-skin'       => $skin,
+			)
+		);
+
+		$this->parent->add_render_attribute( 'post-categories', 'class', 'trx-addons-posts-item-categories' );
+
+		$filter   = '';
+		$taxonomy = '';
+
+		$this->parent->query_posts( $filter, $taxonomy );
+		$query = $this->parent->get_query();
+
+		if ( 'carousel' === $layout ) {
+			$this->slider_settings();
+		}
+
+		if ( ! $query->found_posts ) {
+			?>
+			<div <?php echo wp_kses_post( $this->parent->get_render_attribute_string( 'posts-container' ) ); ?>>
+			<?php
+			$this->render_search();
+			?>
+			</div>
+			<?php
+			return;
+		}
+
+		do_action( 'trx_addons_action_elementor_widgets_posts_before_posts_outer_wrap', $settings );
+		?>
+		<div <?php echo wp_kses_post( $this->parent->get_render_attribute_string( 'posts-container' ) ); ?>>
+			<?php
+			do_action( 'trx_addons_action_elementor_widgets_posts_before_posts_wrap', $settings );
+
+			$i = 1;
+
+			$total_pages = $query->max_num_pages;
+			?>
+
+			<?php if ( 'carousel' !== $layout ) { ?>
+				<?php if ( ( 'numbers' === $pagination_type || 'numbers_and_prev_next' === $pagination_type ) && ( 'top' === $pagination_position || 'top-bottom' === $pagination_position ) ) { ?>
+				<div class="trx-addons-posts-pagination-wrap trx-addons-posts-pagination-top">
+					<?php
+						$this->render_pagination();
+					?>
+				</div>
+				<?php } ?>
+			<?php } ?>
+
+			<div <?php echo wp_kses_post( $this->parent->get_render_attribute_string( 'posts-wrap' ) ); ?>>
+				<?php if ( 'carousel' === $layout ) { ?><div class="swiper-wrapper"><?php } ?>
+					<?php
+					$i = 1;
+
+					if ( $query->have_posts() ) :
+						while ( $query->have_posts() ) :
+							$query->the_post();
+
+							$this->render_post_body();
+
+							$i++;
+
+						endwhile;
+					endif;
+					wp_reset_postdata();
+					?>
+				<?php if ( 'carousel' === $layout ) { ?></div><?php } ?>
+			</div>
+			<?php
+				$this->render_dots();
+
+				$this->render_arrows();
+			?>
+
+			<?php do_action( 'trx_addons_action_elementor_widgets_posts_after_posts_wrap', $settings ); ?>
+
+			<?php if ( 'load_more' === $pagination_type || 'infinite' === $pagination_type ) { ?>
+			<div class="trx-addons-posts-loader"></div>
+			<?php } ?>
+
+			<?php
+			if ( 'load_more' === $pagination_type || 'infinite' === $pagination_type ) {
+				$pagination_bottom = true;
+			} elseif ( ( 'numbers' === $pagination_type || 'numbers_and_prev_next' === $pagination_type ) && ( '' === $pagination_position || 'bottom' === $pagination_position || 'top-bottom' === $pagination_position ) ) {
+				$pagination_bottom = true;
+			} else {
+				$pagination_bottom = false;
+			}
+			?>
+
+			<?php if ( 'carousel' !== $layout ) { ?>
+				<?php if ( $pagination_bottom ) { ?>
+				<div class="trx-addons-posts-pagination-wrap trx-addons-posts-pagination-bottom">
+					<?php
+						$this->render_pagination();
+					?>
+				</div>
+				<?php } ?>
+			<?php } ?>
+		</div>
+
+		<?php do_action( 'trx_addons_action_elementor_widgets_posts_after_posts_outer_wrap', $settings ); ?>
+
+		<?php
+		if ( \Elementor\Plugin::instance()->editor->is_edit_mode() ) {
+			if ( 'masonry' === $layout ) {
+				$this->render_editor_script();
+			}
+		}
+	}
+
+	/**
+	 * Get masonry script.
+	 *
+	 * Returns the post masonry script.
+	 *
+	 * @access public
+	 */
+	public function render_editor_script() {
+		$settings = $this->parent->get_settings_for_display();
+		$layout   = $this->get_instance_value( 'layout' );
+
+		if ( 'masonry' !== $layout ) {
+			return;
+		}
+
+		$layout = 'masonry';
+
+		?>
+		<script type="text/javascript">
+
+			jQuery( document ).ready( function( $ ) {
+				$( '.trx-addons-posts-grid' ).each( function() {
+
+					var $node_id 	= '<?php echo esc_attr( $this->parent->get_id() ); ?>',
+						$scope 		= $( '[data-id="' + $node_id + '"]' ),
+						$selector 	= $(this);
+
+					if ( $selector.closest( $scope ).length < 1 ) {
+						return;
+					}
+
+					$selector.imagesLoaded( function() {
+
+						$isotopeObj = $selector.isotope({
+							layoutMode: '<?php echo esc_attr( $layout ); ?>',
+							itemSelector: '.trx-addons-grid-item-wrap',
+						});
+
+						$selector.find( '.trx-addons-grid-item-wrap' ).resize( function() {
+							$isotopeObj.isotope( 'layout' );
+						});
+					});
+				});
+			});
+
+		</script>
+		<?php
+	}
+
+	/**
+	 * Render post meta output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @access protected
+	 */
+	protected function render_post_meta() {
+		$settings  = $this->parent->get_settings_for_display();
+		$post_meta = $this->get_instance_value( 'post_meta' );
+
+		if ( 'yes' === $post_meta ) {
+			?>
+			<?php do_action( 'trx_addons_action_elementor_widgets_posts_before_single_post_meta', get_the_ID(), $settings ); ?>
+			<div class="trx-addons-posts-item-meta">
+				<?php
+				$meta_items = $this->get_ordered_items( Posts::get_meta_items() );
+
+				foreach ( $meta_items as $meta_item => $index ) {
+					if ( 'author' === $meta_item ) {
+						// Post Author
+						$this->render_meta_item( 'author' );
+					}
+
+					if ( 'date' === $meta_item ) {
+						// Post Date
+						$this->render_meta_item( 'date' );
+					}
+
+					if ( 'comments' === $meta_item ) {
+						// Post Comments
+						$this->render_meta_item( 'comments' );
+					}
+				}
+				?>
+			</div>
+			<?php
+			do_action( 'trx_addons_action_elementor_widgets_posts_after_single_post_meta', get_the_ID(), $settings );
+		}
+	}
+
+	/**
+	 * Render post body output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @access protected
+	 */
+	protected function render_post_body() {
+		$settings = $this->parent->get_settings_for_display();
+
+		$post_terms         = $this->get_instance_value( 'post_terms' );
+		$post_meta          = $this->get_instance_value( 'post_meta' );
+		$thumbnail_location = $this->get_instance_value( 'thumbnail_location' );
+
+		do_action( 'trx_addons_action_elementor_widgets_posts_before_single_post_wrap', get_the_ID(), $settings );
+		?>
+		<div <?php post_class( $this->get_item_wrap_classes() ); ?>>
+			<?php do_action( 'trx_addons_action_elementor_widgets_posts_before_single_post', get_the_ID(), $settings ); ?>
+			<div class="<?php echo esc_attr( $this->get_item_classes() ); ?>">
+				<?php
+				if ( 'outside' === $thumbnail_location ) {
+					$this->render_post_thumbnail();
+				}
+				?>
+
+				<?php do_action( 'trx_addons_action_elementor_widgets_posts_before_single_post_content', get_the_ID(), $settings ); ?>
+
+				<div class="trx-addons-posts-item-content-wrap">
+					<div class="trx-addons-posts-item-content"><?php
+						$content_parts = $this->get_ordered_items( Posts::get_post_parts() );
+
+						foreach ( $content_parts as $part => $index ) {
+							if ( 'thumbnail' === $part ) {
+								if ( 'inside' === $thumbnail_location ) {
+									$this->render_post_thumbnail();
+								}
+							} else if ( 'terms' === $part ) {
+								$this->render_terms();
+							} else if ( 'title' === $part ) {
+								$this->render_post_title();
+							} else if ( 'meta' === $part ) {
+								$this->render_post_meta();
+							} else if ( 'excerpt' === $part ) {
+								$this->render_excerpt();
+							}
+						}
+					?></div><?php
+					$this->render_button();
+				?></div><?php
+				
+				do_action( 'trx_addons_action_elementor_widgets_posts_after_single_post_content', get_the_ID(), $settings );
+			?></div><?php
+			
+			do_action( 'trx_addons_action_elementor_widgets_posts_after_single_post', get_the_ID(), $settings );
+		?></div><?php
+
+		do_action( 'trx_addons_action_elementor_widgets_posts_after_single_post_wrap', get_the_ID(), $settings );
+	}
+
+	/**
+	 * Render Search Form HTML.
+	 *
+	 * Returns the Search Form HTML.
+	 *
+	 * @access public
+	 */
+	public function render_search() {
+		$settings = $this->parent->get_settings_for_display();
+		?>
+		<div class="trx-addons-posts-empty">
+			<?php if ( $settings['nothing_found_message'] ) { ?>
+				<p><?php echo wp_kses_post( $settings['nothing_found_message'] ); ?></p>
+			<?php } ?>
+
+			<?php if ( 'yes' === $settings['show_search_form'] ) { ?>
+				<?php get_search_form(); ?>
+			<?php } ?>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Render post terms output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @access protected
+	 */
+	protected function render_terms() {
+		$settings   = $this->parent->get_settings_for_display();
+		$post_terms = $this->get_instance_value( 'post_terms' );
+		$query_type = $settings['query_type'];
+
+		if ( 'yes' !== $post_terms ) {
+			return;
+		}
+
+		$post_type = $settings['post_type'];
+
+		if ( 'related' === $settings['post_type'] || 'main' === $query_type ) {
+			$post_type = get_post_type();
+		}
+
+		$taxonomies = $this->get_instance_value( 'tax_badge_' . $post_type );
+
+		$terms = array();
+
+		if ( is_array( $taxonomies ) ) {
+			foreach ( $taxonomies as $taxonomy ) {
+				$terms_tax = wp_get_post_terms( get_the_ID(), $taxonomy );
+				$terms     = array_merge( $terms, $terms_tax );
+			}
+		} else {
+			$terms = wp_get_post_terms( get_the_ID(), $taxonomies );
+		}
+
+		if ( empty( $terms ) || is_wp_error( $terms ) ) {
+			return;
+		}
+
+		$max_terms = $this->get_instance_value( 'max_terms' );
+
+		if ( $max_terms ) {
+			$terms = array_slice( $terms, 0, $max_terms );
+		}
+
+		$terms = apply_filters( 'trx_addons_filter_elementor_widgets_posts_posts_terms', $terms );
+
+		$link_terms = $this->get_instance_value( 'post_taxonomy_link' );
+
+		if ( 'yes' === $link_terms ) {
+			$format = '<span class="trx-addons-posts-item-term"><a href="%2$s">%1$s</a></span>';
+		} else {
+			$format = '<span class="trx-addons-posts-item-term">%1$s</span>';
+		}
+		?>
+		<?php do_action( 'trx_addons_action_elementor_widgets_posts_before_single_post_terms', get_the_ID(), $settings ); ?>
+		<div class="trx-addons-posts-item-terms-wrap">
+			<span class="trx-addons-posts-item-terms">
+				<?php
+				$i = 0;
+				foreach ( $terms as $term ) {
+					$i++;
+					printf( wp_kses_post( $format ), esc_attr( $term->name ), esc_url( get_term_link( (int) $term->term_id ) ) );
+					if ( $i < count( $terms ) ) {
+						echo '<span class="trx-addons-terms-separator">' . esc_html( $this->get_instance_value( 'post_terms_separator' ) ) . '</span>';
+					}
+				}
+				do_action( 'trx_addons_action_elementor_widgets_posts_single_post_terms', get_the_ID(), $settings );
+				?>
+			</span>
+		</div>
+		<?php do_action( 'trx_addons_action_elementor_widgets_posts_after_single_post_terms', get_the_ID(), $settings ); ?>
+		<?php
+	}
+
+	/**
+	 * Render post meta output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @access protected
+	 */
+	protected function render_meta_item( $item_type = '' ) {
+		$skin     = $this->get_id();
+		$settings = $this->parent->get_settings_for_display();
+
+		if ( '' === $item_type ) {
+			return;
+		}
+
+		$show_item           = $this->get_instance_value( 'show_' . $item_type );
+		$item_link           = $this->get_instance_value( $item_type . '_link' );
+		$item_prefix         = $this->get_instance_value( $item_type . '_prefix' );
+		$hide_empty_comments = $this->get_instance_value( 'hide_empty_comments' );
+
+		if ( 'yes' !== $show_item ) {
+			return;
+		}
+
+		if ( 'comments' === $item_type && 'yes' === $hide_empty_comments && '0' === get_comments_number() ) {
+			return;
+		}
+
+		$item_icon        = $this->get_instance_value( $item_type . '_icon' );
+		$select_item_icon = $this->get_instance_value( 'select_' . $item_type . '_icon' );
+
+		$migrated = isset( $settings['__fa4_migrated'][ $skin . '_select_' . $item_type . '_icon' ] );
+		$is_new   = empty( $settings[ $skin . '_' . $item_type . '_icon' ] ) && Icons_Manager::is_migration_allowed();
+
+		do_action( 'trx_addons_action_elementor_widgets_posts_before_single_post_' . $item_type, get_the_ID(), $settings );
+		
+		?><span class="trx-addons-posts-item-<?php echo esc_attr( $item_type ); ?>"><?php
+			if ( $item_icon || $select_item_icon ) {
+				?><span class="trx-addons-icon"><?php
+					if ( $is_new || $migrated ) {
+						Icons_Manager::render_icon( $select_item_icon, array( 'class' => 'trx-addons-meta-icon', 'aria-hidden' => 'true' ) );
+					} else {
+						?><span class="trx-addons-meta-icon <?php echo esc_attr( $item_icon ); ?>" aria-hidden="true"></span><?php
+					}
+				?></span><?php
+			}
+
+			if ( $item_prefix ) {
+				?><span class="trx-addons-meta-prefix"><?php
+					echo esc_attr( $item_prefix );
+				?></span><?php
+			}
+			?><span class="trx-addons-meta-text"><?php
+				if ( 'author' === $item_type ) {
+					echo wp_kses_post( $this->get_post_author( $item_link ) );
+				} elseif ( 'date' === $item_type ) {
+					if ( TrxAddonsUtils::is_tribe_events_post( get_the_ID() ) && function_exists( 'tribe_get_start_date' ) ) {
+						$date_format = $this->get_instance_value( 'date_format_select' );
+						$date_custom_format = $this->get_instance_value( 'date_custom_format' );
+
+						if ( 'custom' === $date_format && $date_custom_format ) {
+							$date_format = $date_custom_format;
+						}
+
+						$post_date = tribe_get_start_time( get_the_ID(), $date_format );
+					} else {
+						$post_date = $this->get_post_date();
+					}
+
+					if ( 'yes' === $item_link ) {
+						echo '<a href="' . esc_url( get_permalink() ) . '">' . wp_kses_post( $post_date ) . '</a>';
+					} else {
+						echo wp_kses_post( $post_date );
+					}
+				} elseif ( 'comments' === $item_type ) {
+					echo wp_kses_post( $this->get_post_comments() );
+				}
+			?></span>
+		</span>
+		<span class="trx-addons-meta-separator"><?php echo esc_html( $this->get_instance_value( 'post_meta_separator' ) ); ?></span><?php
+		
+		do_action( 'trx_addons_action_elementor_widgets_posts_after_single_post_' . $item_type, get_the_ID(), $settings );
+	}
+
+	/**
 	 * Render post title output on the frontend.
 	 *
 	 * Written in PHP and used to generate the final HTML.
@@ -4135,10 +4796,10 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 		 */
 		$post_title = apply_filters( 'trx_addons_filter_elementor_widgets_posts_posts_title', $post_title, get_the_ID() );
 		if ( $post_title ) {
-			?>
-			<?php do_action( 'trx_addons_action_elementor_widgets_posts_before_single_post_title', get_the_ID(), $settings ); ?>
-			<<?php echo esc_html( $title_tag ); ?> class="trx-addons-post-title">
-				<?php
+
+			do_action( 'trx_addons_action_elementor_widgets_posts_before_single_post_title', get_the_ID(), $settings );
+
+			?><<?php echo esc_html( $title_tag ); ?> class="trx-addons-posts-item-title"><?php
 				if ( 'yes' === $title_link ) {
 					$this->parent->add_render_attribute( $title_link_key, 'href', apply_filters( 'trx_addons_filter_elementor_widgets_posts_posts_title_link', get_the_permalink(), get_the_ID() ) );
 
@@ -4150,15 +4811,12 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 				}
 
 				echo wp_kses_post( $post_title );
-				?>
-			</<?php echo esc_html( $title_tag ); ?>>
-			<?php
+			?></<?php echo esc_html( $title_tag ); ?>><?php
+
 			if ( 'yes' === $post_title_separator ) {
-				?>
-				<div class="trx-addons-post-separator-wrap">
-					<div class="trx-addons-post-separator"></div>
-				</div>
-				<?php
+				?><div class="trx-addons-posts-item-separator-wrap">
+					<div class="trx-addons-posts-item-separator"></div>
+				</div><?php
 			}
 		}
 
@@ -4197,60 +4855,13 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 		}
 		do_action( 'trx_addons_action_elementor_widgets_posts_before_single_post_thumbnail', get_the_ID(), $settings );
 		?>
-		<div class="trx-addons-post-thumbnail">
-			<div class="trx-addons-post-thumbnail-wrap">
+		<div class="trx-addons-posts-item-thumbnail">
+			<div class="trx-addons-posts-item-thumbnail-wrap">
 				<?php echo wp_kses_post( $thumbnail_html ); ?>
 			</div>
 		</div>
 		<?php
 		do_action( 'trx_addons_action_elementor_widgets_posts_after_single_post_thumbnail', get_the_ID(), $settings );
-	}
-
-	/**
-	 * Get post excerpt length.
-	 *
-	 * Returns the length of post excerpt.
-	 *
-	 * @since 1.7.0
-	 * @access public
-	 */
-	public function pp_excerpt_length_filter() {
-		return $this->get_instance_value( 'excerpt_length' );
-	}
-
-	/**
-	 * Get post excerpt with limited words.
-	 *
-	 * Returns the excerpt with limit.
-	 *
-	 * @since 2.7.11
-	 * @access public
-	 */
-	public function pp_post_excerpt() {
-		$limit = (int) $this->pp_excerpt_length_filter();
-		$excerpt = explode( ' ', get_the_excerpt(), $limit + 1 );
-		$excerpt_more = apply_filters( 'excerpt_more', 20 );
-		if ( count( $excerpt ) >= $limit ) {
-			array_pop( $excerpt );
-			$excerpt = implode( ' ', $excerpt ) . $excerpt_more;
-		} else {
-			$excerpt = implode( ' ', $excerpt );
-		}
-		$excerpt = preg_replace( '`\[[^\]]*\]`', '', $excerpt );
-		return $excerpt;
-	}
-
-	/**
-	 * Get post excerpt end text.
-	 *
-	 * Returns the string to append to post excerpt.
-	 *
-	 * @param string $more returns string.
-	 * @since 1.7.0
-	 * @access public
-	 */
-	public function pp_excerpt_more_filter( $more ) {
-		return ' ...';
 	}
 
 	/**
@@ -4262,6 +4873,8 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 	 * @access public
 	 */
 	public function render_excerpt() {
+		static $loaded  = false;
+
 		$settings       = $this->parent->get_settings_for_display();
 		$show_excerpt   = $this->get_instance_value( 'show_excerpt' );
 		$excerpt_length = $this->get_instance_value( 'excerpt_length' );
@@ -4277,24 +4890,28 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 		}
 		?>
 		<?php do_action( 'trx_addons_action_elementor_widgets_posts_before_single_post_excerpt', get_the_ID(), $settings ); ?>
-		<div class="trx-addons-post-excerpt">
+		<div class="trx-addons-posts-item-excerpt">
 			<?php
 			if ( 'full' === $content_type ) {
 				the_content();
+				if ( ! $loaded ) {
+					wp_enqueue_style( 'wp-block-library' );
+					$loaded = true;
+				}
 			} elseif ( 'content' === $content_type ) {
 				$more = '...';
-				$post_content = wp_trim_words( get_the_content(), $content_length, apply_filters( 'pp_posts_content_limit_more', $more ) );
+				$post_content = wp_trim_words( get_the_content(), $content_length, apply_filters( 'trx_addons_filter_posts_content_limit_more', $more ) );
 				echo wp_kses_post( $post_content );
 			} else {
-				add_filter( 'excerpt_length', array( $this, 'pp_excerpt_length_filter' ), 20 );
-				add_filter( 'excerpt_more', array( $this, 'pp_excerpt_more_filter' ), 20 );
+				add_filter( 'excerpt_length', array( $this, 'excerpt_length_filter' ), 20 );
+				add_filter( 'excerpt_more', array( $this, 'excerpt_more_filter' ), 20 );
 				if ( \Elementor\Plugin::instance()->editor->is_edit_mode() ) {
-					echo $this->pp_post_excerpt();
+					echo $this->post_excerpt();
 				} else {
 					the_excerpt();
 				}
-				remove_filter( 'excerpt_length', array( $this, 'pp_excerpt_length_filter' ), 20 );
-				remove_filter( 'excerpt_more', array( $this, 'pp_excerpt_more_filter' ), 20 );
+				remove_filter( 'excerpt_length', array( $this, 'excerpt_length_filter' ), 20 );
+				remove_filter( 'excerpt_more', array( $this, 'excerpt_more_filter' ), 20 );
 			}
 			?>
 		</div>
@@ -4358,7 +4975,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 
 		$button_text          = isset( $settings[ $skin . '_button_text' ] ) ? $settings[ $skin . '_button_text' ] : $this->get_instance_value( 'button_text' );
 		$button_icon_position = $this->get_instance_value( 'button_icon_position' );
-		$button_size          = $this->get_instance_value( 'button_size' );
+		$button_size          = 'sm';	//$this->get_instance_value( 'button_size' );
 		$button_link_target   = $this->get_instance_value( 'button_link_target' );
 
 		$classes = array(
@@ -4519,6 +5136,11 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 				'prev_next' => false,
 				'show_all'  => 'yes' !== $pagination_shorten,
 			);
+
+			if ( $page_limit ) {
+				$paginate_args['end_size'] = $page_limit;
+				$paginate_args['mid_size'] = $page_limit;
+			}
 		}
 
 		if ( $has_prev_next ) {
@@ -4567,345 +5189,6 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 		}
 	}
 
-	public function get_posts_outer_wrap_classes() {
-		$layout          = $this->get_instance_value( 'layout' );
-		$pagination_type = $this->get_instance_value( 'pagination_type' );
-		$dots_position   = $this->get_instance_value( 'dots_position' );
-
-		$classes = array(
-			'trx-addons-posts-container',
-		);
-
-		if ( 'carousel' === $layout ) {
-			$classes[] = 'swiper-container-wrap swiper';
-
-			if ( $dots_position ) {
-				$classes[] = 'swiper-container-wrap-dots-' . $dots_position;
-			}
-		}
-
-		if ( 'infinite' === $pagination_type ) {
-			$classes[] = 'trx-addons-posts-infinite-scroll';
-		}
-
-		return apply_filters( 'trx_addons_filter_elementor_widgets_posts_posts_outer_wrap_classes', $classes );
-	}
-
-	public function get_posts_wrap_classes() {
-		$layout = $this->get_instance_value( 'layout' );
-
-		$classes = array(
-			'trx-addons-posts',
-			'trx-addons-posts-skin-' . $this->get_id(),
-		);
-
-		if ( 'yes' === $this->get_instance_value( 'button_alignment' ) ) {
-			$classes[] = 'trx-addons-posts-align-buttons';
-		}
-
-		if ( 'carousel' === $layout ) {
-			$classes[] = 'trx-addons-posts-carousel';
-			$classes[] = 'trx-addons-swiper-slider';
-			$classes[] = 'swiper-container';
-		} else {
-			$classes[] = 'trx-addons-elementor-grid';
-			$classes[] = 'trx-addons-posts-grid';
-		}
-
-		return apply_filters( 'trx_addons_filter_elementor_widgets_posts_posts_wrap_classes', $classes );
-	}
-
-	public function get_item_wrap_classes() {
-		$layout = $this->get_instance_value( 'layout' );
-
-		$classes = array( 'trx-addons-post-wrap' );
-
-		if ( 'carousel' === $layout ) {
-			$classes[] = 'trx-addons-carousel-item-wrap swiper-slide';
-		} else {
-			$classes[] = 'trx-addons-grid-item-wrap';
-		}
-
-		return implode( ' ', $classes );
-	}
-
-	public function get_item_classes() {
-		$layout = $this->get_instance_value( 'layout' );
-
-		$classes = array();
-
-		$classes[] = 'trx-addons-post';
-
-		if ( 'carousel' === $layout ) {
-			$classes[] = 'trx-addons-carousel-item';
-		} else {
-			$classes[] = 'trx-addons-grid-item';
-		}
-
-		return implode( ' ', $classes );
-	}
-
-	public function get_ordered_items( $items ) {
-
-		if ( ! $items ) {
-			return;
-		}
-
-		$ordered_items = array();
-
-		foreach ( $items as $item ) {
-			$order = $this->get_instance_value( $item . '_order' );
-
-			$order = ( $order ) ? $order : 1;
-
-			$ordered_items[ $item ] = $order;
-		}
-
-		asort( $ordered_items );
-
-		return $ordered_items;
-	}
-
-	/**
-	 * Render post meta output on the frontend.
-	 *
-	 * Written in PHP and used to generate the final HTML.
-	 *
-	 * @access protected
-	 */
-	protected function render_post_meta() {
-		$settings  = $this->parent->get_settings_for_display();
-		$post_meta = $this->get_instance_value( 'post_meta' );
-
-		if ( 'yes' === $post_meta ) {
-			?>
-			<?php do_action( 'trx_addons_action_elementor_widgets_posts_before_single_post_meta', get_the_ID(), $settings ); ?>
-			<div class="trx-addons-post-meta">
-				<?php
-					$meta_items = $this->get_ordered_items( Posts::get_meta_items() );
-
-				foreach ( $meta_items as $meta_item => $index ) {
-					if ( 'author' === $meta_item ) {
-						// Post Author
-						$this->render_meta_item( 'author' );
-					}
-
-					if ( 'date' === $meta_item ) {
-						// Post Date
-						$this->render_meta_item( 'date' );
-					}
-
-					if ( 'comments' === $meta_item ) {
-						// Post Comments
-						$this->render_meta_item( 'comments' );
-					}
-				}
-				?>
-			</div>
-			<?php
-			do_action( 'trx_addons_action_elementor_widgets_posts_after_single_post_meta', get_the_ID(), $settings );
-		}
-	}
-
-	/**
-	 * Render post body output on the frontend.
-	 *
-	 * Written in PHP and used to generate the final HTML.
-	 *
-	 * @access protected
-	 */
-	protected function render_post_body() {
-		$settings = $this->parent->get_settings_for_display();
-
-		$post_terms         = $this->get_instance_value( 'post_terms' );
-		$post_meta          = $this->get_instance_value( 'post_meta' );
-		$thumbnail_location = $this->get_instance_value( 'thumbnail_location' );
-
-		do_action( 'trx_addons_action_elementor_widgets_posts_before_single_post_wrap', get_the_ID(), $settings );
-		?>
-		<div <?php post_class( $this->get_item_wrap_classes() ); ?>>
-			<?php do_action( 'trx_addons_action_elementor_widgets_posts_before_single_post', get_the_ID(), $settings ); ?>
-			<div class="<?php echo esc_attr( $this->get_item_classes() ); ?>">
-				<?php
-				if ( 'outside' === $thumbnail_location ) {
-					$this->render_post_thumbnail();
-				}
-				?>
-
-				<?php do_action( 'trx_addons_action_elementor_widgets_posts_before_single_post_content', get_the_ID(), $settings ); ?>
-
-				<div class="trx-addons-post-content-wrap">
-					<div class="trx-addons-post-content">
-						<?php
-							$content_parts = $this->get_ordered_items( Posts::get_post_parts() );
-
-						foreach ( $content_parts as $part => $index ) {
-							if ( 'thumbnail' === $part ) {
-								if ( 'inside' === $thumbnail_location ) {
-									$this->render_post_thumbnail();
-								}
-							}
-
-							if ( 'terms' === $part ) {
-								$this->render_terms();
-							}
-
-							if ( 'title' === $part ) {
-								$this->render_post_title();
-							}
-
-							if ( 'meta' === $part ) {
-								$this->render_post_meta();
-							}
-
-							if ( 'excerpt' === $part ) {
-								$this->render_excerpt();
-							}
-						}
-						?>
-					</div>
-					<?php
-						if ( 'button' === $part ) {
-							$this->render_button();
-						}
-					?>
-				</div>
-
-				<?php do_action( 'trx_addons_action_elementor_widgets_posts_after_single_post_content', get_the_ID(), $settings ); ?>
-			</div>
-			<?php do_action( 'trx_addons_action_elementor_widgets_posts_after_single_post', get_the_ID(), $settings ); ?>
-		</div>
-		<?php
-		do_action( 'trx_addons_action_elementor_widgets_posts_after_single_post_wrap', get_the_ID(), $settings );
-	}
-
-	/**
-	 * Render Search Form HTML.
-	 *
-	 * Returns the Search Form HTML.
-	 *
-	 * @since 1.4.11.0
-	 * @access public
-	 */
-	public function render_search() {
-		$settings = $this->parent->get_settings_for_display();
-		?>
-		<div class="trx-addons-posts-empty">
-			<?php if ( $settings['nothing_found_message'] ) { ?>
-				<p><?php echo wp_kses_post( $settings['nothing_found_message'] ); ?></p>
-			<?php } ?>
-
-			<?php if ( 'yes' === $settings['show_search_form'] ) { ?>
-				<?php get_search_form(); ?>
-			<?php } ?>
-		</div>
-		<?php
-	}
-
-	/**
-	 * Carousel Settings.
-	 *
-	 * @access public
-	 */
-	public function slider_settings() {
-		$skin            = $this->get_id();
-		$center_mode     = $this->get_instance_value( 'center_mode' );
-		$autoplay        = $this->get_instance_value( 'autoplay' );
-		$autoplay_speed  = $this->get_instance_value( 'autoplay_speed' );
-		$arrows          = $this->get_instance_value( 'arrows' );
-		$arrow           = $this->get_instance_value( 'arrow' );
-		$select_arrow    = $this->get_instance_value( 'select_arrow' );
-		$dots            = $this->get_instance_value( 'dots' );
-		$animation_speed = $this->get_instance_value( 'animation_speed' );
-		$infinite_loop   = $this->get_instance_value( 'infinite_loop' );
-		$pause_on_hover  = $this->get_instance_value( 'pause_on_hover' );
-		$adaptive_height = $this->get_instance_value( 'adaptive_height' );
-		$direction       = $this->get_instance_value( 'direction' );
-
-		$slides_to_show          = ( $this->get_instance_value( 'columns' ) !== '' ) ? absint( $this->get_instance_value( 'columns' ) ) : 3;
-		$slides_to_show_tablet   = ( $this->get_instance_value( 'columns_tablet' ) !== '' ) ? absint( $this->get_instance_value( 'columns_tablet' ) ) : 2;
-		$slides_to_show_mobile   = ( $this->get_instance_value( 'columns_mobile' ) !== '' ) ? absint( $this->get_instance_value( 'columns_mobile' ) ) : 2;
-		$slides_to_scroll        = ( $this->get_instance_value( 'slides_to_scroll' ) !== '' ) ? absint( $this->get_instance_value( 'slides_to_scroll' ) ) : 1;
-		$slides_to_scroll_tablet = ( $this->get_instance_value( 'slides_to_scroll_tablet' ) !== '' ) ? absint( $this->get_instance_value( 'slides_to_scroll_tablet' ) ) : 1;
-		$slides_to_scroll_mobile = ( $this->get_instance_value( 'slides_to_scroll_mobile' ) !== '' ) ? absint( $this->get_instance_value( 'slides_to_scroll_mobile' ) ) : 1;
-
-		/* if ( 'right' === $direction ) {
-			$slider_options['rtl'] = true;
-		} */
-
-		$slider_options = [
-			'direction'             => 'horizontal',
-			'speed'                 => ( $animation_speed ) ? absint( $animation_speed ) : 600,
-			'slidesPerView'         => $slides_to_show,
-			'autoHeight'            => ( 'yes' === $adaptive_height ),
-			'watchSlidesVisibility' => true,
-			'centeredSlides'        => ( 'yes' === $center_mode ),
-			'loop'                  => ( 'yes' === $infinite_loop ),
-		];
-
-		if ( 'yes' === $autoplay ) {
-			$autoplay_speed = ( $autoplay_speed ) ? $autoplay_speed : 999999;
-		} else {
-			$autoplay_speed = 999999;
-		}
-
-		$slider_options['autoplay'] = [
-			'delay'                => $autoplay_speed,
-			'pauseOnHover'         => ( 'yes' === $pause_on_hover ),
-			'disableOnInteraction' => ( 'yes' === $pause_on_hover ),
-		];
-
-		if ( 'yes' === $dots ) {
-			$slider_options['pagination'] = [
-				'el'                 => '.swiper-pagination-' . esc_attr( $this->parent->get_id() ),
-				'clickable'          => true,
-			];
-		}
-
-		if ( 'yes' === $arrows ) {
-			$slider_options['navigation'] = [
-				'nextEl'             => '.swiper-button-next-' . esc_attr( $this->parent->get_id() ),
-				'prevEl'             => '.swiper-button-prev-' . esc_attr( $this->parent->get_id() ),
-			];
-		}
-
-		$elementor_bp_lg = get_option( 'elementor_viewport_lg' );
-		$elementor_bp_md = get_option( 'elementor_viewport_md' );
-		$bp_desktop      = ! empty( $elementor_bp_lg ) ? $elementor_bp_lg : 1025;
-		$bp_tablet       = ! empty( $elementor_bp_md ) ? $elementor_bp_md : 768;
-		$bp_mobile       = 320;
-
-		$items        = ( isset( $settings['items']['size'] ) && '' !== $settings['items']['size'] ) ? absint( $settings['items']['size'] ) : 3;
-		$items_tablet = ( isset( $settings['items_tablet']['size'] ) && '' !== $settings['items_tablet']['size'] ) ? absint( $settings['items_tablet']['size'] ) : 2;
-		$items_mobile = ( isset( $settings['items_mobile']['size'] ) && '' !== $settings['items_mobile']['size'] ) ? absint( $settings['items_mobile']['size'] ) : 1;
-
-		$margin        = ( isset( $settings['margin']['size'] ) && '' !== $settings['margin']['size'] ) ? absint( $settings['margin']['size'] ) : 10;
-		$margin_tablet = ( isset( $settings['margin_tablet']['size'] ) && '' !== $settings['margin_tablet']['size'] ) ? absint( $settings['margin_tablet']['size'] ) : 10;
-		$margin_mobile = ( isset( $settings['margin_mobile']['size'] ) && '' !== $settings['margin_mobile']['size'] ) ? absint( $settings['margin_mobile']['size'] ) : 10;
-
-		$slider_options['breakpoints'] = [
-			$bp_desktop => [
-				'slidesPerView' => $slides_to_show,
-				//'spaceBetween'  => $margin,
-			],
-			$bp_tablet  => [
-				'slidesPerView' => $slides_to_show_tablet,
-				//'spaceBetween'  => $margin_tablet,
-			],
-			$bp_mobile  => [
-				'slidesPerView' => $slides_to_show_mobile,
-				//'spaceBetween'  => $margin_mobile,
-			],
-		];
-
-		$this->parent->add_render_attribute(
-			'posts-wrap',
-			array(
-				'data-slider-settings' => wp_json_encode( $slider_options ),
-			)
-		);
-	}
-
 	/**
 	 * Render team member carousel dots output on the frontend.
 	 *
@@ -4930,7 +5213,7 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 	}
 
 	/**
-	 * Render team member carousel arrows output on the frontend.
+	 * Render carousel arrows output on the frontend.
 	 *
 	 * Written in PHP and used to generate the final HTML.
 	 *
@@ -5002,206 +5285,4 @@ abstract class BaseSkin extends Elementor_Skin_Base {
 		}
 	}
 
-	/**
-	 * Render posts grid widget output on the frontend.
-	 *
-	 * Written in PHP and used to generate the final HTML.
-	 *
-	 * @access protected
-	 */
-	public function render() {
-		$settings = $this->parent->get_settings_for_display();
-
-		$query_type          = $settings['query_type'];
-		$layout              = $this->get_instance_value( 'layout' );
-		$pagination_type     = $this->get_instance_value( 'pagination_type' );
-		$pagination_position = $this->get_instance_value( 'pagination_position' );
-		$equal_height        = $this->get_instance_value( 'equal_height' );
-		$direction           = $this->get_instance_value( 'direction' );
-		$skin                = $this->get_id();
-		$posts_outer_wrap    = $this->get_posts_outer_wrap_classes();
-		$posts_wrap          = $this->get_posts_wrap_classes();
-		$page_id             = '';
-		if ( null !== \Elementor\Plugin::$instance->documents->get_current() ) {
-			$page_id = \Elementor\Plugin::$instance->documents->get_current()->get_main_id();
-		}
-
-		$this->parent->add_render_attribute( 'posts-container', 'class', $posts_outer_wrap );
-
-		$this->parent->add_render_attribute( 'posts-wrap', 'class', $posts_wrap );
-
-		if ( 'carousel' === $layout ) {
-			if ( 'yes' === $equal_height ) {
-				$this->parent->add_render_attribute( 'posts-wrap', 'data-equal-height', 'yes' );
-			}
-			if ( 'right' === $direction ) {
-				$this->parent->add_render_attribute( 'posts-wrap', 'dir', 'rtl' );
-			}
-		}
-
-		$this->parent->add_render_attribute(
-			'posts-wrap',
-			array(
-				'data-query-type' => $query_type,
-				'data-layout'     => $layout,
-				'data-page'       => $page_id,
-				'data-skin'       => $skin,
-			)
-		);
-
-		$this->parent->add_render_attribute( 'post-categories', 'class', 'trx-addons-post-categories' );
-
-		$filter   = '';
-		$taxonomy = '';
-
-		$this->parent->query_posts( $filter, $taxonomy );
-		$query = $this->parent->get_query();
-
-		if ( 'carousel' === $layout ) {
-			$this->slider_settings();
-		}
-
-		if ( ! $query->found_posts ) {
-			?>
-			<div <?php echo wp_kses_post( $this->parent->get_render_attribute_string( 'posts-container' ) ); ?>>
-			<?php
-			$this->render_search();
-			?>
-			</div>
-			<?php
-			return;
-		}
-
-		do_action( 'trx_addons_action_elementor_widgets_posts_before_posts_outer_wrap', $settings );
-		?>
-		<div <?php echo wp_kses_post( $this->parent->get_render_attribute_string( 'posts-container' ) ); ?>>
-			<?php
-			do_action( 'trx_addons_action_elementor_widgets_posts_before_posts_wrap', $settings );
-
-			$i = 1;
-
-			$total_pages = $query->max_num_pages;
-			?>
-
-			<?php if ( 'carousel' !== $layout ) { ?>
-				<?php if ( ( 'numbers' === $pagination_type || 'numbers_and_prev_next' === $pagination_type ) && ( 'top' === $pagination_position || 'top-bottom' === $pagination_position ) ) { ?>
-				<div class="trx-addons-posts-pagination-wrap trx-addons-posts-pagination-top">
-					<?php
-						$this->render_pagination();
-					?>
-				</div>
-				<?php } ?>
-			<?php } ?>
-
-			<div <?php echo wp_kses_post( $this->parent->get_render_attribute_string( 'posts-wrap' ) ); ?>>
-				<?php if ( 'carousel' === $layout ) { ?><div class="swiper-wrapper"><?php } ?>
-					<?php
-					$i = 1;
-
-					if ( $query->have_posts() ) :
-						while ( $query->have_posts() ) :
-							$query->the_post();
-
-							$this->render_post_body();
-
-							$i++;
-
-						endwhile;
-					endif;
-					wp_reset_postdata();
-					?>
-				<?php if ( 'carousel' === $layout ) { ?></div><?php } ?>
-			</div>
-			<?php
-				$this->render_dots();
-
-				$this->render_arrows();
-			?>
-
-			<?php do_action( 'trx_addons_action_elementor_widgets_posts_after_posts_wrap', $settings ); ?>
-
-			<?php if ( 'load_more' === $pagination_type || 'infinite' === $pagination_type ) { ?>
-			<div class="trx-addons-posts-loader"></div>
-			<?php } ?>
-
-			<?php
-			if ( 'load_more' === $pagination_type || 'infinite' === $pagination_type ) {
-				$pagination_bottom = true;
-			} elseif ( ( 'numbers' === $pagination_type || 'numbers_and_prev_next' === $pagination_type ) && ( '' === $pagination_position || 'bottom' === $pagination_position || 'top-bottom' === $pagination_position ) ) {
-				$pagination_bottom = true;
-			} else {
-				$pagination_bottom = false;
-			}
-			?>
-
-			<?php if ( 'carousel' !== $layout ) { ?>
-				<?php if ( $pagination_bottom ) { ?>
-				<div class="trx-addons-posts-pagination-wrap trx-addons-posts-pagination-bottom">
-					<?php
-						$this->render_pagination();
-					?>
-				</div>
-				<?php } ?>
-			<?php } ?>
-		</div>
-
-		<?php do_action( 'trx_addons_action_elementor_widgets_posts_after_posts_outer_wrap', $settings ); ?>
-
-		<?php
-		if ( \Elementor\Plugin::instance()->editor->is_edit_mode() ) {
-			if ( 'masonry' === $layout ) {
-				$this->render_editor_script();
-			}
-		}
-	}
-
-	/**
-	 * Get masonry script.
-	 *
-	 * Returns the post masonry script.
-	 *
-	 * @since 1.7.0
-	 * @access public
-	 */
-	public function render_editor_script() {
-		$settings = $this->parent->get_settings_for_display();
-		$layout   = $this->get_instance_value( 'layout' );
-
-		if ( 'masonry' !== $layout ) {
-			return;
-		}
-
-		$layout = 'masonry';
-
-		?>
-		<script type="text/javascript">
-
-			jQuery( document ).ready( function( $ ) {
-				$( '.trx-addons-posts-grid' ).each( function() {
-
-					var $node_id 	= '<?php echo esc_attr( $this->parent->get_id() ); ?>',
-						$scope 		= $( '[data-id="' + $node_id + '"]' ),
-						$selector 	= $(this);
-
-					if ( $selector.closest( $scope ).length < 1 ) {
-						return;
-					}
-
-					$selector.imagesLoaded( function() {
-
-						$isotopeObj = $selector.isotope({
-							layoutMode: '<?php echo esc_attr( $layout ); ?>',
-							itemSelector: '.trx-addons-grid-item-wrap',
-						});
-
-						$selector.find( '.trx-addons-grid-item-wrap' ).resize( function() {
-							$isotopeObj.isotope( 'layout' );
-						});
-					});
-				});
-			});
-
-		</script>
-		<?php
-	}
 }

@@ -372,7 +372,7 @@ if ( ! class_exists('TRX_Addons_SOW_Widget_Blogger') ) {
 
 			do_action('trx_addons_action_before_widget_meta', $instance, 'trx_addons_sow_widget_blogger', $this);
 
-			$meta_parts = apply_filters('trx_addons_filter_get_list_meta_parts', array());
+			$meta_parts = trx_addons_get_list_meta_parts();
 			$this->show_field(array('name' => 'meta_parts',
 				'title' => __('Choose meta parts', 'trx_addons'),
 				'dependency' => array(

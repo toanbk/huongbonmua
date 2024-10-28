@@ -103,7 +103,7 @@ if ( !function_exists( 'trx_addons_sc_switcher_check_in_html_output' ) ) {
 */
 if ( ! function_exists( 'trx_addons_sc_switcher' ) ) {
 	function trx_addons_sc_switcher( $atts, $content = '' ) {	
-		$atts = trx_addons_sc_prepare_atts( 'trx_sc_switcher', $atts, trx_addons_sc_common_atts( 'id,title', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_switcher', $atts, trx_addons_sc_common_atts( 'trx_sc_switcher', 'id,title', array(
 			// Individual params
 			"type" => "default",
 			"effect" => "swap",
@@ -124,8 +124,7 @@ if ( ! function_exists( 'trx_addons_sc_switcher' ) ) {
 			"slide2_template" => "",
 			"slide2_content" => "",
 			"slides" => "",
-			) )
-		);
+		) ) );
 		// Load shortcode-specific scripts and styles
 		trx_addons_sc_switcher_load_scripts_front( true );
 		// Load template

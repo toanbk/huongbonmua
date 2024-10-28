@@ -81,11 +81,6 @@
   overflow: hidden;
 }
 
-.trx_addons_audio_player.with_cover .audio_caption,
-.trx_addons_audio_player.with_cover .audio_description {
-  color: #fff;
-}
-
 .trx_addons_audio_player .audio_author,
 .trx_addons_audio_player .audio_caption {
   margin: 0.5em 0 1em;
@@ -124,6 +119,13 @@
   text-transform: uppercase;
   z-index: 2;
   position: relative;
+}
+
+.trx_addons_audio_wrap.with_cover .trx_addons_audio_navigation,
+.trx_addons_audio_player.with_cover .audio_now_playing,
+.trx_addons_audio_player.with_cover .audio_author,
+.trx_addons_audio_player.with_cover .audio_caption,
+.trx_addons_audio_player.with_cover .audio_description {
   color: #fff;
 }
 

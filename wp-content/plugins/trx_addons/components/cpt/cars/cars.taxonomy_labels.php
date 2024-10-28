@@ -101,7 +101,7 @@ if (!function_exists('trx_addons_cpt_cars_taxonomy_labels_admin_clear_cache_labe
 	add_action( 'edited_'.TRX_ADDONS_CPT_CARS_TAXONOMY_LABELS, 'trx_addons_cpt_cars_taxonomy_labels_admin_clear_cache_labels', 10, 1 );
 	add_action( 'delete_'.TRX_ADDONS_CPT_CARS_TAXONOMY_LABELS, 'trx_addons_cpt_cars_taxonomy_labels_admin_clear_cache_labels', 10, 1 );
 	add_action( 'created_'.TRX_ADDONS_CPT_CARS_TAXONOMY_LABELS, 'trx_addons_cpt_cars_taxonomy_labels_admin_clear_cache_labels', 10, 1 );
-	function trx_addons_cpt_cars__taxonomy_labelsadmin_clear_cache_labels( $term_id=0 ) {  
+	function trx_addons_cpt_cars_taxonomy_labels_admin_clear_cache_labels( $term_id=0 ) {  
 		trx_addons_admin_clear_cache_terms(TRX_ADDONS_CPT_CARS_TAXONOMY_LABELS);
 	}
 }

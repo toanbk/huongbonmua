@@ -20,7 +20,7 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_widget_twitter' ) ) {
 	function trx_addons_sc_widget_twitter($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_widget_twitter', $atts, trx_addons_sc_common_atts('id,slider', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_widget_twitter', $atts, trx_addons_sc_common_atts( 'trx_widget_twitter', 'id,slider', array(
 			// Individual params
 			"type" => 'list',
 			"title" => "",
@@ -43,8 +43,7 @@ if ( !function_exists( 'trx_addons_sc_widget_twitter' ) ) {
 			"token_key" => "",
 			"token_secret" => "",
 			"twitter_api" => "token"
-			))
-		);
+		) ) );
 		if ($atts['follow']=='') $atts['follow'] = 0;
 		if ($atts['embed_header']=='') $atts['embed_header'] = 0;
 		if ($atts['embed_footer']=='') $atts['embed_footer'] = 0;

@@ -21,6 +21,7 @@
 .sc_switcher_controls_section_title {
 	margin: 0 !important;
 	cursor: pointer;
+	@include transition-property(color);
 }
 .sc_switcher_controls_toggle {
 	@include box(5.6em, 2.6em);
@@ -45,6 +46,52 @@
 	@include translateX(3em);
 }
 
+/* Type 'Modern' */
+.sc_switcher_modern {
+	.sc_switcher_content {
+		@include flex;
+		@include flex-direction(column);
+		@include flex-justify-content(flex-start);
+		@include flex-align-items(center);
+	}
+	.sc_switcher_controls {
+		@include inline-flex;
+		vertical-align: top;
+		@include flex-justify-content(space-between);
+		@include flex-align-items(center);
+		@include flex-wrap(nowrap);
+		position: relative;
+		padding: 0;
+	}
+	.sc_switcher_controls_toggle {
+		@include abs-lt(0,0);
+		@include box(100%, 3.6em);
+	}
+	.sc_switcher_controls_toggle_button {
+		width: calc( 50% - 0.2em );
+		height: 3.2em;
+		@include border-radius(1.5em);
+	}
+	.sc_switcher_controls_toggle:not(.sc_switcher_controls_toggle_on) .sc_switcher_controls_toggle_button {
+		@include translateX(100%);
+	}	
+	.sc_switcher_controls_section1,
+	.sc_switcher_controls_section2 {
+		@include flex-grow(1);
+		@include flex-shrink(0);
+		position: relative;
+		z-index: 2;
+		width: 50%;
+		padding: 0.5em 1.5em;
+		margin: 0;
+		text-align: center;
+		text-wrap: nowrap;
+	}
+	.sc_switcher_sections {
+		width: 100%;
+	}
+}
+
 /* Type 'Tabs' */
 .sc_switcher_tabs_controls {
 	@include flex;
@@ -57,6 +104,7 @@
 	position: relative;
 	border: 1px solid #e0e0e0;
 	padding: 2em;
+	@include transition-colors;
 
 	& + & {
 		margin-left: 2em;

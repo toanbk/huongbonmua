@@ -109,7 +109,7 @@ if ( !function_exists( 'trx_addons_sc_hscroll_check_in_html_output' ) ) {
 */
 if ( ! function_exists( 'trx_addons_sc_hscroll' ) ) {
 	function trx_addons_sc_hscroll( $atts, $content = '' ) {	
-		$atts = trx_addons_sc_prepare_atts( 'trx_sc_hscroll', $atts, trx_addons_sc_common_atts( 'id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_hscroll', $atts, trx_addons_sc_common_atts( 'trx_sc_hscroll', 'id', array(
 			// Individual params
 			"type" => "default",
 			"slides" => "",
@@ -124,8 +124,7 @@ if ( ! function_exists( 'trx_addons_sc_hscroll' ) ) {
 			"progress_position" => "bottom",
 			"speed" => 10,
 			"disable_on_mobile" => 1,
-			) )
-		);
+		) ) );
 		if ( function_exists( 'vc_param_group_parse_atts' ) && ! is_array( $atts['slides'] ) ) {
 			$atts['slides'] = (array) vc_param_group_parse_atts( $atts['slides'] );
 		}

@@ -252,7 +252,7 @@ if ( !function_exists( 'trx_addons_sc_form_field_send' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_form' ) ) {
 	function trx_addons_sc_form($atts, $content = '') {	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_form', $atts, trx_addons_sc_common_atts('id,title', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_form', $atts, trx_addons_sc_common_atts( 'trx_sc_form', 'id,title', array(
 			// Individual params
 			"type" => "default",
 			"style" => "inherit",
@@ -262,12 +262,11 @@ if ( !function_exists( 'trx_addons_sc_form' ) ) {
 			"phone" => "",
 			"email" => "",
 			"address" => "",
-			))
-		);
+		) ) );
 
 		ob_start();
 		if (empty($atts['style']) || trx_addons_is_inherit($atts['style'])) 
-			$atts['style'] = trx_addons_get_option('input_hover');
+			$atts['style'] = trx_addons_get_option( 'input_hover', 'default' );
 		if (!empty($atts['email'])) {
 			$atts['form_data'] = mt_rand();
 			set_transient("trx_addons_form_data_{$atts['form_data']}", str_replace(array(' ', ',', ';'), '|', $atts['email']), 60*60);

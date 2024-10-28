@@ -141,7 +141,7 @@ if ( !function_exists( 'trx_addons_get_upgrade_data' ) ) {
 						'src'        => $theme_info['theme_pro_key'],
 						'theme_slug' => $theme_info['theme_slug'],
 						'theme_name' => $theme_info['theme_name'],
-						'domain'     => trx_addons_remove_protocol( get_home_url(), true ),
+						'domain'     => trx_addons_remove_protocol( home_url(), true ),
 					),
 					$params
 				);
@@ -524,7 +524,7 @@ if ( !function_exists( 'trx_addons_theme_panel_section_general' ) ) {
 							</p>
 							<p class="trx_addons_theme_panel_section_license_domain">
 								<span class="trx_addons_theme_panel_section_license_domain_label"><?php esc_html_e( 'Domain:', 'trx_addons' ); ?></span>
-								<span class="trx_addons_theme_panel_section_license_domain_state"><?php echo esc_html( trx_addons_remove_protocol( get_home_url(), true ) ); ?></span>
+								<span class="trx_addons_theme_panel_section_license_domain_state"><?php echo esc_html( trx_addons_remove_protocol( home_url(), true ) ); ?></span>
 							</p>
 						</div>
 						<div class="trx_addons_theme_panel_section_license_buttons">
@@ -873,7 +873,7 @@ if ( !function_exists( 'trx_addons_theme_panel_activation_form' ) ) {
 															. esc_url( 'https://api.extensions.envato.com/extensions/begin_activation'
 																. '?extension_id=bec21c4c-b621-4fef-9080-cf24c6415957'
 																. '&extension_type=envato-wordpress'
-																. '&extension_description=' . wp_get_theme()->get( 'Name' ) . ' (' . get_home_url() . ')'
+																. '&extension_description=' . wp_get_theme()->get( 'Name' ) . ' (' . home_url() . ')'
 																. '&utm_content=settings'
 																)
 														. '" target="_blank">'
@@ -885,7 +885,7 @@ if ( !function_exists( 'trx_addons_theme_panel_activation_form' ) ) {
 															. esc_url( 'https://api.extensions.envato.com/extensions/begin_activation'
 																. '?extension_id=7c7270f606fb77cc9c8b45ccad352290'
 																. '&extension_type=envato-wordpress'
-																. '&extension_description=' . wp_get_theme()->get( 'Name' ) . ' (' . get_home_url() . ')'
+																. '&extension_description=' . wp_get_theme()->get( 'Name' ) . ' (' . home_url() . ')'
 																)
 														. '" target="_blank">'
 																. esc_html__('an alternative link', 'trx_addons')

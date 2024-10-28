@@ -403,7 +403,7 @@ if ( ! function_exists( 'trx_addons_add_og_tags' ) ) {
 	 */
 	function trx_addons_add_og_tags() {
 		global $wp_query;
-		if ( is_admin() || trx_addons_is_off( trx_addons_get_option( 'add_og_tags' ) ) ) {
+		if ( is_admin() || trx_addons_is_off( trx_addons_get_option( 'add_og_tags', 0 ) ) ) {
 			return;
 		}
 		if ( trx_addons_is_singular() && ( ! isset( $wp_query->is_posts_page ) || $wp_query->is_posts_page != 1 ) && ! is_home() && ! is_front_page() && ! empty( $wp_query->post ) ) {

@@ -6,6 +6,11 @@
  * @since v1.6.08
  */
 
-if ( ($trx_addons_breadcrumbs = trx_addons_get_breadcrumbs()) != '') {
-	?><div class="breadcrumbs"><?php trx_addons_show_layout($trx_addons_breadcrumbs); ?></div><?php
+$args = get_query_var( 'trx_addons_args_show_breadcrumbs' );
+if ( ! is_array( $args ) ) {
+	$args = array();
+}
+
+if ( ( $trx_addons_breadcrumbs = trx_addons_get_breadcrumbs( $args ) ) != '' ) {
+	?><div class="breadcrumbs"><?php trx_addons_show_layout( $trx_addons_breadcrumbs ); ?></div><?php
 }

@@ -23,13 +23,12 @@ if ( !function_exists( 'trx_addons_sc_testimonials' ) ) {
 		// Exit to prevent recursion
 		if (trx_addons_sc_stack_check('trx_sc_testimonials')) return '';
 
-		$atts = trx_addons_sc_prepare_atts('trx_sc_testimonials', $atts, trx_addons_sc_common_atts('id,title,slider,query', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_testimonials', $atts, trx_addons_sc_common_atts( 'trx_sc_testimonials', 'id,title,slider,query', array(
 			// Individual params
 			"type" => "default",
 			"use_initials" => false,
 			"rating" => 0
-			))
-		);
+		) ) );
 
 		$atts['rating'] = max(0, min(1, (int) $atts['rating']));
 		if (!empty($atts['ids'])) {

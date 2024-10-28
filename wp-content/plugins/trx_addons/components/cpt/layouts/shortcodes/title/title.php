@@ -40,7 +40,7 @@ if ( !function_exists( 'trx_addons_sc_layouts_title_merge_styles' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_layouts_title' ) ) {
 	function trx_addons_sc_layouts_title($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_layouts_title', $atts, trx_addons_sc_common_atts('id,hide', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_layouts_title', $atts, trx_addons_sc_common_atts( 'trx_sc_layouts_title', 'id,hide', array(
 			// Individual params
 			"type" => "default",
 			"image" => "",
@@ -51,8 +51,7 @@ if ( !function_exists( 'trx_addons_sc_layouts_title' ) ) {
 			"title" => "0",
 			"breadcrumbs" => "0",
 			"description" => "0",
-			))
-		);
+		) ) );
 
 		ob_start();
 		trx_addons_get_template_part(array(

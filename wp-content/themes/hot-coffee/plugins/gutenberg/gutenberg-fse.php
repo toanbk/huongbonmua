@@ -169,7 +169,7 @@ if ( ! function_exists( 'hot_coffee_gutenberg_fse_update_theme_json' ) ) {
 			$new_skin = hot_coffee_skins_get_active_skin_name();
 		}
 		// If the current skin supports FSE
-		if ( ! empty( $new_skin ) && is_dir( HOT_COFFEE_THEME_DIR . hot_coffee_skins_get_current_skin_dir( $new_skin ) . '_fse' ) ) {
+		if ( ! empty( $new_skin ) ) {	// && is_dir( HOT_COFFEE_THEME_DIR . hot_coffee_skins_get_current_skin_dir( $new_skin ) . '_fse' ) ) {
 			$theme_json_data = hot_coffee_gutenberg_fse_theme_json_data();
 			if ( ! empty( $theme_json_data ) && is_array( $theme_json_data ) ) {
 				hot_coffee_fpc( hot_coffee_prepare_path( HOT_COFFEE_THEME_DIR . 'theme.json' ), json_encode( $theme_json_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) );
@@ -190,68 +190,10 @@ if ( ! function_exists( 'hot_coffee_gutenberg_fse_theme_json_data' ) ) {
 
 		$data = array(
 
+					"\$schema" => "https://schemas.wp.org/trunk/theme.json",
+
 					"version" => 2,
 					
-					// Theme-specific templates for posts, pages, etc.
-					"customTemplates" => array(
-						array(
-							"name"      => "blog",
-							"title"     => esc_html__( "Blog archive", 'hot-coffee' ),
-							"postTypes" => array(
-								"page"
-							)
-						)
-					),
-
-					// Theme-specific template parts
-					"templateParts" => array(
-						array(
-							"name"  => "header",
-							"title" => esc_html__( "Header for FSE", 'hot-coffee' ),
-							"area"  => HOT_COFFEE_FSE_TEMPLATE_PART_AREA_HEADER,
-						),
-						array(
-							"name"  => "sidebar",
-							"title" => esc_html__( "Sidebar for FSE", 'hot-coffee' ),
-							"area"  => HOT_COFFEE_FSE_TEMPLATE_PART_AREA_SIDEBAR,
-						),
-						array(
-							"name"  => "content-404",
-							"title" => esc_html__( "Page 404 content", 'hot-coffee' ),
-							"area"  => WP_TEMPLATE_PART_AREA_UNCATEGORIZED,
-						),
-						array(
-							"name"  => "none-archive",
-							"title" => esc_html__( "No posts found", 'hot-coffee' ),
-							"area"  => WP_TEMPLATE_PART_AREA_UNCATEGORIZED,
-						),
-						array(
-							"name"  => "none-search",
-							"title" => esc_html__( "Nothing matched search", 'hot-coffee' ),
-							"area"  => WP_TEMPLATE_PART_AREA_UNCATEGORIZED,
-						),
-						array(
-							"name"  => "blog-post-standard",
-							"title" => esc_html__( "Blog post item: Standard", 'hot-coffee' ),
-							"area"  => WP_TEMPLATE_PART_AREA_UNCATEGORIZED,
-						),
-						array(
-							"name"  => "blog-post-header",
-							"title" => esc_html__( "Blog post header", 'hot-coffee' ),
-							"area"  => WP_TEMPLATE_PART_AREA_UNCATEGORIZED,
-						),
-						array(
-							"name"  => "blog-pagination",
-							"title" => esc_html__( "Blog pagination", 'hot-coffee' ),
-							"area"  => WP_TEMPLATE_PART_AREA_UNCATEGORIZED,
-						),
-						array(
-							"name"  => "footer",
-							"title" => esc_html__( "Footer for FSE", 'hot-coffee' ),
-							"area"  => WP_TEMPLATE_PART_AREA_FOOTER,
-						),
-					),
-
 					// General settings
 					"settings" => array(
 
@@ -271,7 +213,8 @@ if ( ! function_exists( 'hot_coffee_gutenberg_fse_theme_json_data' ) ) {
 
 						// Typography
 						"typography" => array(
-							"dropCap"      => true,
+							"fluid"   =>  true,
+							"dropCap" => true,
 /*
 							// Font family - can be used below as CSS-vars
 							// For example: var(--wp--preset--font-family--xxx)
@@ -541,18 +484,23 @@ if ( ! function_exists( 'hot_coffee_gutenberg_fse_theme_json_data' ) ) {
 				"name"     => esc_html__( 'Diagonal from link color to hover color', 'hot-coffee' ),
 			);
 		}
-/*
+
 		// Add fonts
 		$fonts = hot_coffee_get_theme_fonts();
+		$added = array();
 		foreach( $fonts as $tag => $font ) {
+			if ( ! in_array( $font['font-family'], $added ) ) {
+				$added[] = $font['font-family'];
+				$data['settings']['typography']['fontFamilies'][] = array(
+					"fontFamily" => $font['font-family'],
+					"name"       => $font['font-family'], //$font['title'],
+					"slug"       => "{$tag}-font",
+				);
+			}
+/*			
 			if ( ! in_array( $tag, array( 'button', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ) ) ) {
 				continue;
 			}
-			$data['settings']['typography']['fontFamilies'][] = array(
-				"fontFamily" => $font['font-family'],
-				"name"       => $font['title'],
-				"slug"       => "{$tag}-font",
-			);
 			$data['settings']['typography']['fontSizes'][] = array(
 				"size"       => $font['font-size'],
 				"slug"       => "{$tag}-font",
@@ -569,12 +517,76 @@ if ( ! function_exists( 'hot_coffee_gutenberg_fse_theme_json_data' ) ) {
 				"size"       => ! empty( $font['letter-spacing'] ) ? $font['letter-spacing'] : '0',
 				"slug"       => "{$tag}-font",
 			);
-		}
 */
+		}
+
 		// Layout dimensions
 		$vars = hot_coffee_get_theme_vars();
 		$data['settings']['layout']['contentSize'] = ( $vars['page_width'] - $vars['sidebar_width'] - $vars['sidebar_gap'] ) . 'px';
 		$data['settings']['layout']['wideSize']    = $vars['page_width'] . 'px';
+
+		// Add templates for FSE themes
+		if ( hot_coffee_gutenberg_is_fse_theme() ) {
+			// Theme-specific templates for posts, pages, etc.
+			$data['customTemplates'] = array(
+				array(
+					"name"      => "blog",
+					"title"     => esc_html__( "Blog archive", 'hot-coffee' ),
+					"postTypes" => array(
+						"page"
+					)
+				)
+			);
+
+			// Theme-specific template parts
+			$data['templateParts'] = array(
+				array(
+					"name"  => "header",
+					"title" => esc_html__( "Header for FSE", 'hot-coffee' ),
+					"area"  => HOT_COFFEE_FSE_TEMPLATE_PART_AREA_HEADER,
+				),
+				array(
+					"name"  => "sidebar",
+					"title" => esc_html__( "Sidebar for FSE", 'hot-coffee' ),
+					"area"  => HOT_COFFEE_FSE_TEMPLATE_PART_AREA_SIDEBAR,
+				),
+				array(
+					"name"  => "content-404",
+					"title" => esc_html__( "Page 404 content", 'hot-coffee' ),
+					"area"  => WP_TEMPLATE_PART_AREA_UNCATEGORIZED,
+				),
+				array(
+					"name"  => "none-archive",
+					"title" => esc_html__( "No posts found", 'hot-coffee' ),
+					"area"  => WP_TEMPLATE_PART_AREA_UNCATEGORIZED,
+				),
+				array(
+					"name"  => "none-search",
+					"title" => esc_html__( "Nothing matched search", 'hot-coffee' ),
+					"area"  => WP_TEMPLATE_PART_AREA_UNCATEGORIZED,
+				),
+				array(
+					"name"  => "blog-post-standard",
+					"title" => esc_html__( "Blog post item: Standard", 'hot-coffee' ),
+					"area"  => WP_TEMPLATE_PART_AREA_UNCATEGORIZED,
+				),
+				array(
+					"name"  => "blog-post-header",
+					"title" => esc_html__( "Blog post header", 'hot-coffee' ),
+					"area"  => WP_TEMPLATE_PART_AREA_UNCATEGORIZED,
+				),
+				array(
+					"name"  => "blog-pagination",
+					"title" => esc_html__( "Blog pagination", 'hot-coffee' ),
+					"area"  => WP_TEMPLATE_PART_AREA_UNCATEGORIZED,
+				),
+				array(
+					"name"  => "footer",
+					"title" => esc_html__( "Footer for FSE", 'hot-coffee' ),
+					"area"  => WP_TEMPLATE_PART_AREA_FOOTER,
+				),
+			);
+		}
 
 		return apply_filters( 'hot_coffee_filter_gutenberg_fse_theme_json_data', $data );
 	}

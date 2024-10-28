@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 // Add scripts and styles for the editor
 if ( ! function_exists( 'trx_addons_gutenberg_sc_accordionposts_editor_assets' ) ) {
-	add_action( 'enqueue_block_editor_assets', 'trx_addons_gutenberg_sc_accordionposts_editor_assets' );
+	add_action( 'enqueue_block_editor_assets', 'trx_addons_gutenberg_sc_accordionposts_editor_assets', TRX_ADDONS_GUTENBERG_EDITOR_BLOCK_REGISTRATION_PRIORITY );
 	function trx_addons_gutenberg_sc_accordionposts_editor_assets() {
 		if ( trx_addons_exists_gutenberg() && trx_addons_get_setting( 'allow_gutenberg_blocks' ) ) {
 			// Scripts

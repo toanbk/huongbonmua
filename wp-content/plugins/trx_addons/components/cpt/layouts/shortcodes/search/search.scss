@@ -22,7 +22,7 @@
 }
 
 .search_wrap .search_submit {
-	@include abs-lb(0, -2px);
+	@include abs-lb;
 	background-color:transparent;
 	padding: 0;
 	@include font(inherit, inherit, inherit);

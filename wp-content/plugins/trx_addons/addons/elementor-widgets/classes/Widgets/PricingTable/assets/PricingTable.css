@@ -3,11 +3,14 @@
 }
 
 .trx-addons-pricing-table {
-  overflow: hidden;
   text-align: center;
   transition: all 0.25s linear 0s;
 }
-.trx-addons-pricing-table h1, .trx-addons-pricing-table h2, .trx-addons-pricing-table h3, .trx-addons-pricing-table h4, .trx-addons-pricing-table h5, .trx-addons-pricing-table h6 {
+.trx-addons-pricing-table:not(.trx-addons-pricing-table-tooltip-yes) {
+  overflow: hidden;
+}
+.trx-addons-pricing-table h1, .trx-addons-pricing-table h2, .trx-addons-pricing-table h3, .trx-addons-pricing-table h4, .trx-addons-pricing-table h5, .trx-addons-pricing-table h6, .trx-addons-pricing-table p {
+  letter-spacing: 0;
   margin: 0;
 }
 
@@ -67,14 +70,27 @@
   padding: 30px;
 }
 
+.trx-addons-pricing-table:not(.trx-addons-pricing-table-currency-raised) .trx-addons-pricing-table-price-prefix,
 .trx-addons-pricing-table-price-value {
   display: flex;
+  align-self: center;
 }
 
 .trx-addons-pricing-table-after-part {
   font-size: .4em;
   line-height: 1;
   align-self: flex-start;
+}
+
+.trx-addons-pricing-table-button-wrap-above {
+  padding: 0 30px;
+}
+
+.trx-addons-pricing-table-button {
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  vertical-align: top;
 }
 
 .trx-addons-pricing-table .trx-addons-pricing-table-features {
@@ -92,7 +108,7 @@
   border-bottom: 0;
 }
 
-.trx-addons-pricing-table .trx-addons-pricing-table-features .excluded {
+.trx-addons-pricing-table .trx-addons-pricing-table-features li.excluded .trx-addons-pricing-table-feature-text {
   text-decoration: line-through;
 }
 
@@ -100,24 +116,19 @@
   position: relative;
 }
 
-.trx-addons-pricing-table .trx-addons-pricing-table-price-prefix,
+.trx-addons-pricing-table-currency-raised .trx-addons-pricing-table-price-prefix,
 .trx-addons-pricing-table .trx-addons-pricing-table-price-duration {
   font-size: 0.4em;
   line-height: 1;
   text-align: left;
 }
 
-.trx-addons-pricing-table .trx-addons-pricing-table-price-prefix {
+.trx-addons-pricing-table-currency-raised .trx-addons-pricing-table-price-prefix {
   align-self: flex-start;
 }
 
 .trx-addons-pricing-table .trx-addons-pricing-table-price-duration {
   align-self: flex-end;
-}
-
-.trx-addons-pricing-table .trx-addons-pricing-table-price-original .trx-addons-pricing-table-price-prefix {
-  font-size: 1em;
-  margin: 0;
 }
 
 .trx-addons-pricing-table-price-duration-wrap .trx-addons-pricing-table-price {
@@ -129,6 +140,7 @@
   width: 100%;
 }
 
+.trx-addons-pricing-table:not(.trx-addons-pricing-table-currency-raised) .trx-addons-pricing-table-price-prefix,
 .trx-addons-pricing-table .trx-addons-pricing-table-price-value {
   line-height: .9;
 }
@@ -211,11 +223,11 @@
 }
 
 .trx-addons-pricing-table-ribbon-2.trx-addons-pricing-table-ribbon-right {
-  transform: translateX(38%) translateY(-38%);
+  transform: translateX(50%) translateY(-50%);
 }
 
 .trx-addons-pricing-table-ribbon-2.trx-addons-pricing-table-ribbon-left {
-  transform: translateX(-38%) translateY(-38%);
+  transform: translateX(-50%) translateY(-50%);
 }
 
 .trx-addons-pricing-table-ribbon-right {

@@ -1,6 +1,16 @@
-// Info List
+@import "../../../../../../css/_mixins.scss";
+@import "../../../../../../css/_trx_addons.vars.scss";
+@import "../../../../../../css/_trx_addons.colors.scss";
+
+
 .trx-addons-info-list-container {
 	overflow: hidden;
+
+	h1,h2,h3,h4,h5,h6,p {
+		// font-family: inherit;
+		letter-spacing: 0;
+		margin: 0;
+	}
 }
 
 .trx-addons-info-list-container li {
@@ -28,6 +38,12 @@
 
 .trx-addons-info-list-container .trx-addons-info-list-number {
 	text-align: center;
+}
+
+.trx-addons-info-list-container .trx-addons-info-list-image {
+	@include inline-flex;
+	@include flex-justify-content(center);
+	@include flex-align-items(center);
 }
 
 .trx-addons-info-list-container .trx-addons-info-list-item:last-child {
@@ -199,7 +215,8 @@
 }
 
 .trx-addons-info-list-item .trx-addons-info-list-button {
-	display: flex;
+	display: inline-flex;
+	vertical-align: top;
 }
 
 .trx-addons-info-list-item .trx-addons-info-list-button .trx-addons-button-icon {

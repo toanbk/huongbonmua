@@ -369,6 +369,10 @@
 	@include transition-properties(background-color, color);
 }
 
+.portfolio_page_details_button_link {
+	margin-top: 1.5em;
+}
+
 .portfolio_page_details_wrap {
 	@include border-box;
 }

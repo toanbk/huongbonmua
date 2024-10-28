@@ -20,7 +20,7 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_recent_news' ) ) {
 	function trx_addons_sc_recent_news($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_widget_recent_news', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_widget_recent_news', $atts, trx_addons_sc_common_atts( 'trx_widget_recent_news', 'id', array(
 			// Individual params
 			"style" => "news-magazine",
 			"count" => 3,
@@ -37,8 +37,7 @@ if ( !function_exists( 'trx_addons_sc_recent_news' ) ) {
 			"title" => "",
 			"subtitle" => "",
 			"show_categories" => 0,
-			))
-		);
+		) ) );
 		extract($atts);
 
 		set_query_var('trx_addons_inside_sc', true);

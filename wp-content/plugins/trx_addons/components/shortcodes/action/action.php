@@ -91,7 +91,7 @@ if ( !function_exists( 'trx_addons_sc_action_check_in_html_output' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_action' ) ) {
 	function trx_addons_sc_action($atts, $content = '') {	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_action', $atts, trx_addons_sc_common_atts('id,title,slider', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_action', $atts, trx_addons_sc_common_atts( 'trx_sc_action', 'id,title,slider', array(
 			// Individual params
 			"type" => "default",
 			"columns" => "",
@@ -100,8 +100,7 @@ if ( !function_exists( 'trx_addons_sc_action' ) ) {
 			"actions" => "",
 			"full_height" => 0,
 			"min_height" => 0,
-			))
-		);
+		) ) );
 		if (function_exists('vc_param_group_parse_atts') && !is_array($atts['actions'])) {
 			$atts['actions'] = (array) vc_param_group_parse_atts( $atts['actions'] );
 		}

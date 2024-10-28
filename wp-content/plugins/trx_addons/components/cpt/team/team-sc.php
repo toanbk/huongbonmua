@@ -23,7 +23,7 @@ if ( !function_exists( 'trx_addons_sc_team' ) ) {
 		// Exit to prevent recursion
 		if (trx_addons_sc_stack_check('trx_sc_team')) return '';
 
-		$atts = trx_addons_sc_prepare_atts('trx_sc_team', $atts, trx_addons_sc_common_atts('id,title,slider,query', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_team', $atts, trx_addons_sc_common_atts( 'trx_sc_team', 'id,title,slider,query', array(
 			// Individual params
 			"type" => "default",
 			"no_margin" => 0,
@@ -35,8 +35,7 @@ if ( !function_exists( 'trx_addons_sc_team' ) ) {
 			'taxonomy' => TRX_ADDONS_CPT_TEAM_TAXONOMY,
 			'parent_post' => 'none',
 			'posts_exclude' => '',	// comma-separated list of IDs to exclude from output
-			))
-		);
+		) ) );
 
 		if (!empty($atts['ids'])) {
 			if ( is_array( $atts['ids'] ) ) {

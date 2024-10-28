@@ -1,6 +1,16 @@
+@import "../../../../../../css/_mixins.scss";
+@import "../../../../../../css/_trx_addons.vars.scss";
+@import "../../../../../../css/_trx_addons.colors.scss";
+
 .trx-addons-image-accordion {
 	display: flex;
 	height: 50vh;
+
+	h1,h2,h3,h4,h5,h6 {
+		// font-family: inherit;
+		letter-spacing: 0;
+		margin: 0;
+	}
 }
 
 .trx-addons-image-accordion .trx-addons-image-accordion-img {
@@ -15,12 +25,21 @@
 	width: 100%;
 }
 
-.trx-addons-image-accordion .trx-addons-image-accordion-button-wrap * {
+.trx-addons-image-accordion-button-wrap * {
 	transition: none;
 }
 
-.trx-addons-image-accordion .trx-addons-image-accordion-button {
+.trx-addons-image-accordion-button {
+	@include inline-flex;
+	vertical-align: top;
 	transition: all 0.25s linear 0s;
+
+	&.trx-addons-button-icon-before .trx-addons-button-icon {
+		margin-right: 10px;
+	}
+	&.trx-addons-button-icon-after .trx-addons-button-icon {
+		margin-left: 10px;
+	}
 }
 
 .trx-addons-image-accordion-item {
@@ -58,6 +77,10 @@
 	transition: background-color .4s;
 }
 
+.trx-addons-image-accordion-button-wrap {
+	transform: translate3d(0, 60px, 0);
+}
+
 .trx-addons-image-accordion-overlay .trx-addons-image-accordion-content-wrap {
 	z-index: 1;
 }
@@ -73,7 +96,7 @@
 	margin-bottom: 0;
 }
 
-.trx-addons-image-accordion-content-wrap * {
+.trx-addons-image-accordion-content-wrap > * {
 	visibility: hidden;
 	opacity: 0;
 	transform-style: preserve-3d;
@@ -86,10 +109,6 @@
 
 .trx-addons-image-accordion-description {
 	color: #fff;
-	transform: translate3d(0, 60px, 0);
-}
-
-.trx-addons-image-accordion-button-wrap {
 	transform: translate3d(0, 60px, 0);
 }
 

@@ -314,9 +314,10 @@ if ( !function_exists( 'trx_addons_cpt_competitions_admin_clear_cache_competitio
 	function trx_addons_cpt_competitions_admin_clear_cache_competition($options, $post_id, $post_type) {
 		if ($post_type == TRX_ADDONS_CPT_COMPETITIONS_PT) {
 			$terms = get_the_terms($post_id, TRX_ADDONS_CPT_COMPETITIONS_TAXONOMY);
-			if (!is_array($terms) || count($terms)==0) return;
-			$tax = $terms[0]->slug;
-			set_transient("trx_addons_competitions_filter_".trim($tax), '', 24*60*60);
+			if ( ! empty( $terms[0]->slug ) ) {
+				$tax = $terms[0]->slug;
+				set_transient("trx_addons_competitions_filter_".trim($tax), '', 24*60*60);
+			}
 		}
 		return $options;
 	}

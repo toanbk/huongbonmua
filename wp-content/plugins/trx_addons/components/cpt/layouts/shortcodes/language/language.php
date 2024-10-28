@@ -57,14 +57,13 @@ if ( !function_exists( 'trx_addons_sc_layouts_language_load_scripts' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_layouts_language' ) ) {
 	function trx_addons_sc_layouts_language($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_layouts_language', $atts, trx_addons_sc_common_atts('id,hide', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_layouts_language', $atts, trx_addons_sc_common_atts( 'trx_sc_layouts_language', 'id,hide', array(
 			// Individual params
 			"type" => "default",
 			"flag" => "both",
 			"title_link" => "name",
 			"title_menu" => "name",
-			))
-		);
+		) ) );
 
 		// Superfish Menu
 		// Attention! To prevent duplicate this script in the plugin and in the menu, don't merge it!

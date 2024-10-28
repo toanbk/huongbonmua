@@ -175,6 +175,33 @@ class ElementorWidgets extends Base {
 					__( 'Nav Menu Help', 'trx_addons' ) => '//doc.themerex.net/qwery/'
 				)
 			),
+			'PostBreadcrumbs' => array(
+				'title' => __('Post Breadcrumbs', 'trx_addons'),
+				'name' => 'trx_elm_post_breadcrumbs',
+				'icon' => 'eicon-form-vertical trx_addons_elementor_widget_icon',
+				'keywords' => array( 'post', 'title', 'heading', 'breadcrumbs' ),
+				'documentation' => array(
+					__( 'Post Breadcrumbs Help', 'trx_addons' ) => '//doc.themerex.net/qwery/'
+				)
+			),
+			'PostMeta' => array(
+				'title' => __('Post Meta', 'trx_addons'),
+				'name' => 'trx_elm_post_meta',
+				'icon' => 'eicon-post-info trx_addons_elementor_widget_icon',
+				'keywords' => array( 'post', 'meta', 'info', 'author', 'date', 'comments' ),
+				'documentation' => array(
+					__( 'Post Meta Help', 'trx_addons' ) => '//doc.themerex.net/qwery/'
+				)
+			),
+			'PostTitle' => array(
+				'title' => __('Post Title', 'trx_addons'),
+				'name' => 'trx_elm_post_title',
+				'icon' => 'eicon-t-letter trx_addons_elementor_widget_icon',
+				'keywords' => array( 'post', 'title', 'heading' ),
+				'documentation' => array(
+					__( 'Post Title Help', 'trx_addons' ) => '//doc.themerex.net/qwery/'
+				)
+			),
 			'Posts' => array(
 				'title' => __('Posts', 'trx_addons'),
 				'name' => 'trx_elm_posts',
@@ -203,16 +230,16 @@ class ElementorWidgets extends Base {
 				)
 			),
 			'Tabs' => array(
-				'title' => __('Tabs', 'trx_addons'),
+				'title' => __('Advanced Tabs', 'trx_addons'),
 				'name' => 'trx_elm_tabs',
 				'icon' => 'eicon-tabs trx_addons_elementor_widget_icon',
-				'keywords' => array( 'tabs' ),
+				'keywords' => array( 'tabs', 'advanced' ),
 				'documentation' => array(
-					__( 'Tabs Help', 'trx_addons' ) => '//doc.themerex.net/qwery/'
+					__( 'Advanced Tabs Help', 'trx_addons' ) => '//doc.themerex.net/qwery/'
 				)
 			),
 			'TeamMember' => array(
-				'title' => __('TeamMember', 'trx_addons'),
+				'title' => __('Team Member', 'trx_addons'),
 				'name' => 'trx_elm_team_member',
 				'icon' => 'eicon-person trx_addons_elementor_widget_icon',
 				'keywords' => array( 'team', 'member' ),
@@ -221,12 +248,12 @@ class ElementorWidgets extends Base {
 				)
 			),
 			'Testimonials' => array(
-				'title' => __('Testimonials New', 'trx_addons'),
+				'title' => __('Advanced Testimonials', 'trx_addons'),
 				'name' => 'trx_elm_testimonials',
 				'icon' => 'eicon-testimonial trx_addons_elementor_widget_icon',
 				'keywords' => array( 'testimonials', 'reviews', 'rating', 'stars' ),
 				'documentation' => array(
-					__( 'Testimonials Help', 'trx_addons' ) => '//doc.themerex.net/qwery/'
+					__( 'Advanced Testimonials Help', 'trx_addons' ) => '//doc.themerex.net/qwery/'
 				)
 			),
 		) );

@@ -313,18 +313,18 @@ if ( ! function_exists( 'trx_addons_elm_add_bg_slides_data' ) ) {
 					$element->add_render_attribute( '_wrapper', 'class', 'trx_addons_has_bg_slides' );
 					// Add data-parameters to the section wrapper
 					$element->add_render_attribute( '_wrapper', 'data-trx-addons-bg-slides', json_encode( array(
-						'bg_slides_allow'              => (int) $settings['bg_slides_allow'],
-						'bg_slides'                    => $settings['bg_slides'],
-						'bg_slides_overlay_color'      => $settings['bg_slides_overlay_color'],
-						'bg_slides_animation_duration' => $settings['bg_slides_animation_duration']['size'],
-						'bg_slides_mask'               => (int)$settings['bg_slides_mask'],
+						'bg_slides_allow'              => (int)$settings['bg_slides_allow'],
+						'bg_slides'                    => $settings['bg_slides'] ?? '',
+						'bg_slides_overlay_color'      => $settings['bg_slides_overlay_color'] ?? '',
+						'bg_slides_animation_duration' => $settings['bg_slides_animation_duration']['size'] ?? '',
+						'bg_slides_mask'               => (int)$settings['bg_slides_mask'] ?? 0,
 						'bg_slides_mask_svg'           => trx_addons_get_svg_from_file(
 															! empty( $settings['bg_slides_mask_svg']['url'] )
 																? $settings['bg_slides_mask_svg']['url']
 																: trx_addons_get_file_dir( TRX_ADDONS_PLUGIN_ADDONS . 'bg-slides/images/mask-round.svg' )
 															),
-						'bg_slides_mask_delay'         => max( 1, (int)$settings['bg_slides_mask_delay']['size'] ),
-						'bg_slides_mask_zoom'          => max( 1, (float)$settings['bg_slides_mask_zoom']['size'] ),
+						'bg_slides_mask_delay'         => max( 1, (int)$settings['bg_slides_mask_delay']['size'] ?? 1 ),
+						'bg_slides_mask_zoom'          => max( 1, (float)$settings['bg_slides_mask_zoom']['size'] ?? 1 ),
 						)
 					) );
 				}

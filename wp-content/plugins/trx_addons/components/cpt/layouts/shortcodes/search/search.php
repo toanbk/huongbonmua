@@ -50,7 +50,8 @@ if (!function_exists('trx_addons_add_search_form')) {
 						'style' => 'normal',
 						'class' => '',
 						'ajax'  => true,
-						'post_types' => ''
+						'post_types' => '',
+						'icon'  => 'trx_addons_icon-search',
 					),
 					$args
 				);
@@ -194,14 +195,14 @@ if ( !function_exists( 'trx_addons_callback_ajax_search' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_layouts_search' ) ) {
 	function trx_addons_sc_layouts_search($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_layouts_search', $atts, trx_addons_sc_common_atts('id,hide', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_layouts_search', $atts, trx_addons_sc_common_atts( 'trx_sc_layouts_search', 'id,hide', array(
 			// Individual params
 			"type"       => "default",
 			"style"      => "normal",
 			"ajax"       => "1",
-			"post_types" => ''
-			))
-		);
+			"post_types" => '',
+			'icon'       => 'trx_addons_icon-search',
+			) ) );
 
 		ob_start();
 		trx_addons_get_template_part(array(

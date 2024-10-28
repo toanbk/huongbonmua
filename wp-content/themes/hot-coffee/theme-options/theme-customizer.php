@@ -750,7 +750,7 @@ if ( ! function_exists( 'hot_coffee_customizer_register_controls' ) ) {
 
 				$wp_customize->add_control( new Hot_Coffee_Customize_Info_Control( $wp_customize, $id, $args ) );
 
-			} elseif ( 'hidden' == $opt['type'] ) {
+			} elseif ( 'hidden' == $opt['type'] || 'group' == $opt['type'] ) {
 
 				if ( isset( $opt['std']) ) {		// Need for options without 'std', i.e. type => 'info'
 					$wp_customize->add_setting(

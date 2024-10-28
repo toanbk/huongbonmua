@@ -167,11 +167,11 @@ if (!function_exists('trx_addons_sc_promo_add_in_elementor')) {
 						]
 					);
 
-					$this->add_title_param('', [
+					$this->add_title_param( '', [
 						'title' => ['default' => __('Promo block', 'trx_addons')],
 						'subtitle' => ['default' => $this->get_default_subtitle()],
 						'description' => ['default' => $this->get_default_description()],
-					]);
+					] );
 
 					$this->add_control(
 						'link2',

@@ -481,6 +481,7 @@ if ( !function_exists( 'trx_addons_cpt_team_projects_after_article' ) ) {
 					),
 					// Default parameters
 					trx_addons_sc_common_atts(
+						'trx_sc_portfolio',
 						// Common params
 						'id,title,slider,query',
 						// Individual (shortcode-specific) params

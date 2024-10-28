@@ -11,14 +11,21 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 	exit;
 }
 
+use Elementor\Controls_Manager;
+use Elementor\Group_Control_Border;
+use Elementor\Group_Control_Typography;
+use Elementor\Group_Control_Background;
+use Elementor\Group_Control_Box_Shadow;
+use Elementor\Group_Control_Text_Shadow;
+
 
 // Elementor Widget
 //------------------------------------------------------
-if (!function_exists('trx_addons_sc_layouts_search_add_in_elementor')) {
+if ( ! function_exists( 'trx_addons_sc_layouts_search_add_in_elementor' ) ) {
 	add_action( trx_addons_elementor_get_action_for_widgets_registration(), 'trx_addons_sc_layouts_search_add_in_elementor' );
 	function trx_addons_sc_layouts_search_add_in_elementor() {
 		
-		if (!class_exists('TRX_Addons_Elementor_Layouts_Widget')) return;	
+		if ( ! class_exists( 'TRX_Addons_Elementor_Layouts_Widget' ) ) return;	
 
 		class TRX_Addons_Elementor_Widget_Layouts_Search extends TRX_Addons_Elementor_Layouts_Widget {
 
@@ -95,6 +102,18 @@ if (!function_exists('trx_addons_sc_layouts_search_add_in_elementor')) {
 			 * @access protected
 			 */
 			protected function register_controls() {
+
+				$this->register_content_controls();
+
+				if ( apply_filters( 'trx_addons_filter_allow_sc_styles_in_elementor', false, 'sc_layouts_search' ) ) {
+					$this->register_style_search_button_controls();
+				}
+			}
+
+			/**
+			 * Register content controls.
+			 */
+			protected function register_content_controls() {
 				// Detect edit mode
 				$is_edit_mode = trx_addons_elm_is_edit_mode();
 
@@ -113,7 +132,7 @@ if (!function_exists('trx_addons_sc_layouts_search_add_in_elementor')) {
 					[
 						'label' => __( 'Layout', 'trx_addons' ),
 						'label_block' => false,
-						'type' => \Elementor\Controls_Manager::SELECT,
+						'type' => Controls_Manager::SELECT,
 						'options' => apply_filters('trx_addons_sc_type', array(
 								'default' => esc_html__('Default', 'trx_addons'),
 							), 'trx_sc_layouts_search'),
@@ -126,7 +145,7 @@ if (!function_exists('trx_addons_sc_layouts_search_add_in_elementor')) {
 					[
 						'label' => __( 'Style', 'trx_addons' ),
 						'label_block' => false,
-						'type' => \Elementor\Controls_Manager::SELECT,
+						'type' => Controls_Manager::SELECT,
 						'options' => ! $is_edit_mode ? array() : apply_filters('trx_addons_sc_style', trx_addons_get_list_sc_layouts_search(), 'trx_sc_layouts_search'),
 						'default' => 'normal'
 					]
@@ -138,7 +157,7 @@ if (!function_exists('trx_addons_sc_layouts_search_add_in_elementor')) {
 						'label' => __( 'AJAX search', 'trx_addons' ),
 						'label_block' => false,
 						'description' => wp_kses_data( __("Use incremental AJAX search", 'trx_addons') ),
-						'type' => \Elementor\Controls_Manager::SWITCHER,
+						'type' => Controls_Manager::SWITCHER,
 						'label_off' => __( 'Off', 'trx_addons' ),
 						'label_on' => __( 'On', 'trx_addons' ),
 						'return_value' => '1'
@@ -150,13 +169,209 @@ if (!function_exists('trx_addons_sc_layouts_search_add_in_elementor')) {
 					[
 						'label' => __( 'Search in post types', 'trx_addons' ),
 						'label_block' => false,
-						'type' => \Elementor\Controls_Manager::SELECT2,
+						'type' => Controls_Manager::SELECT2,
 						'options' => $post_types,
 						'multiple' => true,
 						'default' => ''
 					]
 				);
 
+				$this->end_controls_section();
+			}
+
+			/**
+			 * Register style controls for the button 'Search'
+			 */
+			protected function register_style_search_button_controls() {
+				$this->start_controls_section(
+					'section_sc_layouts_search_style_button',
+					[
+						'label' => __( 'Button "Search"', 'trx_addons' ),
+						'tab' => Controls_Manager::TAB_STYLE,
+					]
+				);
+
+				$this->add_icon_param('');
+
+				$this->add_responsive_control(
+					'icon_size',
+					array(
+						'label'      => __( 'Icon Size', 'trx_addons' ),
+						'type'       => Controls_Manager::SLIDER,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors'  => array(
+							'{{WRAPPER}} .search_style_normal .search_submit,
+							 {{WRAPPER}} .search_style_expand .search_submit,
+							 {{WRAPPER}} .search_style_fullscreen:not(.search_opened) .search_submit' => 'font-size: {{SIZE}}{{UNIT}};',
+						),
+					)
+				);
+
+				$this->start_controls_tabs( 'tabs_icon_styles' );
+
+				$this->start_controls_tab(
+					'tab_icon_style_normal',
+					array(
+						'label' => __( 'Normal', 'trx_addons' ),
+					)
+				);
+
+				$this->add_group_control(
+					Group_Control_Background::get_type(),
+					array(
+						'name'     => 'icon_bg',
+						'types'    => array( 'classic', 'gradient' ),
+						'selector' => '{{WRAPPER}} .search_style_normal .search_submit,
+										{{WRAPPER}} .search_style_expand .search_submit,
+										{{WRAPPER}} .search_style_fullscreen:not(.search_opened) .search_submit',
+					)
+				);
+		
+				$this->add_control(
+					'icon_color',
+					array(
+						'label'     => __( 'Icon Color', 'trx_addons' ),
+						'type'      => Controls_Manager::COLOR,
+						'selectors' => array(
+							'{{WRAPPER}} .search_style_normal .search_submit:before,
+							 {{WRAPPER}} .search_style_expand .search_submit:before,
+							 {{WRAPPER}} .search_style_fullscreen:not(.search_opened) .search_submit:before' => 'color: {{VALUE}};',
+						),
+					)
+				);
+		
+				$this->add_group_control(
+					Group_Control_Text_Shadow::get_type(),
+					array(
+						'name'     => 'icon_shadow',
+						'selector' => '{{WRAPPER}} .search_style_normal .search_submit,
+										{{WRAPPER}} .search_style_expand .search_submit,
+										{{WRAPPER}} .search_style_fullscreen:not(.search_opened) .search_submit',
+					)
+				);
+		
+				$this->add_group_control(
+					Group_Control_Border::get_type(),
+					array(
+						'name'     => 'icon_border',
+						'selector' => '{{WRAPPER}} .search_style_normal .search_submit,
+										{{WRAPPER}} .search_style_expand .search_submit,
+										{{WRAPPER}} .search_style_fullscreen:not(.search_opened) .search_submit',
+					)
+				);
+		
+				$this->add_control(
+					'icon_radius',
+					array(
+						'label'      => __( 'Border Radius', 'trx_addons' ),
+						'type'       => Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors'  => array(
+							'{{WRAPPER}} .search_style_normal .search_submit,
+							 {{WRAPPER}} .search_style_expand .search_submit,
+							 {{WRAPPER}} .search_style_fullscreen:not(.search_opened) .search_submit' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+						),
+					)
+				);
+
+				$this->add_responsive_control(
+					'icon_padding',
+					array(
+						'label'      => __( 'Padding', 'trx_addons' ),
+						'type'       => Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors'  => array(
+							'{{WRAPPER}} .search_style_normal .search_submit,
+							 {{WRAPPER}} .search_style_expand .search_submit,
+							 {{WRAPPER}} .search_style_fullscreen:not(.search_opened) .search_submit' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						),
+					)
+				);
+
+				$this->add_responsive_control(
+					'icon_margin',
+					array(
+						'label'      => __( 'Margin', 'trx_addons' ),
+						'type'       => Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors'  => array(
+							'{{WRAPPER}} .search_style_normal .search_submit,
+							 {{WRAPPER}} .search_style_expand .search_submit,
+							 {{WRAPPER}} .search_style_fullscreen:not(.search_opened) .search_submit' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						),
+					)
+				);
+		
+				$this->end_controls_tab();
+		
+				$this->start_controls_tab(
+					'icon_hover',
+					array(
+						'label' => __( 'Hover', 'trx_addons' ),
+					)
+				);
+
+				$this->add_group_control(
+					Group_Control_Background::get_type(),
+					array(
+						'name'           => 'icon_bg_hover',
+						'types'          => array( 'classic', 'gradient' ),
+						'selector'       => '{{WRAPPER}} .search_style_normal .search_submit:hover,
+											 {{WRAPPER}} .search_style_expand .search_submit:hover,
+											 {{WRAPPER}} .search_style_fullscreen:not(.search_opened) .search_submit:hover',
+						'fields_options' => array(
+							'background' => array(
+								'default' => 'classic',
+							),
+							// 'color'      => array(
+							// 	'global' => array(
+							// 		'default' => Global_Colors::COLOR_SECONDARY,
+							// 	),
+							// ),
+						),
+					)
+				);
+
+				$this->add_control(
+					'icon_color_hover',
+					array(
+						'label'     => __( 'Icon Color', 'trx_addons' ),
+						'type'      => Controls_Manager::COLOR,
+						'selectors' => array(
+							'{{WRAPPER}} .search_style_normal .search_submit:hover:before,
+							 {{WRAPPER}} .search_style_expand .search_submit:hover:before,
+							 {{WRAPPER}} .search_style_fullscreen:not(.search_opened) .search_submit:hover:before' => 'color: {{VALUE}};',
+						),
+					)
+				);
+
+				$this->add_group_control(
+					Group_Control_Text_Shadow::get_type(),
+					array(
+						'name'     => 'icon_shadow_hover',
+						'selector' => '{{WRAPPER}} .search_style_normal .search_submit:hover,
+										{{WRAPPER}} .search_style_expand .search_submit:hover,
+										{{WRAPPER}} .search_style_fullscreen:not(.search_opened) .search_submit:hover',
+					)
+				);
+
+				$this->add_control(
+					'icon_border_color_hover',
+					array(
+						'label'     => __( 'Border Color', 'trx_addons' ),
+						'type'      => Controls_Manager::COLOR,
+						'selectors' => array(
+							'{{WRAPPER}} .search_style_normal .search_submit:hover,
+							 {{WRAPPER}} .search_style_expand .search_submit:hover,
+							 {{WRAPPER}} .search_style_fullscreen:not(.search_opened) .search_submit:hover' => 'border-color: {{VALUE}};',
+						),
+					)
+				);
+		
+				$this->end_controls_tab();
+
+				$this->end_controls_tabs();
+		
 				$this->end_controls_section();
 			}
 

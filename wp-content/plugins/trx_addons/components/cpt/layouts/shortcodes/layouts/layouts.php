@@ -19,7 +19,7 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 */
 if ( ! function_exists( 'trx_addons_sc_layouts' ) ) {
 	function trx_addons_sc_layouts($atts, $content = '') {	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_layouts', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_layouts', $atts, trx_addons_sc_common_atts( 'trx_sc_layouts', 'id', array(
 			// Individual params
 			"type" => "default",
 			"layout" => "",
@@ -34,8 +34,7 @@ if ( ! function_exists( 'trx_addons_sc_layouts' ) ) {
 			"show_on" => "none",
 			"show_delay" => 0,
 			"popup_id" => "",		// Alter name for id in Elementor ('id' is reserved by Elementor)
-			))
-		);
+		) ) );
 
 		$output = '';
 

@@ -19,8 +19,8 @@ jQuery( document ).on( 'action.init_hidden_elements', function() {
 			$sections_wrap = $self.find( '.sc_switcher_sections' ),
 			$sections = $self.find( '.sc_switcher_section' );
 
-		// Type 'Default'
-		if ( $self.hasClass( 'sc_switcher_default' ) ) {
+		// Type 'Default' or 'Modern'
+		if ( $self.hasClass( 'sc_switcher_default' ) || $self.hasClass( 'sc_switcher_modern' ) ) {
 			var $toggle = $self.find( '.sc_switcher_controls_toggle' );
 			// Click on toggle
 			$toggle.on( 'click', function() {
@@ -61,10 +61,11 @@ jQuery( document ).on( 'action.init_hidden_elements', function() {
 			sc_switcher_change_height();
 		} );
 
-		// Toggle state (for type 'Default')
+		// Toggle state (for types 'Default' and 'Modern')
 		function sc_switcher_toggle_state( state ) {
 			if ( $toggle.hasClass( 'sc_switcher_controls_toggle_on' ) ) {
 				if ( state === 0 || state == 2 ) {
+					$self.removeClass( 'sc_switcher_toggle_on' );
 					$toggle.removeClass( 'sc_switcher_controls_toggle_on' );
 					$sections.eq(0).removeClass( 'sc_switcher_section_active' );
 					$sections.eq(1).addClass( 'sc_switcher_section_active' );
@@ -74,6 +75,7 @@ jQuery( document ).on( 'action.init_hidden_elements', function() {
 				}
 			} else {
 				if ( state === 0 || state == 1 ) {
+					$self.addClass( 'sc_switcher_toggle_on' );
 					$toggle.addClass( 'sc_switcher_controls_toggle_on' );
 					$sections.eq(0).addClass( 'sc_switcher_section_active' );
 					$sections.eq(1).removeClass( 'sc_switcher_section_active' );

@@ -127,13 +127,12 @@ if (!function_exists('trx_addons_add_cart')) {
 */
 if ( !function_exists( 'trx_addons_sc_layouts_cart' ) ) {
 	function trx_addons_sc_layouts_cart($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_layouts_cart', $atts, trx_addons_sc_common_atts('id,hide', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_layouts_cart', $atts, trx_addons_sc_common_atts( 'trx_sc_layouts_cart', 'id,hide', array(
 			// Individual params
 			"type" => "default",
 			"market" => "woocommerce",
 			"text" => "",
-			))
-		);
+		) ) );
 
 		if ( $atts['type'] == 'panel' && ! function_exists( 'trx_addons_sc_layouts' ) ) {
 			$atts['type'] = 'default';

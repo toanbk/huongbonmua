@@ -20,8 +20,7 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 */
 if ( ! function_exists( 'trx_addons_sc_widget_audio' ) ) {
 	function trx_addons_sc_widget_audio( $atts, $content = '' ) {
-		$atts = trx_addons_sc_prepare_atts(
-			'trx_widget_audio', $atts, trx_addons_sc_common_atts( 'id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_widget_audio', $atts, trx_addons_sc_common_atts( 'trx_widget_audio', 'id', array(
 				// Individual params
 				'title'        => '',
 				'subtitle'     => '',
@@ -35,8 +34,7 @@ if ( ! function_exists( 'trx_addons_sc_widget_audio' ) ) {
 				'track_time'   => '1',
 				'track_scroll' => '1',
 				'track_volume' => '1',
-			) )
-		);
+		) ) );
 
 		if ( function_exists( 'vc_param_group_parse_atts' ) && ! is_array( $atts['media'] ) ) {
 			$atts['media'] = (array) vc_param_group_parse_atts( $atts['media'] );

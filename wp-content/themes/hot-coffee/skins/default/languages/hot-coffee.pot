@@ -2,20 +2,20 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Hot Coffee\n"
-"POT-Creation-Date: 2021-12-24 10:46+0200\n"
-"PO-Revision-Date: 2015-09-02 14:01+0300\n"
+"POT-Creation-Date: 2024-08-12 14:08+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: ThemeREX\n"
-"Language: en_GB\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Loco https://localise.biz/\n"
 "X-Poedit-KeywordsList: translate_nooped_plural;gettext_noop;gettext;"
 "esc_html__;esc_html_e;esc_html_x;esc_attr__;esc_attr_e;_n_noop;_nx;_n;_x;_e;"
 "__\n"
 "X-Poedit-Basepath: ../../..\n"
-"Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 
@@ -492,8 +492,8 @@ msgstr ""
 #: front-page/front-page-options.php:1703
 msgid ""
 "You can select an icon and/or specify a text to create an anchor for this "
-"section to display it in the side menu (if selected in the section \"Header "
-"- Menu\")."
+"section to display it in the side menu (if selected in the section \"Header -"
+" Menu\")."
 msgstr ""
 
 #: front-page/front-page-options.php:324 front-page/front-page-options.php:491
@@ -620,9 +620,9 @@ msgstr ""
 #: front-page/front-page-options.php:597
 #, php-format
 msgid ""
-"Attention! You can use %%CONTENT%% to insert instead the content of the "
-"page, selected as the Front Page in the menu \"Settings - Reading\" or in "
-"the \"Customize - Static Front Page\""
+"Attention! You can use %%CONTENT%% to insert instead the content of the page,"
+" selected as the Front Page in the menu \"Settings - Reading\" or in the "
+"\"Customize - Static Front Page\""
 msgstr ""
 
 #: front-page/front-page-options.php:694
@@ -3249,7 +3249,7 @@ msgid "Light"
 msgstr ""
 
 #: skins/default/plugins/woocommerce/woocommerce-skin.php:88
-msgid "Shopping Cart"
+msgid "Giỏ Hàng"
 msgstr ""
 
 #: skins/default/plugins/woocommerce/woocommerce-skin.php:89
@@ -3988,8 +3988,8 @@ msgstr ""
 
 #: skins/default/skin-options.php:985
 msgid ""
-"Select or upload logo for the footer area used on Retina displays (if empty "
-"- use default logo from the field above)"
+"Select or upload logo for the footer area used on Retina displays (if empty -"
+" use default logo from the field above)"
 msgstr ""
 
 #: skins/default/skin-options.php:996
@@ -4293,9 +4293,9 @@ msgstr ""
 
 #: skins/default/skin-options.php:1627
 msgid ""
-"Apply options and content of pages created with the template \"Blog Archive"
-"\" for some type of posts and / or taxonomy when viewing feeds of posts of "
-"this type and taxonomy."
+"Apply options and content of pages created with the template \"Blog "
+"Archive\" for some type of posts and / or taxonomy when viewing feeds of "
+"posts of this type and taxonomy."
 msgstr ""
 
 #: skins/default/skin-options.php:1636 skins/default/skin-options.php:1642
@@ -4329,8 +4329,8 @@ msgstr ""
 #: skins/default/skin-options.php:1773
 msgid ""
 "Content width on the single posts if the sidebar is hidden. Attention! "
-"\"Narrow\" width is only available for posts. For all other post types "
-"(Team, Services, etc.), it is equivalent to \"Normal\""
+"\"Narrow\" width is only available for posts. For all other post types (Team,"
+" Services, etc.), it is equivalent to \"Normal\""
 msgstr ""
 
 #: skins/default/skin-options.php:1785
@@ -7101,8 +7101,8 @@ msgstr ""
 
 #: theme-specific/theme-about/theme-about.php:122
 msgid ""
-"In order to continue, please install and activate <b>ThemeREX Addons plugin</"
-"b>."
+"In order to continue, please install and activate <b>ThemeREX Addons "
+"plugin</b>."
 msgstr ""
 
 #: theme-specific/theme-about/theme-about.php:140
@@ -7144,8 +7144,8 @@ msgstr ""
 
 #: theme-specific/theme-about/theme-upgrade.php:68
 msgid ""
-"Our built-in shortcode/widget \"Slider\" is able to work not only with "
-"posts, but also with slides created  in \"Revolution Slider\"."
+"Our built-in shortcode/widget \"Slider\" is able to work not only with posts,"
+" but also with slides created  in \"Revolution Slider\"."
 msgstr ""
 
 #: theme-specific/theme-about/theme-upgrade.php:81

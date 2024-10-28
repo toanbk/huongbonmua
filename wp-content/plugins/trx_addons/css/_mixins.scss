@@ -170,6 +170,47 @@ $vendors_all: (webkit, moz, ms, o);
 }
 
 
+// Scrollbar decoration
+//------------------------------------------
+
+@mixin thick-scrollbar($w: 16px) {
+	// Firefox
+	// scrollbar-width: thin;
+	scrollbar-color: var(--trx-addons-color-scrollbar-thumb, #e5e5e5) var(--trx-addons-color-scrollbar-bg, #f3f5f7);
+
+	// WebKit-based browsers
+	&::-webkit-scrollbar {
+		width: $w;
+	}
+	&::-webkit-scrollbar-track {
+		background: var(--trx-addons-color-scrollbar-bg, #f3f5f7);
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: var(--trx-addons-color-scrollbar-thumb, #dadada);
+		border: 2px solid var(--trx-addons-color-scrollbar-bg, #f3f5f7);
+	}
+}
+
+@mixin thin-scrollbar($w: 8px) {
+	// Firefox
+	scrollbar-width: thin;
+	scrollbar-color: var(--trx-addons-color-scrollbar-thumb, #e5e5e5) var(--trx-addons-color-scrollbar-bg, #f3f5f7);
+
+	// WebKit-based browsers
+	&::-webkit-scrollbar {
+		width: $w;
+	}
+	&::-webkit-scrollbar-track {
+		background: var(--trx-addons-color-scrollbar-bg, #f3f5f7);
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: var(--trx-addons-color-scrollbar-thumb, #dadada);
+		border: 1px solid var(--trx-addons-color-scrollbar-bg, #f3f5f7);
+		@include border-radius(6px);
+	}
+}
+
+
 
 // Position
 //------------------------------------------

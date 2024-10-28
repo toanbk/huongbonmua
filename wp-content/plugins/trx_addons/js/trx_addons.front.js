@@ -1493,9 +1493,9 @@
 						if ( wrapper.find('audio').length
 							|| wrapper.find('video').length
 							|| ( iframe.length
-								&& ( ( iframe.data('src') && iframe.data('src').search(/(youtu|vimeo|daily|facebook)/i) > 0 )
+								&& ( ( iframe.data('src') && iframe.data('src').search(/(youtu|vimeo|daily|facebook|instagram.com)/i) > 0 )
 									|| 
-									 ( iframe.attr('src') && iframe.attr('src').search(/(youtu|vimeo|daily|facebook)/i) > 0 )
+									 ( iframe.attr('src') && iframe.attr('src').search(/(youtu|vimeo|daily|facebook|instagram.com)/i) > 0 )
 									)
 								)
 						) {

@@ -13,7 +13,7 @@ $args = get_query_var('trx_addons_args_search');
 				}
 			?>" name="post_types">
 			<input type="text" class="search_field" placeholder="<?php esc_attr_e('Search', 'trx_addons'); ?>" value="<?php echo esc_attr(get_search_query()); ?>" name="s">
-			<button type="submit" class="search_submit trx_addons_icon-search" aria-label="<?php esc_attr_e( 'Start search', 'trx_addons' ); ?>"></button>
+			<button type="submit" class="search_submit <?php echo ! empty( $args['icon'] ) ? $args['icon'] : 'trx_addons_icon-search'; ?>" aria-label="<?php esc_attr_e( 'Start search', 'trx_addons' ); ?>"></button>
 			<?php if ($args['style'] == 'fullscreen') { ?>
 				<a class="search_close trx_addons_icon-delete"></a>
 			<?php } ?>

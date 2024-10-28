@@ -17,7 +17,7 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 //-------------------------------------------------------------
 if ( !function_exists( 'trx_addons_sc_widget_video_list' ) ) {
 	function trx_addons_sc_widget_video_list($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_widget_video_list', $atts, trx_addons_sc_common_atts('id,query', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_widget_video_list', $atts, trx_addons_sc_common_atts( 'trx_widget_video_list', 'id,query', array(
 			// Individual params
 			'title' => '',
 			'autoplay' => 0,				// Autoplay first video on page load
@@ -30,8 +30,7 @@ if ( !function_exists( 'trx_addons_sc_widget_video_list' ) ) {
 			'controller_autoplay' => 1,		// Autoplay video on click on the the controller item
 			'controller_link' => 1,			// Switch video or Go to the post on click on the the controller item
 			'videos' => '',
-			))
-		);
+		) ) );
 		if ( ! is_array($atts['videos']) && function_exists('vc_param_group_parse_atts')) {
 			$atts['videos'] = (array) vc_param_group_parse_atts( $atts['videos'] );
 		}

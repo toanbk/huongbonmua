@@ -21,6 +21,8 @@ if ( ! empty( $args['image'] ) ) {
 
 	if ( ! empty( $image ) ) {
 
+		$id = ! empty( $args['id'] ) ? $args['id'] . '_sc' : 'sc_hotspot_' . mt_rand();
+
 		?><div <?php if ( ! empty( $args['id'] ) ) echo ' id="' . esc_attr( $args['id'] ) . '"'; ?> 
 			class="sc_hotspot sc_hotspot_<?php
 				echo esc_attr( $args['type'] );
@@ -44,8 +46,11 @@ if ( ! empty( $args['image'] ) ) {
 				}
 
 				$numbers = 0;
+				$cnt = 0;
 
 				foreach ( $args['spots'] as $item ) {
+					$cnt++;
+					$item_id = $id . '_item_' . $cnt;
 
 					// Dynamic content (from post)
 					if ( $item['source'] != 'custom' && (int)$item['post'] > 0 ) {
@@ -80,7 +85,20 @@ if ( ! empty( $args['image'] ) ) {
 
 					$item['open'] = (int) $item['open'] > 0 ? 'click' : 'hover';
 					$item['spot_visible'] = (int) $item['spot_visible'] > 0 ? 'always' : 'hover';
-					?><div class="<?php
+					if ( ! empty( $item['spot_size'] ) ) {
+						trx_addons_add_inline_css( sprintf(
+							'#%s {
+								--sc-hotspot-content-item-size: %s;
+								--sc-hotspot-content-item-size-half: calc( var(--sc-hotspot-content-item-size) / 2 );
+								--sc-hotspot-content-item-size-half-: calc( var(--sc-hotspot-content-item-size) / -2 );
+								--sc-hotspot-content-item-popup-offset-x: calc( var(--sc-hotspot-content-item-size) + var(--sc-hotspot-content-item-popup-offset) );
+								--sc-hotspot-content-item-popup-offset-y: calc( -1 * var(--sc-hotspot-content-item-size) - var(--sc-hotspot-content-item-popup-offset) );
+							}',
+							$item_id,
+							$item['spot_size']
+						) );
+					}
+					?><div id="<?php echo esc_attr( $item_id ); ?>" class="<?php
 							echo apply_filters(
 									'trx_addons_filter_sc_item_classes',
 									'sc_hotspot_item'
@@ -218,9 +236,9 @@ if ( ! empty( $args['image'] ) ) {
 							if ( ! empty( $item['image'] ) ) {
 								$image = '';
 								if ( is_numeric( $item['image'] ) && (int) $item['image'] > 0 ) {
-									$image = wp_get_attachment_image( $item['image'], apply_filters('trx_addons_filter_thumb_size', trx_addons_get_thumb_size('small'), 'hotspot-default-item-image'), false );
+									$image = wp_get_attachment_image( $item['image'], apply_filters('trx_addons_filter_thumb_size', trx_addons_get_thumb_size('masonry'), 'hotspot-default-item-image'), false );
 								} else {
-									$image = trx_addons_get_attachment_url( $item['image'], apply_filters('trx_addons_filter_thumb_size', trx_addons_get_thumb_size('small'), 'hotspot-default-item-image') );
+									$image = trx_addons_get_attachment_url( $item['image'], apply_filters('trx_addons_filter_thumb_size', trx_addons_get_thumb_size('masonry'), 'hotspot-default-item-image') );
 									if ( ! empty( $image ) ) {
 										$image = '<img src="' . esc_url( $image ) . '" alt="' . esc_attr__( 'Hotspot image', 'trx_addons' ) . '" />';
 									}

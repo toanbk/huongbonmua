@@ -67,14 +67,13 @@ if ( !function_exists( 'trx_addons_sc_socials_merge_styles_responsive' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_socials' ) ) {
 	function trx_addons_sc_socials($atts, $content = '') {	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_socials', $atts, trx_addons_sc_common_atts('id,title', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_socials', $atts, trx_addons_sc_common_atts( 'trx_sc_socials', 'id,title', array(
 			// Individual params
 			"type" => "default",
 			"icons_type" => "socials",
 			"icons" => "",
 			"align" => "",
-			))
-		);
+		) ) );
 		if (function_exists('vc_param_group_parse_atts') && !is_array($atts['icons'])) {
 			$atts['icons'] = (array) vc_param_group_parse_atts($atts['icons']);
 		}

@@ -18,7 +18,7 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 
 // Add scripts and styles for the editor
 if ( ! function_exists( 'trx_addons_gutenberg_sc_form_editor_assets' ) ) {
-	add_action( 'enqueue_block_editor_assets', 'trx_addons_gutenberg_sc_form_editor_assets' );
+	add_action( 'enqueue_block_editor_assets', 'trx_addons_gutenberg_sc_form_editor_assets', TRX_ADDONS_GUTENBERG_EDITOR_BLOCK_REGISTRATION_PRIORITY );
 	function trx_addons_gutenberg_sc_form_editor_assets() {
 		if ( trx_addons_exists_gutenberg() && trx_addons_get_setting( 'allow_gutenberg_blocks' ) ) {
 			// Scripts
@@ -76,7 +76,7 @@ if ( ! function_exists( 'trx_addons_sc_form_add_in_gutenberg' ) ) {
 								'default' => false,
 							),
 						),
-						trx_addons_gutenberg_get_param_title(),
+						! apply_filters( 'trx_addons_filter_add_title_param', true, 'trx-addons/form' ) ? array() : trx_addons_gutenberg_get_param_title(),
 						trx_addons_gutenberg_get_param_id()
 					),
 					'render_callback' => 'trx_addons_gutenberg_sc_form_render_block',

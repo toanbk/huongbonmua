@@ -29,7 +29,7 @@
 							object_type 	: self.model.get('object_type'),
 						};
 
-						return elementorCommon.ajax.addRequest('pp_query_control_filter_autocomplete', {
+						return elementorCommon.ajax.addRequest('trx_addons_query_control_filter_autocomplete', {
 							data 	: data,
 							success : success,
 							error 	: failure,
@@ -64,7 +64,7 @@
 			}
 
 			elementorCommon.ajax.loadObjects({
-				action 	: 'pp_query_control_value_titles',
+				action 	: 'trx_addons_query_control_value_titles',
 				ids 	: ids,
 				data 	: {
 					query_type 		: queryType,

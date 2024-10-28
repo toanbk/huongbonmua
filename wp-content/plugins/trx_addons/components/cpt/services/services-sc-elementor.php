@@ -357,7 +357,9 @@ if (!function_exists('trx_addons_sc_services_add_in_elementor')) {
 					]
 				]);
 				
-				$this->add_title_param();
+				if ( apply_filters( 'trx_addons_filter_add_title_param', true, $this->get_name() ) ) {
+					$this->add_title_param();
+				}
 			}
 		}
 		

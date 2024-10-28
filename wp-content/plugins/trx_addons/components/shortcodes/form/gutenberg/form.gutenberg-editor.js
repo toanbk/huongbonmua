@@ -48,7 +48,7 @@
 						default: false
 					}
 				},
-				trx_addons_gutenberg_get_param_title(),
+				! trx_addons_apply_filters( 'trx_addons_filter_add_title_param', true, 'trx-addons/form' ) ? {} : trx_addons_gutenberg_get_param_title(),
 				trx_addons_gutenberg_get_param_id()
 			), 'trx-addons/form' ),
 			edit: function(props) {
@@ -126,7 +126,7 @@
 						),
 						'additional_params': el( wp.element.Fragment, { key: props.name + '-additional-params' },
 							// Title params
-							trx_addons_gutenberg_add_param_title( props, false ),
+							! trx_addons_apply_filters( 'trx_addons_filter_add_title_param', true, 'trx-addons/form' ) ? null : trx_addons_gutenberg_add_param_title( props, false ),
 							// ID, Class, CSS params
 							trx_addons_gutenberg_add_param_id( props )
 						)

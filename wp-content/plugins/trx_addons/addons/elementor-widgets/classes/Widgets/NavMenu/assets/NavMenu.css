@@ -109,9 +109,11 @@
 .trx-addons-mega-nav-item {
   position: relative;
 }
-
 .trx-addons-mega-nav-item > .trx-addons-submenu {
   display: none;
+}
+.trx-addons-mega-nav-item > ul.trx-addons-mega-content-container {
+  padding: 7px 10px;
 }
 
 .trx-addons-mega-content-container {
@@ -135,6 +137,28 @@
   visibility: visible;
   opacity: 1;
   pointer-events: auto;
+}
+
+/* Elm 3.16.0+ Compensate for the padding of the mega content container. Attention! A theme-specific CSS-vars "--theme-var-" are used */
+body.elementor-use-container .trx-addons-main-nav-menu li > .trx-addons-mega-content-container > .sc_layouts_submenu_wrap > .elementor > .elementor-section .elementor-column-gap-narrow {
+  margin-left: calc( -1 * var(--theme-var-elm_gap_narrow) / 2 );
+  margin-right: calc( -1 * var(--theme-var-elm_gap_narrow) / 2 );
+}
+body.elementor-use-container .trx-addons-main-nav-menu li > .trx-addons-mega-content-container > .sc_layouts_submenu_wrap > .elementor > .elementor-section .elementor-column-gap-default {
+  margin-left: calc( -1 * var(--theme-var-elm_gap_default) / 2 );
+  margin-right: calc( -1 * var(--theme-var-elm_gap_default) / 2 );
+}
+body.elementor-use-container .trx-addons-main-nav-menu li > .trx-addons-mega-content-container > .sc_layouts_submenu_wrap > .elementor > .elementor-section .elementor-column-gap-extended {
+  margin-left: calc( -1 * var(--theme-var-elm_add_page_margins) / 2 );
+  margin-right: calc( -1 * var(--theme-var-elm_add_page_margins) / 2 );
+}
+body.elementor-use-container .trx-addons-main-nav-menu li > .trx-addons-mega-content-container > .sc_layouts_submenu_wrap > .elementor > .elementor-section .elementor-column-gap-wide {
+  margin-left: calc( -1 * var(--theme-var-elm_gap_wide) / 2 );
+  margin-right: calc( -1 * var(--theme-var-elm_gap_wide) / 2 );
+}
+body.elementor-use-container .trx-addons-main-nav-menu li > .trx-addons-mega-content-container > .sc_layouts_submenu_wrap > .elementor > .elementor-section .elementor-column-gap-wider {
+  margin-left: calc( -1 * var(--theme-var-elm_gap_wider) / 2 );
+  margin-right: calc( -1 * var(--theme-var-elm_gap_wider) / 2 );
 }
 
 .trx-addons-nav-widget-container .trx-addons-hamburger-toggle,
@@ -163,6 +187,16 @@
   height: 22px;
 }
 
+.trx-addons-nav-widget-container .trx-addons-hamburger-toggle .trx-addons-toggle-text,
+.trx-addons-nav-widget-container .trx-addons-hamburger-toggle .trx-addons-toggle-close {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
 .trx-addons-nav-widget-container .trx-addons-hamburger-toggle i,
 .trx-addons-nav-widget-container .trx-addons-hamburger-toggle .trx-addons-toggle-text,
 .trx-addons-nav-widget-container .trx-addons-hamburger-toggle .trx-addons-toggle-close {
@@ -179,7 +213,7 @@
   margin: 2px;
 }
 
-.trx-addons-nav-widget-container .trx-addons-hamburger-toggle .trx-addons-toggle-close {
+.trx-addons-nav-widget-container .trx-addons-hamburger-toggle:not(.trx-addons-toggle-opened) .trx-addons-toggle-close {
   display: none;
 }
 
@@ -209,6 +243,18 @@
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+}
+
+.trx-addons-mobile-menu-align-flex-start .trx-addons-mobile-menu-container .trx-addons-menu-link {
+  text-align: left;
+}
+
+.trx-addons-mobile-menu-align-center .trx-addons-mobile-menu-container .trx-addons-menu-link {
+  text-align: center;
+}
+
+.trx-addons-mobile-menu-align-flex-end .trx-addons-mobile-menu-container .trx-addons-menu-link {
+  text-align: right;
 }
 
 .trx-addons-item-badge,
@@ -242,18 +288,26 @@
 .trx-addons-ver-hamburger-menu .trx-addons-mobile-menu-outer-container {
   position: fixed;
   z-index: 10002;
-  left: 0;
-  top: 0;
+  top: var(--fixed-rows-height);
   width: 300px;
   height: 100%;
   overflow-x: hidden;
-  -webkit-transform: translateX(-300px);
-  -ms-transform: translateX(-300px);
-  transform: translateX(-300px);
   -webkit-transition: 0.5s;
   transition: 0.5s;
   padding-top: 50px;
   background-color: #f7f7f7;
+}
+.trx-addons-ver-hamburger-menu.trx-addons-ver-hamburger-menu-left .trx-addons-mobile-menu-outer-container {
+  left: 0;
+  -webkit-transform: translateX(-300px);
+  -ms-transform: translateX(-300px);
+  transform: translateX(-300px);
+}
+.trx-addons-ver-hamburger-menu.trx-addons-ver-hamburger-menu-right .trx-addons-mobile-menu-outer-container {
+  right: 0;
+  -webkit-transform: translateX(300px);
+  -ms-transform: translateX(300px);
+  transform: translateX(300px);
 }
 
 .trx-addons-ver-hamburger-menu .trx-addons-mobile-menu-outer-container .trx-addons-mobile-menu {
@@ -549,15 +603,29 @@
   font-size: 13px;
   font-style: normal;
   margin: 0 7px 0 0;
-  -webkit-transition: color 0.3s ease;
-  -ms-transition: color 0.3s ease;
-  transition: color 0.3s ease;
+  -webkit-transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+  -ms-transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 }
-
 .trx-addons-item-icon svg,
 .trx-addons-sub-item-icon svg {
   width: 100%;
   height: 100%;
+}
+
+.trx-addons-sub-item-icon,
+.trx-addons-item-icon.trx-addons-item-image,
+.trx-addons-sub-item-icon.trx-addons-sub-item-image {
+  width: 1.25em;
+  height: 1.25em;
+  line-height: 1.25em;
+  text-align: center;
+  text-align: center;
+}
+
+.trx-addons-item-icon.trx-addons-item-image,
+.trx-addons-sub-item-icon.trx-addons-sub-item-image {
+  box-sizing: content-box;
 }
 
 .trx-addons-item-icon.trx-addons-lottie-animation,
@@ -579,25 +647,19 @@
 }
 
 .trx-addons-nav-menu-item[class*="icon-"]:before {
-  padding-left: 10px;
-  margin-right: 7px;
-  display: inline-block;
-}
-.trx-addons-nav-menu-item[class*="icon-"] > .trx-addons-menu-link {
-  padding-left: 0;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
+  display: none;
 }
 
 .trx-addons-nav-menu-item {
   position: relative;
 }
 
+.trx-addons-nav-menu-item,
 .trx-addons-nav-menu-item .trx-addons-menu-link,
 .trx-addons-nav-menu-item .trx-addons-dropdown-icon {
-  -webkit-transition: 0.3s all ease-in-out;
-  transition: 0.3s all ease-in-out;
+  -webkit-transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, margin 0.3s ease, padding 0.3s ease;
+  -ms-transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, margin 0.3s ease, padding 0.3s ease;
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, margin 0.3s ease, padding 0.3s ease;
 }
 
 .trx-addons-nav-menu-item .trx-addons-menu-link {
@@ -607,6 +669,7 @@
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
+  width: 100%;
   height: 100%;
   padding: 7px 10px;
   position: relative;
@@ -618,6 +681,20 @@
 
 .trx-addons-nav-menu-item .trx-addons-dropdown-icon {
   margin: 5px;
+}
+
+.trx-addons-dropdown-icon-fixed .trx-addons-submenu .menu-item-has-children > .trx-addons-menu-link {
+  padding-right: 2em;
+}
+.trx-addons-dropdown-icon-fixed .trx-addons-submenu .trx-addons-dropdown-icon {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  right: 10px;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  margin: 0;
 }
 
 .trx-addons-nav-menu-item.menu-item-has-children {
@@ -634,28 +711,52 @@
   justify-content: flex-start;
 }
 
+.trx-addons-mega-item-static {
+  position: static !important;
+}
+
 .trx-addons-hamburger-menu .trx-addons-mega-content-container,
 .trx-addons-nav-dropdown .trx-addons-mega-content-container,
 .trx-addons-nav-slide .trx-addons-mega-content-container {
   display: none;
 }
-
-.trx-addons-mega-item-static {
-  position: static !important;
-}
-
 .trx-addons-hamburger-menu .trx-addons-nav-menu-container,
 .trx-addons-nav-dropdown .trx-addons-nav-menu-container,
 .trx-addons-nav-slide .trx-addons-nav-menu-container {
   display: none;
 }
-
 .trx-addons-hamburger-menu .trx-addons-hamburger-toggle,
 .trx-addons-nav-dropdown .trx-addons-hamburger-toggle,
 .trx-addons-nav-slide .trx-addons-hamburger-toggle {
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
   display: inline-flex;
+}
+.trx-addons-hamburger-menu .trx-addons-ver-inner-container,
+.trx-addons-nav-dropdown .trx-addons-ver-inner-container,
+.trx-addons-nav-slide .trx-addons-ver-inner-container {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.trx-addons-hamburger-toggle i {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.trx-addons-hamburger-toggle * {
+  -webkit-transition: 0.3s all ease-in-out;
+  transition: 0.3s all ease-in-out;
 }
 
 .trx-addons-hidden-icon-yes.trx-addons-hamburger-menu .trx-addons-item-icon,
@@ -686,11 +787,6 @@
   display: flex;
 }
 
-.trx-addons-ham-dropdown .trx-addons-toggle-opened .trx-addons-toggle-close,
-.trx-addons-nav-dropdown .trx-addons-toggle-opened .trx-addons-toggle-close {
-  display: inline !important;
-}
-
 .trx-addons-ham-dropdown .trx-addons-toggle-opened .trx-addons-toggle-text,
 .trx-addons-nav-dropdown .trx-addons-toggle-opened .trx-addons-toggle-text {
   display: none !important;
@@ -705,13 +801,13 @@
   display: none;
 }
 
-.trx-addons-hamburger-toggle {
-  width: 100%;
-}
-
-.trx-addons-hamburger-toggle * {
-  -webkit-transition: 0.3s all ease-in-out;
-  transition: 0.3s all ease-in-out;
+.trx-addons-main-nav-menu > li li.menu-delimiter {
+  margin-top: 0.5em;
+  padding-top: 0.5em;
+  border-top: 1px solid #f0f0f0;
+  text-align: center;
+  height: 0;
+  overflow: hidden;
 }
 
 .trx-addons-menu-link-parent:before,
@@ -989,6 +1085,11 @@
   transform: rotate(6deg);
 }
 
+.trx-addons-nav-pointer-background .trx-addons-menu-link > * {
+  position: relative;
+  z-index: 1;
+}
+
 .trx-addons-nav-pointer-background .trx-addons-menu-link-parent:before {
   top: 0;
   left: 0;
@@ -996,7 +1097,7 @@
   bottom: 0;
   background: #55595c;
   background-color: #55595c;
-  z-index: -1;
+  z-index: 0;
 }
 
 .trx-addons-nav-pointer-background .trx-addons-menu-link-parent:before,

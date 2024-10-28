@@ -27,7 +27,7 @@ if ( ! function_exists( 'trx_addons_sc_edd_details' ) ) {
 	 * @return string Shortcode output
 	 */
 	function trx_addons_sc_edd_details( $atts, $content = '' ) {	
-		$atts = trx_addons_sc_prepare_atts( 'trx_sc_edd_details', $atts, trx_addons_sc_common_atts( 'id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_edd_details', $atts, trx_addons_sc_common_atts( 'trx_sc_edd_details', 'id', array(
 			// Individual params
 			"type" => "default",
 		) ) );
@@ -77,7 +77,7 @@ if ( ! function_exists( 'trx_addons_sc_edd_add_to_cart' ) ) {
 	 * @return string Shortcode output
 	 */
 	function trx_addons_sc_edd_add_to_cart( $atts, $content = '' ) {	
-		$atts = trx_addons_sc_prepare_atts( 'trx_sc_edd_add_to_cart', $atts, trx_addons_sc_common_atts( 'id,title', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_edd_add_to_cart', $atts, trx_addons_sc_common_atts( 'trx_sc_edd_add_to_cart', 'id,title', array(
 			// Individual params
 			"type" => "default",
 			"download" => 0,

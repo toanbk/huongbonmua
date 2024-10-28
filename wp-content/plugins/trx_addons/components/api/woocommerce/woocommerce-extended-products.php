@@ -93,7 +93,7 @@ if ( ! function_exists( 'trx_addons_sc_extended_products' ) ) {
 			return '';
 		}
 
-		$atts = trx_addons_sc_prepare_atts( 'trx_sc_extended_products', $atts, trx_addons_sc_common_atts( 'id,title,slider', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_extended_products', $atts, trx_addons_sc_common_atts( 'trx_sc_extended_products', 'id,title,slider', array(
 			// Individual params
 			"type" => "default",
 			"style" => "products",

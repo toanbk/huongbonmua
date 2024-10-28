@@ -101,7 +101,7 @@ if (!function_exists('trx_addons_sc_layouts_meta_add_in_elementor')) {
 				$is_edit_mode = trx_addons_elm_is_edit_mode();
 
 				// Register controls
-				$components = ! $is_edit_mode ? array() : apply_filters('trx_addons_filter_get_list_meta_parts', array());
+				$components = ! $is_edit_mode ? array() : trx_addons_get_list_meta_parts();
 
 				$this->start_controls_section(
 					'section_sc_layouts_meta',

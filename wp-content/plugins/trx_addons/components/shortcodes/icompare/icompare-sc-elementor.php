@@ -120,6 +120,22 @@ if ( ! function_exists( 'trx_addons_sc_icompare_add_in_elementor' ) ) {
 			 * @access protected
 			 */
 			protected function register_controls() {
+				$this->register_content_controls();
+				$this->register_style_controls_image();
+				$this->register_style_controls_handler();
+				$this->register_style_controls_before_after();
+
+				if ( apply_filters( 'trx_addons_filter_add_title_param', true, $this->get_name() ) ) {
+					$this->add_title_param();
+				}
+			}
+
+			/**
+			 * Register widget content controls.
+			 *
+			 * @access protected
+			 */
+			protected function register_content_controls() {
 
 				// Detect edit mode
 				$is_edit_mode = trx_addons_elm_is_edit_mode();
@@ -184,17 +200,6 @@ if ( ! function_exists( 'trx_addons_sc_icompare_add_in_elementor' ) ) {
 				);
 
 				$this->add_control(
-					'handler',
-					[
-						'label' => __( 'Handler style', 'trx_addons' ),
-						'label_block' => false,
-						'type' => \Elementor\Controls_Manager::SELECT,
-						'options' => ! $is_edit_mode ? array() : trx_addons_get_list_sc_icompare_handlers(),
-						'default' => 'round'
-					]
-				);
-
-				$this->add_control(
 					'handler_separator',
 					[
 						'label' => __( 'Show separator', 'trx_addons' ),
@@ -206,67 +211,68 @@ if ( ! function_exists( 'trx_addons_sc_icompare_add_in_elementor' ) ) {
 					]
 				);
 
-				$params = trx_addons_get_icon_param('icon');
-				$params = trx_addons_array_get_first_value( $params );
-				unset( $params['name'] );
-				$this->add_control( 'icon', $params );
+				$this->end_controls_section();
+			}
 
-				$this->add_control(
-					'handler_image',
+			/**
+			 * Register an image style controls.
+			 *
+			 * @access protected
+			 */
+			protected function register_style_controls_image() {
+
+				$this->start_controls_section(
+					'section_sc_icompare_image_style',
 					[
-						'label' => __( 'Handler image', 'trx_addons' ),
-						'type' => \Elementor\Controls_Manager::MEDIA,
-						'default' => [ 'url' => '' ]
+						'label' => __( 'Image style', 'trx_addons' ),
+						'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
 					]
 				);
 
-				$this->add_control(
-					'before_text',
+				$this->add_group_control(
+					\Elementor\Group_Control_Border::get_type(),
 					[
-						'label' => __( 'Text "Before"', 'trx_addons' ),
-						'label_block' => false,
-						'type' => \Elementor\Controls_Manager::TEXT,
-						'default' => ''
+						'name'     => 'image_border',
+						'label'    => esc_html__( 'Border', 'trx_addons' ),
+						'selector' => '{{WRAPPER}} .sc_icompare_content'
 					]
 				);
 
-				$this->add_control(
-					'before_pos',
+				$this->add_responsive_control(
+					'image_border_radius',
 					[
-						'label' => __( 'Position "Before"', 'trx_addons' ),
-						'label_block' => false,
-						'type' => \Elementor\Controls_Manager::SELECT,
-						'options' => ! $is_edit_mode ? array() : trx_addons_get_list_sc_positions(),
-						'default' => 'tl'
+						'label'      => esc_html__( 'Border Radius', 'trx_addons' ),
+						'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors'  => [
+							'{{WRAPPER}} .sc_icompare_content' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						],
 					]
 				);
 
-				$this->add_control(
-					'after_text',
+				$this->add_group_control(
+					\Elementor\Group_Control_Box_Shadow::get_type(),
 					[
-						'label' => __( 'Text "After"', 'trx_addons' ),
-						'label_block' => false,
-						'type' => \Elementor\Controls_Manager::TEXT,
-						'default' => ''
-					]
-				);
-
-				$this->add_control(
-					'after_pos',
-					[
-						'label' => __( 'Position "After"', 'trx_addons' ),
-						'label_block' => false,
-						'type' => \Elementor\Controls_Manager::SELECT,
-						'options' => ! $is_edit_mode ? array() : trx_addons_get_list_sc_positions(),
-						'default' => 'br'
+						'name'      => 'image_box_shadow',
+						'selector'  => '{{WRAPPER}} .sc_icompare_content',
 					]
 				);
 
 				$this->end_controls_section();
+			}
 
-				// Style
+			/**
+			 * Register a handler style controls.
+			 *
+			 * @access protected
+			 */
+			protected function register_style_controls_handler() {
+
+				// Detect edit mode
+				$is_edit_mode = trx_addons_elm_is_edit_mode();
+
 				$this->start_controls_section(
-					'section_sc_icompare_style',
+					'section_sc_icompare_handler_style',
 					[
 						'label' => __( 'Handler style', 'trx_addons' ),
 						'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
@@ -274,9 +280,20 @@ if ( ! function_exists( 'trx_addons_sc_icompare_add_in_elementor' ) ) {
 				);
 
 				$this->add_control(
+					'handler',
+					[
+						'label' => __( 'Handler style', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::SELECT,
+						'options' => ! $is_edit_mode ? array() : trx_addons_get_list_sc_icompare_handlers(),
+						'default' => 'round'
+					]
+				);
+
+				$this->add_control(
 					'handler_pos',
 					[
-						'label' => __( 'Handler position', 'trx_addons' ),
+						'label' => __( 'Handler position (in %)', 'trx_addons' ),
 						'type' => \Elementor\Controls_Manager::SLIDER,
 						'default' => [
 							'size' => 50,
@@ -314,12 +331,45 @@ if ( ! function_exists( 'trx_addons_sc_icompare_add_in_elementor' ) ) {
 								'step' => 0.1
 							],
 						],
-						'size_units' => [ 'px', 'em' ],
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 						'selectors' => [
 							'{{WRAPPER}} .sc_icompare_handler' => '--sc-icompare-handler-size: {{SIZE}}{{UNIT}};',
 						]
 					]
 				);
+
+				$this->add_control(
+					'handler_image',
+					[
+						'label' => __( 'Handler image', 'trx_addons' ),
+						'type' => \Elementor\Controls_Manager::MEDIA,
+						'default' => [ 'url' => '' ]
+					]
+				);
+
+				$this->add_control(
+					'handler_image_size',
+					[
+						'label' => __( 'Image size', 'trx_addons' ),
+						'type' => \Elementor\Controls_Manager::SLIDER,
+						'default' => [
+							'size' => 100,
+							'unit' => '%'
+						],
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors' => [
+							'{{WRAPPER}} .sc_icompare_handler_image' => 'width: {{SIZE}}{{UNIT}};',
+						],
+						'condition' => [
+							'handler_image[url]!' => ''
+						],
+					]
+				);
+
+				$params = trx_addons_get_icon_param('icon');
+				$params = trx_addons_array_get_first_value( $params );
+				unset( $params['name'] );
+				$this->add_control( 'icon', $params );
 
 				$this->add_control(
 					'handler_icon_size',
@@ -342,7 +392,7 @@ if ( ! function_exists( 'trx_addons_sc_icompare_add_in_elementor' ) ) {
 								'step' => 0.1
 							],
 						],
-						'size_units' => [ 'px', 'em' ],
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 						'selectors' => [
 							'{{WRAPPER}} .sc_icompare_handler' => '--sc-icompare-handler-icon-size: {{SIZE}}{{UNIT}};',
 						],
@@ -376,32 +426,6 @@ if ( ! function_exists( 'trx_addons_sc_icompare_add_in_elementor' ) ) {
 				);
 
 				$this->add_control(
-					'handler_image_size',
-					[
-						'label' => __( 'Image size', 'trx_addons' ),
-						'type' => \Elementor\Controls_Manager::SLIDER,
-						'default' => [
-							'size' => 100,
-							'unit' => '%'
-						],
-						'range' => [
-							'%' => [
-								'min' => 0,
-								'max' => 100,
-								'step' => 1
-							],
-						],
-						'size_units' => [ '%' ],
-						'selectors' => [
-							'{{WRAPPER}} .sc_icompare_handler_image' => 'width: {{SIZE}}{{UNIT}};',
-						],
-						'condition' => [
-							'handler_image[url]!' => ''
-						],
-					]
-				);
-
-				$this->add_control(
 					'handler_border_size',
 					[
 						'label' => __( 'Border size', 'trx_addons' ),
@@ -417,7 +441,7 @@ if ( ! function_exists( 'trx_addons_sc_icompare_add_in_elementor' ) ) {
 								'step' => 1
 							],
 						],
-						'size_units' => [ 'px' ],
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 						'selectors' => [
 							'{{WRAPPER}} .sc_icompare_handler' => '--sc-icompare-handler-border: {{SIZE}}{{UNIT}};',
 						]
@@ -441,6 +465,22 @@ if ( ! function_exists( 'trx_addons_sc_icompare_add_in_elementor' ) ) {
 					]
 				);
 
+				$this->add_responsive_control(
+					'handler_border_radius',
+					[
+						'label'      => esc_html__( 'Border Radius', 'trx_addons' ),
+						'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors'  => [
+							'{{WRAPPER}} .sc_icompare_handler' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+							'{{WRAPPER}} .sc_icompare_handler_image' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						],
+						'condition' => [
+							'handler' => 'square'
+						]
+					]
+				);
+
 				$this->add_control(
 					'handler_background_color',
 					[
@@ -458,8 +498,329 @@ if ( ! function_exists( 'trx_addons_sc_icompare_add_in_elementor' ) ) {
 				);
 
 				$this->end_controls_section();
+			}
 
-				$this->add_title_param();
+			/**
+			 * Register a before/after style controls.
+			 *
+			 * @access protected
+			 */
+			protected function register_style_controls_before_after() {
+
+				$this->start_controls_section(
+					'section_sc_icompare_before_after_style',
+					[
+						'label' => __( 'Before/After style', 'trx_addons' ),
+						'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+					]
+				);
+
+				$this->start_controls_tabs( 'tabs_before_after_style' );
+
+				$this->start_controls_tab(
+					'icompare_tab_before',
+					[
+						'label'      => __( 'Before', 'trx_addons' ),
+					]
+				);
+
+				$this->add_control(
+					'before_text',
+					[
+						'label' => __( 'Text "Before"', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::TEXT,
+						'default' => ''
+					]
+				);
+
+				$this->add_control(
+					'before_pos',
+					[
+						'label' => __( 'Position', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::SELECT,
+						'options' => trx_addons_get_list_sc_positions(),
+						'default' => 'tl',
+						'condition' => [
+							'before_text!' => ''
+						]
+					]
+				);
+
+				$this->add_control(
+					'before_bg_color',
+					[
+						'label' => __( 'Background color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'selectors' => [
+							'{{WRAPPER}} .sc_icompare_text_before' => 'background-color: {{VALUE}};',
+						],
+						'condition' => [
+							'before_text!' => ''
+						]
+					]
+				);
+
+				$this->add_control(
+					'before_color',
+					[
+						'label' => __( 'Text color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'selectors' => [
+							'{{WRAPPER}} .sc_icompare_text_before' => 'color: {{VALUE}};',
+						],
+						'condition' => [
+							'before_text!' => ''
+						]
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Border::get_type(),
+					[
+						'name'     => 'before_border',
+						'label'    => esc_html__( 'Border', 'trx_addons' ),
+						'selector' => '{{WRAPPER}} .sc_icompare_text_before',
+						'condition' => [
+							'before_text!' => ''
+						]
+					]
+				);
+
+				$this->add_responsive_control(
+					'before_border_radius',
+					[
+						'label'      => esc_html__( 'Border Radius', 'trx_addons' ),
+						'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors'  => [
+							'{{WRAPPER}} .sc_icompare_text_before' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						],
+						'condition' => [
+							'before_text!' => ''
+						]
+					]
+				);
+
+				$this->add_responsive_control(
+					'before_padding',
+					[
+						'label'      => esc_html__( 'Padding', 'trx_addons' ),
+						'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors'  => [
+							'{{WRAPPER}} .sc_icompare_text_before' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						],
+						'condition' => [
+							'before_text!' => ''
+						]
+					]
+				);
+
+				$this->add_responsive_control(
+					'before_margin',
+					[
+						'label'      => esc_html__( 'Margin', 'trx_addons' ),
+						'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors'  => [
+							'{{WRAPPER}} .sc_icompare_text_before' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						],
+						'condition' => [
+							'before_text!' => ''
+						]
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Text_Shadow::get_type(),
+					array(
+						'name'      => 'before_text_shadow',
+						'label'     => __( 'Text Shadow', 'trx_addons' ),
+						'selector'  => '{{WRAPPER}} .sc_icompare_text_before',
+						'condition' => [
+							'before_text!' => ''
+						]
+					)
+				);
+		
+				$this->add_group_control(
+					\Elementor\Group_Control_Box_Shadow::get_type(),
+					[
+						'name'      => 'before_box_shadow',
+						'selector'  => '{{WRAPPER}} .sc_icompare_text_before',
+						'condition' => [
+							'before_text!' => ''
+						]
+					]
+				);
+
+				$this->end_controls_tab();
+
+				$this->start_controls_tab(
+					'icompare_tab_after',
+					[
+						'label'      => __( 'After', 'trx_addons' ),
+					]
+				);
+
+				$this->add_control(
+					'after_text',
+					[
+						'label' => __( 'Text "After"', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::TEXT,
+						'default' => ''
+					]
+				);
+
+				$this->add_control(
+					'after_pos',
+					[
+						'label' => __( 'Position "After"', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::SELECT,
+						'options' => trx_addons_get_list_sc_positions(),
+						'default' => 'br',
+						'condition' => [
+							'after_text!' => ''
+						]
+					]
+				);
+
+				$this->add_control(
+					'after_bg_color',
+					[
+						'label' => __( 'Background color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'selectors' => [
+							'{{WRAPPER}} .sc_icompare_text_after' => 'background-color: {{VALUE}};',
+						],
+						'condition' => [
+							'after_text!' => ''
+						]
+					]
+				);
+
+				$this->add_control(
+					'after_color',
+					[
+						'label' => __( 'Text color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'selectors' => [
+							'{{WRAPPER}} .sc_icompare_text_after' => 'color: {{VALUE}};',
+						],
+						'condition' => [
+							'after_text!' => ''
+						]
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Border::get_type(),
+					[
+						'name'     => 'after_border',
+						'label'    => esc_html__( 'Border', 'trx_addons' ),
+						'selector' => '{{WRAPPER}} .sc_icompare_text_after',
+						'condition' => [
+							'after_text!' => ''
+						]
+					]
+				);
+				$this->add_responsive_control(
+					'after_border_radius',
+					[
+						'label'      => esc_html__( 'Border Radius', 'trx_addons' ),
+						'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors'  => [
+							'{{WRAPPER}} .sc_icompare_text_after' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						],
+						'condition' => [
+							'after_text!' => ''
+						]
+					]
+				);
+
+				$this->add_responsive_control(
+					'after_padding',
+					[
+						'label'      => esc_html__( 'Padding', 'trx_addons' ),
+						'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors'  => [
+							'{{WRAPPER}} .sc_icompare_text_after' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						],
+						'condition' => [
+							'after_text!' => ''
+						]
+					]
+				);
+
+				$this->add_responsive_control(
+					'after_margin',
+					[
+						'label'      => esc_html__( 'Margin', 'trx_addons' ),
+						'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors'  => [
+							'{{WRAPPER}} .sc_icompare_text_after' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						],
+						'condition' => [
+							'after_text!' => ''
+						]
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Text_Shadow::get_type(),
+					array(
+						'name'      => 'after_text_shadow',
+						'label'     => __( 'Text Shadow', 'trx_addons' ),
+						'selector'  => '{{WRAPPER}} .sc_icompare_text_after',
+						'condition' => [
+							'after_text!' => ''
+						]
+					)
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Box_Shadow::get_type(),
+					[
+						'name'      => 'after_box_shadow',
+						'selector'  => '{{WRAPPER}} .sc_icompare_text_after',
+						'condition' => [
+							'after_text!' => ''
+						]
+					]
+				);
+
+				$this->end_controls_tab();
+
+				$this->end_controls_tabs();
+
+				$this->end_controls_section();
 			}
 
 			/**

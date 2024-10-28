@@ -99,10 +99,10 @@ class TeamMemberWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Image Width', 'trx_addons' ),
 				'type'                  => Controls_Manager::SLIDER,
-				'size_units'            => [ '%', 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'default'               => [
-					'size' => 200,
-					'unit' => 'px',
+					'size' => 50,
+					'unit' => '%',
 				],
 				'range'                 => [
 					'px' => [
@@ -110,10 +110,10 @@ class TeamMemberWidget extends BaseWidget {
 					],
 				],
 				'tablet_default'        => [
-					'unit' => 'px',
+					'unit' => '%',
 				],
 				'mobile_default'        => [
-					'unit' => 'px',
+					'unit' => '%',
 				],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-tm-image' => 'width: {{SIZE}}{{UNIT}};',
@@ -563,8 +563,44 @@ class TeamMemberWidget extends BaseWidget {
 		$this->start_controls_section(
 			'section_item_style',
 			[
-				'label'                 => __( 'Whole item', 'trx_addons' ),
+				'label'                 => __( 'Team member', 'trx_addons' ),
 				'tab'                   => Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'member_box_vertical_align',
+			[
+				'label'                 => __( 'Vertical Alignment', 'trx_addons' ),
+				'type'                  => Controls_Manager::CHOOSE,
+				'label_block'           => false,
+				'default'               => 'middle',
+				'options'               => [
+					'top'          => [
+						'title'    => __( 'Top', 'trx_addons' ),
+						'icon'     => 'eicon-v-align-top',
+					],
+					'middle'       => [
+						'title'    => __( 'Center', 'trx_addons' ),
+						'icon'     => 'eicon-v-align-middle',
+					],
+					'bottom'       => [
+						'title'    => __( 'Bottom', 'trx_addons' ),
+						'icon'     => 'eicon-v-align-bottom',
+					],
+				],
+				'selectors_dictionary'  => [
+					'top'          => 'flex-start',
+					'middle'       => 'center',
+					'bottom'       => 'flex-end',
+				],
+				'selectors'             => [
+					'{{WRAPPER}}.trx-addons-tm-image-left .trx-addons-tm'  => 'align-items: {{VALUE}};',
+					'{{WRAPPER}}.trx-addons-tm-image-right .trx-addons-tm' => 'align-items: {{VALUE}};',
+				],
+				'condition'             => [
+					'member_image_position' => [ 'left', 'right' ],
+				],
 			]
 		);
 
@@ -596,7 +632,7 @@ class TeamMemberWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Border Radius', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%', 'em' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-tm-wrapper' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -608,7 +644,7 @@ class TeamMemberWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-tm-wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -646,6 +682,7 @@ class TeamMemberWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Alignment', 'trx_addons' ),
 				'type'                  => Controls_Manager::CHOOSE,
+				'render_type'           => 'template',
 				'options'               => [
 					'left'      => [
 						'title' => __( 'Left', 'trx_addons' ),
@@ -674,7 +711,7 @@ class TeamMemberWidget extends BaseWidget {
 				'label'                 => __( 'Background', 'trx_addons' ),
 				'types'                 => [ 'classic', 'gradient' ],
 				'separator'             => 'before',
-				'selector'              => '{{WRAPPER}} .trx-addons-tm-content-normal',
+				'selector'              => '{{WRAPPER}} .trx-addons-tm-content',
 			]
 		);
 
@@ -687,6 +724,18 @@ class TeamMemberWidget extends BaseWidget {
 				'default'               => '1px',
 				'separator'             => 'before',
 				'selector'              => '{{WRAPPER}} .trx-addons-tm-content',
+			]
+		);
+
+		$this->add_control(
+			'member_content_border_radius',
+			[
+				'label'                 => __( 'Border Radius', 'trx_addons' ),
+				'type'                  => Controls_Manager::DIMENSIONS,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-tm-content' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
 			]
 		);
 
@@ -703,10 +752,10 @@ class TeamMemberWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Margin', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'separator'             => 'before',
 				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-tm-content-normal' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-tm-content' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -716,7 +765,7 @@ class TeamMemberWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-tm-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -749,6 +798,7 @@ class TeamMemberWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Alignment', 'trx_addons' ),
 				'type'                  => Controls_Manager::CHOOSE,
+				'render_type'           => 'template',
 				'options'               => [
 					'left'      => [
 						'title' => __( 'Left', 'trx_addons' ),
@@ -832,21 +882,33 @@ class TeamMemberWidget extends BaseWidget {
 				'default'            => 'top',
 				'options'            => array(
 					'left'  => array(
-						'title' => __( 'Image on Left', 'trx_addons' ),
+						'title' => __( 'Left', 'trx_addons' ),
 						'icon'  => 'eicon-h-align-left',
 					),
 					'top'   => array(
-						'title' => __( 'Image on Top', 'trx_addons' ),
+						'title' => __( 'Top', 'trx_addons' ),
 						'icon'  => 'eicon-v-align-top',
 					),
 					'right' => array(
-						'title' => __( 'Image on Right', 'trx_addons' ),
+						'title' => __( 'Right', 'trx_addons' ),
 						'icon'  => 'eicon-h-align-right',
 					),
 				),
 				'prefix_class'       => 'trx-addons-tm-image%s-',
 				'frontend_available' => true,
 			)
+		);
+
+		$this->add_control(
+			'member_image_bg_color',
+			[
+				'label'                 => __( 'Background Color', 'trx_addons' ),
+				'type'                  => Controls_Manager::COLOR,
+				'default'               => '',
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-tm-image' => 'background-color: {{VALUE}}',
+				],
+			]
 		);
 
 		$this->add_group_control(
@@ -856,7 +918,7 @@ class TeamMemberWidget extends BaseWidget {
 				'label'                 => __( 'Border', 'trx_addons' ),
 				'placeholder'           => '1px',
 				'default'               => '1px',
-				'selector'              => '{{WRAPPER}} .trx-addons-tm-image img',
+				'selector'              => '{{WRAPPER}} .trx-addons-tm-image',
 			]
 		);
 
@@ -865,9 +927,10 @@ class TeamMemberWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Border Radius', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%', 'em' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-tm-image img, {{WRAPPER}} .trx-addons-tm-overlay-content-wrap:before' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-tm-image' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					// '{{WRAPPER}} .trx-addons-tm-overlay-content-wrap:before' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -877,10 +940,30 @@ class TeamMemberWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Margin', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%', 'rem' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-tm-image' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'member_image_padding',
+			[
+				'label'                 => __( 'Padding', 'trx_addons' ),
+				'type'                  => Controls_Manager::DIMENSIONS,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-tm-image' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name'                  => 'member_image_shadow',
+				'selector'              => '{{WRAPPER}} .trx-addons-tm-image',
 			]
 		);
 
@@ -917,7 +1000,7 @@ class TeamMemberWidget extends BaseWidget {
 		$this->add_control(
 			'member_name_text_color',
 			[
-				'label'                 => __( 'Text Color', 'trx_addons' ),
+				'label'                 => __( 'Color', 'trx_addons' ),
 				'type'                  => Controls_Manager::COLOR,
 				'global'                => [
 					'default' => Global_Colors::COLOR_PRIMARY,
@@ -933,7 +1016,7 @@ class TeamMemberWidget extends BaseWidget {
 		$this->add_control(
 			'member_name_text_hover',
 			[
-				'label'                 => __( 'Text Hover', 'trx_addons' ),
+				'label'                 => __( 'Hover Color', 'trx_addons' ),
 				'type'                  => Controls_Manager::COLOR,
 				'global'                => [
 					'default' => Global_Colors::COLOR_PRIMARY,
@@ -957,7 +1040,7 @@ class TeamMemberWidget extends BaseWidget {
 					'size' => 10,
 					'unit' => 'px',
 				],
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px' => [
 						'max' => 100,
@@ -1035,7 +1118,7 @@ class TeamMemberWidget extends BaseWidget {
 					'size' => 100,
 					'unit' => 'px',
 				],
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px' => [
 						'max' => 800,
@@ -1062,9 +1145,9 @@ class TeamMemberWidget extends BaseWidget {
 				'label'                 => __( 'Divider Height', 'trx_addons' ),
 				'type'                  => Controls_Manager::SLIDER,
 				'default'               => [
-					'size' => 4,
+					'size' => 1,
 				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px' => [
 						'max' => 20,
@@ -1094,7 +1177,7 @@ class TeamMemberWidget extends BaseWidget {
 					'size' => 10,
 					'unit' => 'px',
 				],
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px' => [
 						'max' => 100,
@@ -1169,7 +1252,7 @@ class TeamMemberWidget extends BaseWidget {
 					'size' => 10,
 					'unit' => 'px',
 				],
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px' => [
 						'max' => 100,
@@ -1247,7 +1330,7 @@ class TeamMemberWidget extends BaseWidget {
 					'size' => 100,
 					'unit' => 'px',
 				],
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px' => [
 						'max' => 800,
@@ -1274,9 +1357,9 @@ class TeamMemberWidget extends BaseWidget {
 				'label'                 => __( 'Divider Height', 'trx_addons' ),
 				'type'                  => Controls_Manager::SLIDER,
 				'default'               => [
-					'size' => 3,
+					'size' => 1,
 				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px' => [
 						'max' => 20,
@@ -1306,7 +1389,7 @@ class TeamMemberWidget extends BaseWidget {
 					'size' => 10,
 					'unit' => 'px',
 				],
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px' => [
 						'max' => 100,
@@ -1393,7 +1476,7 @@ class TeamMemberWidget extends BaseWidget {
 					'size' => 10,
 					'unit' => 'px',
 				],
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px' => [
 						'max' => 100,
@@ -1481,7 +1564,7 @@ class TeamMemberWidget extends BaseWidget {
 					'size' => 100,
 					'unit' => 'px',
 				],
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px' => [
 						'max' => 800,
@@ -1510,9 +1593,9 @@ class TeamMemberWidget extends BaseWidget {
 				'label'                 => __( 'Divider Height', 'trx_addons' ),
 				'type'                  => Controls_Manager::SLIDER,
 				'default'               => [
-					'size' => 4,
+					'size' => 1,
 				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px' => [
 						'max' => 20,
@@ -1544,7 +1627,7 @@ class TeamMemberWidget extends BaseWidget {
 					'size' => 10,
 					'unit' => 'px',
 				],
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px' => [
 						'max' => 100,
@@ -1590,7 +1673,7 @@ class TeamMemberWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Icons Gap', 'trx_addons' ),
 				'type'                  => Controls_Manager::SLIDER,
-				'size_units'            => [ '%', 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px' => [
 						'max' => 60,
@@ -1603,7 +1686,7 @@ class TeamMemberWidget extends BaseWidget {
 					'unit' => 'px',
 				],
 				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-tm-social-links li:not(:last-child)' => 'margin-right: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-tm-social-links' => 'gap: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -1613,7 +1696,7 @@ class TeamMemberWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Icon Size', 'trx_addons' ),
 				'type'                  => Controls_Manager::SLIDER,
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px' => [
 						'max' => 30,
@@ -1693,6 +1776,7 @@ class TeamMemberWidget extends BaseWidget {
 				'default'    => '',
 				'selectors'  => [
 					'{{WRAPPER}} .trx-addons-tm-social-links .trx-addons-tm-social-icon-wrap' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .trx-addons-tm-social-links .trx-addons-tm-social-icon-wrap.elementor-social-icon i' => 'color: inherit;',
 					'{{WRAPPER}} .trx-addons-tm-social-links .trx-addons-tm-social-icon-wrap svg' => 'fill: {{VALUE}};',
 				],
 				'conditions' => array(
@@ -1777,7 +1861,7 @@ class TeamMemberWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Border Radius', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%', 'em' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-tm-social-links .trx-addons-tm-social-icon-wrap' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1789,7 +1873,7 @@ class TeamMemberWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%', 'rem' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'separator'             => 'before',
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-tm-social-links .trx-addons-tm-social-icon-wrap' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -1839,6 +1923,7 @@ class TeamMemberWidget extends BaseWidget {
 				'default'    => '',
 				'selectors'  => [
 					'{{WRAPPER}} .trx-addons-tm-social-links .trx-addons-tm-social-icon-wrap:hover' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .trx-addons-tm-social-links .trx-addons-tm-social-icon-wrap.elementor-social-icon:hover i' => 'color: inherit;',
 					'{{WRAPPER}} .trx-addons-tm-social-links .trx-addons-tm-social-icon-wrap:hover svg' => 'fill: {{VALUE}};',
 				],
 				'conditions' => array(
@@ -1950,6 +2035,93 @@ class TeamMemberWidget extends BaseWidget {
 		$this->end_controls_section();
 	}
 
+
+	/*-----------------------------------------------------------------------------------*/
+	/*	RENDER
+	/*-----------------------------------------------------------------------------------*/
+
+	/**
+	 * Render a widget output on the frontend.
+	 *
+	 * @access protected
+	 */
+	protected function render() {
+		$settings = $this->get_settings_for_display();
+		$link_key = 'link';
+
+		if ( 'none' !== $settings['link_type'] ) {
+			if ( ! empty( $settings['link']['url'] ) ) {
+				$this->add_link_attributes( $link_key, $settings['link'] );
+			}
+		}
+		?>
+		<div class="trx-addons-tm-wrapper">
+			<div class="trx-addons-tm">
+				<div class="trx-addons-tm-image"> 
+					<?php $this->render_image(); ?>
+
+					<?php if ( 'none' !== $settings['overlay_content'] ) { ?>
+						<div class="trx-addons-tm-overlay-content-wrap">
+							<div class="trx-addons-tm-overlay-content">
+								<?php
+								if ( 'yes' === $settings['member_social_links'] ) {
+									if ( 'social_icons' === $settings['overlay_content'] ) {
+										$this->render_social_links( 'overlay' );
+									} elseif ( 'all_content' === $settings['overlay_content'] ) {
+										if ( 'before_desc' === $settings['social_links_position'] ) {
+											$this->render_social_links( 'overlay' );
+										}
+									}
+								}
+
+								if ( 'content' === $settings['overlay_content'] || 'all_content' === $settings['overlay_content'] ) {
+									$this->render_description();
+								}
+
+								if ( 'yes' === $settings['member_social_links'] && 'all_content' === $settings['overlay_content'] ) {
+									if ( 'after_desc' === $settings['social_links_position'] ) {
+										$this->render_social_links( 'overlay' );
+									}
+								}
+								?>
+							</div>
+						</div>
+					<?php } ?>
+				</div>
+				<div class="trx-addons-tm-content">
+					<?php
+					// Name
+					$this->render_name();
+
+					// Position
+					$this->render_position();
+
+					if ( 'yes' === $settings['member_social_links'] && ( 'none' === $settings['overlay_content'] || 'content' === $settings['overlay_content'] ) ) {
+						if ( 'none' === $settings['overlay_content'] ) {
+							if ( 'before_desc' === $settings['social_links_position'] ) {
+								$this->render_social_links( 'content' );
+							}
+						} else {
+							$this->render_social_links( 'content' );
+						}
+					}
+
+					if ( 'none' === $settings['overlay_content'] || 'social_icons' === $settings['overlay_content'] ) {
+						$this->render_description();
+					}
+
+					if ( 'yes' === $settings['member_social_links'] && ( 'none' === $settings['overlay_content'] || 'content' === $settings['overlay_content'] ) ) {
+						if ( 'after_desc' === $settings['social_links_position'] && 'none' === $settings['overlay_content'] ) {
+							$this->render_social_links( 'content' );
+						}
+					}
+					?>
+				</div>
+			</div>
+		</div>
+		<?php
+	}
+
 	protected function render_image() {
 		$settings = $this->get_settings_for_display();
 		$link_key = 'link';
@@ -2047,9 +2219,10 @@ class TeamMemberWidget extends BaseWidget {
 		}
 	}
 
-	protected function render_social_links() {
+	protected function render_social_links( $pos ) {
 		$settings = $this->get_settings_for_display();
 		$i = 1;
+		$alignment = $pos == 'overlay' ? $settings['overlay_alignment'] : $settings['member_box_alignment'];
 
 		$fallback_defaults = [
 			'fa fa-facebook',
@@ -2068,9 +2241,8 @@ class TeamMemberWidget extends BaseWidget {
 		$is_new = ! isset( $item['icon'] ) && $migration_allowed;
 		?>
 		<div class="trx-addons-tm-social-links-wrap">
-			<ul class="trx-addons-tm-social-links">
-				<?php foreach ( $settings['team_member_social'] as $index => $item ) : ?>
-					<?php
+			<ul class="trx-addons-tm-social-links trx-addons-tm-social-links-align-<?php echo esc_attr( $alignment ); ?>"><?php
+				foreach ( $settings['team_member_social'] as $index => $item ) {
 					$migrated = isset( $item['__fa4_migrated']['select_social_icon'] );
 					$is_new = empty( $item['social_icon'] ) && $migration_allowed;
 					$social = '';
@@ -2100,7 +2272,7 @@ class TeamMemberWidget extends BaseWidget {
 					$icon_wrap_key   = 'icon_wrap' . $i;
 
 					$this->add_render_attribute( $social_link_key, 'class', 'trx-addons-tm-social-link' );
-					$this->add_render_attribute( $icon_wrap_key, 'class', 'trx-addons-tm-social-icon-wrap' );
+					$this->add_render_attribute( $icon_wrap_key, 'class', array( 'trx-addons-tm-social-icon-wrap', 'trx-addons-social-icon-wrap', 'trx-addons-social-icon-wrap-' . $social ) );
 
 					if ( 'button' === $settings['social_links_style'] ) {
 						$this->add_render_attribute( $icon_wrap_key, 'class', [
@@ -2113,8 +2285,7 @@ class TeamMemberWidget extends BaseWidget {
 					if ( ! empty( $item['social_link']['url'] ) ) {
 						$this->add_link_attributes( $social_link_key, $item['social_link'] );
 					}
-					?>
-					<li>
+					?><li>
 						<a <?php echo wp_kses_post( $this->get_render_attribute_string( $social_link_key ) ); ?>>
 							<span <?php echo wp_kses_post( $this->get_render_attribute_string( $icon_wrap_key ) ); ?>>
 								<span class="elementor-screen-only"><?php echo esc_html( ucwords( $social ) ); ?></span>
@@ -2129,247 +2300,171 @@ class TeamMemberWidget extends BaseWidget {
 								</span>
 							</span>
 						</a>
-					</li>
-					<?php $i++;
-				endforeach; ?>
-			</ul>
-		</div>
-		<?php
-	}
-
-	protected function render() {
-		$settings = $this->get_settings_for_display();
-		$link_key = 'link';
-
-		if ( 'none' !== $settings['link_type'] ) {
-			if ( ! empty( $settings['link']['url'] ) ) {
-				$this->add_link_attributes( $link_key, $settings['link'] );
-			}
-		}
-		?>
-		<div class="trx-addons-tm-wrapper">
-			<div class="trx-addons-tm">
-				<div class="trx-addons-tm-image"> 
-					<?php $this->render_image(); ?>
-
-					<?php if ( 'none' !== $settings['overlay_content'] ) { ?>
-						<div class="trx-addons-tm-overlay-content-wrap">
-							<div class="trx-addons-tm-content">
-								<?php
-								if ( 'yes' === $settings['member_social_links'] ) {
-									if ( 'social_icons' === $settings['overlay_content'] ) {
-										$this->render_social_links();
-									} elseif ( 'all_content' === $settings['overlay_content'] ) {
-										if ( 'before_desc' === $settings['social_links_position'] ) {
-											$this->render_social_links();
-										}
-									}
-								}
-
-								if ( 'content' === $settings['overlay_content'] || 'all_content' === $settings['overlay_content'] ) {
-									$this->render_description();
-								}
-
-								if ( 'yes' === $settings['member_social_links'] && 'all_content' === $settings['overlay_content'] ) {
-									if ( 'after_desc' === $settings['social_links_position'] ) {
-										$this->render_social_links();
-									}
-								}
-								?>
-							</div>
-						</div>
-					<?php } ?>
-				</div>
-				<div class="trx-addons-tm-content trx-addons-tm-content-normal">
-					<?php
-					// Name
-					$this->render_name();
-
-					// Position
-					$this->render_position();
-
-					if ( 'yes' === $settings['member_social_links'] && ( 'none' === $settings['overlay_content'] || 'content' === $settings['overlay_content'] ) ) {
-						if ( 'none' === $settings['overlay_content'] ) {
-							if ( 'before_desc' === $settings['social_links_position'] ) {
-								$this->render_social_links();
-							}
-						} else {
-							$this->render_social_links();
-						}
-					}
-
-					if ( 'none' === $settings['overlay_content'] || 'social_icons' === $settings['overlay_content'] ) {
-						$this->render_description();
-					}
-
-					if ( 'yes' === $settings['member_social_links'] && ( 'none' === $settings['overlay_content'] || 'content' === $settings['overlay_content'] ) ) {
-						if ( 'after_desc' === $settings['social_links_position'] && 'none' === $settings['overlay_content'] ) {
-							$this->render_social_links();
-						}
-					}
-					?>
-				</div>
-			</div>
+					</li><?php
+					$i++;
+				}
+			?></ul>
 		</div>
 		<?php
 	}
 
 	/**
-	 * Render team member widget output in the editor.
+	 * Render a widget output in the editor.
 	 *
 	 * Written as a Backbone JavaScript template and used to generate the live preview.
 	 *
-	 * @since 2.4.2
 	 * @access protected
 	 */
 	protected function content_template() {
-		?>
-		<#
-			function member_image() {
-				if ( '' !== settings.image.url ) {
-					var image = {
-						id: settings.image.id,
-						url: settings.image.url,
-						size: settings.image_size,
-						dimension: settings.image_custom_dimension,
-						model: view.getEditModel()
-					};
+		?><#
+		function member_image() {
+			if ( '' !== settings.image.url ) {
+				var image = {
+					id: settings.image.id,
+					url: settings.image.url,
+					size: settings.image_size,
+					dimension: settings.image_custom_dimension,
+					model: view.getEditModel()
+				};
 
-					var image_url = elementor.imagesManager.getImageUrl( image );
+				var image_url = elementor.imagesManager.getImageUrl( image );
 
-					var imageHtml = '<img src="' + _.escape( image_url ) + '" />';
+				var imageHtml = '<img src="' + _.escape( image_url ) + '" />';
 
-					if ( settings.link_type == 'image' && settings.link.url != '' ) {
-						imageHtml = '<a href="' + _.escape( settings.link.url ) + '">' + imageHtml + '</a>';
-					}
-
-					print( imageHtml );
+				if ( settings.link_type == 'image' && settings.link.url != '' ) {
+					imageHtml = '<a href="' + _.escape( settings.link.url ) + '">' + imageHtml + '</a>';
 				}
+
+				print( imageHtml );
+			}
+		}
+
+		function member_name() {
+			if ( settings.team_member_name != '' ) {
+				var name = settings.team_member_name;
+
+				view.addRenderAttribute( 'team_member_name', 'class', 'trx-addons-tm-name' );
+
+				view.addInlineEditingAttributes( 'team_member_name' );
+
+				var nameHTMLTag = elementor.helpers.validateHTMLTag( settings.name_html_tag ),
+					name_html = '<' + nameHTMLTag  + ' ' + view.getRenderAttributeString( 'team_member_name' ) + '>' + name + '</' + nameHTMLTag + '>';
 			}
 
-			function member_name() {
-				if ( settings.team_member_name != '' ) {
-					var name = settings.team_member_name;
-
-					view.addRenderAttribute( 'team_member_name', 'class', 'trx-addons-tm-name' );
-
-					view.addInlineEditingAttributes( 'team_member_name' );
-
-					var nameHTMLTag = elementor.helpers.validateHTMLTag( settings.name_html_tag ),
-						name_html = '<' + nameHTMLTag  + ' ' + view.getRenderAttributeString( 'team_member_name' ) + '>' + name + '</' + nameHTMLTag + '>';
-				}
-
-				if ( settings.link_type == 'title' && settings.link.url != '' ) { #>
-					<#
-					var target = settings.link.is_external ? ' target="_blank"' : '';
-					var nofollow = settings.link.nofollow ? ' rel="nofollow"' : '';
-					#>
-					<a href="{{ _.escape( settings.link.url ) }}"{{ target }}{{ nofollow }}>
-						<# print( name_html ); #>
-					</a>
-				<# } else {
-					print( name_html );
-				}
-
-				if ( settings.member_title_divider == 'yes' ) { #>
-					<div class="trx-addons-tm-title-divider-wrap">
-						<div class="trx-addons-tm-divider trx-addons-tm-title-divider"></div>
-					</div>
-				<# }
+			if ( settings.link_type == 'title' && settings.link.url != '' ) { #>
+				<#
+				var target = settings.link.is_external ? ' target="_blank"' : '';
+				var nofollow = settings.link.nofollow ? ' rel="nofollow"' : '';
+				#>
+				<a href="{{ _.escape( settings.link.url ) }}"{{ target }}{{ nofollow }}>
+					<# print( name_html ); #>
+				</a>
+			<# } else {
+				print( name_html );
 			}
 
-			function member_position() {
-				if ( settings.team_member_position != '' ) {
-					var position = settings.team_member_position;
-
-					view.addRenderAttribute( 'team_member_position', 'class', 'trx-addons-tm-position' );
-
-					view.addInlineEditingAttributes( 'team_member_position' );
-
-					var positionHTMLTag = elementor.helpers.validateHTMLTag( settings.position_html_tag ),
-						position_html = '<' + positionHTMLTag  + ' ' + view.getRenderAttributeString( 'team_member_position' ) + '>' + position + '</' + positionHTMLTag + '>';
-
-					print( position_html );
-				}
-
-				if ( settings.member_position_divider == 'yes' ) { #>
-					<div class="trx-addons-tm-position-divider-wrap">
-						<div class="trx-addons-tm-divider trx-addons-tm-position-divider"></div>
-					</div>
-				<# }
-			}
-
-			function member_description() {
-				if ( settings.team_member_description_switch == 'yes' ) {
-					if ( settings.team_member_description != '' ) {
-						var description = settings.team_member_description;
-
-						view.addRenderAttribute( 'team_member_description', 'class', 'trx-addons-tm-description' );
-
-						view.addInlineEditingAttributes( 'team_member_description', 'advanced' );
-
-						var positionHTMLTag = elementor.helpers.validateHTMLTag( settings.position_html_tag ),
-							description_html = '<' + positionHTMLTag  + ' ' + view.getRenderAttributeString( 'team_member_description' ) + '>' + description + '</' + positionHTMLTag + '>';
-
-						print( description_html );
-					}
-
-					if ( settings.member_description_divider == 'yes' ) { #>
-						<div class="trx-addons-tm-description-divider-wrap">
-							<div class="trx-addons-tm-divider trx-addons-tm-description-divider"></div>
-						</div>
-					<# }
-				}
-			}
-
-			function member_social_links() { #>
-				<# var iconsHTML = {}; #>
-				<div class="trx-addons-tm-social-links-wrap">
-					<ul class="trx-addons-tm-social-links">
-						<# _.each( settings.team_member_social, function( item, index ) {
-							var link = item.social_link ? item.social_link.url : '',
-								migrated = elementor.helpers.isIconMigrated( item, 'select_social_icon' );
-								social = elementor.helpers.getSocialNetworkNameFromIcon( item.select_social_icon, item.social_icon, false, migrated );
-
-								var socialLinkKey = view.getRepeaterSettingKey( 'text', 'social_link', index );
-								var iconWrapKey = view.getRepeaterSettingKey( 'text', 'icon_wrap', index );
-
-								view.addRenderAttribute( socialLinkKey, 'class', 'trx-addons-tm-social-link' );
-								view.addRenderAttribute( iconWrapKey, 'class', 'trx-addons-tm-social-icon-wrap' );
-
-								if ( 'button' == settings.social_links_style ) {
-									view.addRenderAttribute( iconWrapKey, 'class', [
-										'elementor-icon',
-										'elementor-social-icon',
-										'elementor-social-icon-' + social,
-									] );
-								}
-
-								view.addRenderAttribute( socialLinkKey, 'href', link );
-							#>
-							<li>
-								<# if ( item.social_icon || item.select_social_icon ) { #>
-									<a {{{ view.getRenderAttributeString( socialLinkKey ) }}}>
-										<span {{{ view.getRenderAttributeString( iconWrapKey ) }}}>
-											<span class="trx-addons-tm-social-icon trx-addons-icon">
-												<span class="elementor-screen-only">{{{ social }}}</span>
-												<#
-													iconsHTML[ index ] = elementor.helpers.renderIcon( view, item.select_social_icon, {}, 'i', 'object' );
-													if ( ( ! item.social_icon || migrated ) && iconsHTML[ index ] && iconsHTML[ index ].rendered ) { #>
-														{{{ iconsHTML[ index ].value }}}
-													<# } else { #>
-														<i class="{{ item.social_icon }}"></i>
-													<# }
-												#>
-											</span>
-										</span>
-									</a>
-								<# } #>
-							</li>
-						<# } ); #>
-					</ul>
+			if ( settings.member_title_divider == 'yes' ) { #>
+				<div class="trx-addons-tm-title-divider-wrap">
+					<div class="trx-addons-tm-divider trx-addons-tm-title-divider"></div>
 				</div>
-		<# } #>
+			<# }
+		}
+
+		function member_position() {
+			if ( settings.team_member_position != '' ) {
+				var position = settings.team_member_position;
+
+				view.addRenderAttribute( 'team_member_position', 'class', 'trx-addons-tm-position' );
+
+				view.addInlineEditingAttributes( 'team_member_position' );
+
+				var positionHTMLTag = elementor.helpers.validateHTMLTag( settings.position_html_tag ),
+					position_html = '<' + positionHTMLTag  + ' ' + view.getRenderAttributeString( 'team_member_position' ) + '>' + position + '</' + positionHTMLTag + '>';
+
+				print( position_html );
+			}
+
+			if ( settings.member_position_divider == 'yes' ) { #>
+				<div class="trx-addons-tm-position-divider-wrap">
+					<div class="trx-addons-tm-divider trx-addons-tm-position-divider"></div>
+				</div>
+			<# }
+		}
+
+		function member_description() {
+			if ( settings.team_member_description_switch == 'yes' ) {
+				if ( settings.team_member_description != '' ) {
+					var description = settings.team_member_description;
+
+					view.addRenderAttribute( 'team_member_description', 'class', 'trx-addons-tm-description' );
+
+					view.addInlineEditingAttributes( 'team_member_description', 'advanced' );
+
+					var descriptionHTMLTag = 'div',
+						description_html = '<' + descriptionHTMLTag  + ' ' + view.getRenderAttributeString( 'team_member_description' ) + '>' + description + '</' + descriptionHTMLTag + '>';
+
+					print( description_html );
+				}
+
+				if ( settings.member_description_divider == 'yes' ) { #>
+					<div class="trx-addons-tm-description-divider-wrap">
+						<div class="trx-addons-tm-divider trx-addons-tm-description-divider"></div>
+					</div>
+				<# }
+			}
+		}
+
+		function member_social_links( pos ) { #>
+			<#
+			var iconsHTML = {},
+				alignment = pos == 'overlay' ? settings.overlay_alignment : settings.member_box_alignment;
+			#>
+			<div class="trx-addons-tm-social-links-wrap">
+				<ul class="trx-addons-tm-social-links trx-addons-tm-social-links-align-{{ alignment }}"><#
+					_.each( settings.team_member_social, function( item, index ) {
+						var link = item.social_link ? item.social_link.url : '',
+							migrated = elementor.helpers.isIconMigrated( item, 'select_social_icon' );
+							social = elementor.helpers.getSocialNetworkNameFromIcon( item.select_social_icon, item.social_icon, false, migrated );
+
+							var socialLinkKey = view.getRepeaterSettingKey( 'text', 'social_link', index );
+							var iconWrapKey = view.getRepeaterSettingKey( 'text', 'icon_wrap', index );
+
+							view.addRenderAttribute( socialLinkKey, 'class', 'trx-addons-tm-social-link' );
+							view.addRenderAttribute( iconWrapKey, 'class', [ 'trx-addons-tm-social-icon-wrap', 'trx-addons-social-icon-wrap', 'trx-addons-social-icon-wrap-' + social ] );
+
+							if ( 'button' == settings.social_links_style ) {
+								view.addRenderAttribute( iconWrapKey, 'class', [
+									'elementor-icon',
+									'elementor-social-icon',
+									'elementor-social-icon-' + social,
+								] );
+							}
+
+							view.addRenderAttribute( socialLinkKey, 'href', link );
+						#><li><#
+							if ( item.social_icon || item.select_social_icon ) {
+								#><a {{{ view.getRenderAttributeString( socialLinkKey ) }}}>
+									<span {{{ view.getRenderAttributeString( iconWrapKey ) }}}>
+										<span class="trx-addons-tm-social-icon trx-addons-icon">
+											<span class="elementor-screen-only">{{{ social }}}</span>
+											<#
+												iconsHTML[ index ] = elementor.helpers.renderIcon( view, item.select_social_icon, {}, 'i', 'object' );
+												if ( ( ! item.social_icon || migrated ) && iconsHTML[ index ] && iconsHTML[ index ].rendered ) { #>
+													{{{ iconsHTML[ index ].value }}}
+												<# } else { #>
+													<i class="{{ item.social_icon }}"></i>
+												<# }
+											#>
+										</span>
+									</span>
+								</a><#
+							}
+						#></li><#
+					} );
+				#></ul>
+			</div><#
+		}
+		#>
 
 		<div class="trx-addons-tm-wrapper">
 			<div class="trx-addons-tm">
@@ -2378,14 +2473,14 @@ class TeamMemberWidget extends BaseWidget {
 
 					<# if ( settings.overlay_content != 'none' ) { #>
 						<div class="trx-addons-tm-overlay-content-wrap">
-							<div class="trx-addons-tm-content">
+							<div class="trx-addons-tm-overlay-content">
 								<#
 									if ( settings.member_social_links == 'yes' ) {
 										if ( settings.overlay_content == 'social_icons' ) {
-											member_social_links();
+											member_social_links( 'overlay' );
 										} else if ( settings.overlay_content == 'all_content' ) {
 											if ( settings.social_links_position == 'before_desc' ) {
-												member_social_links();
+												member_social_links( 'overlay' );
 											}
 										}
 									}
@@ -2396,7 +2491,7 @@ class TeamMemberWidget extends BaseWidget {
 
 									if ( settings.member_social_links == 'yes' && settings.overlay_content == 'all_content' ) {
 										if ( settings.social_links_position == 'after_desc' ) {
-											member_social_links();
+											member_social_links( 'overlay' );
 										}
 									}
 								#>
@@ -2404,7 +2499,7 @@ class TeamMemberWidget extends BaseWidget {
 						</div>
 					<# } #>
 				</div>
-				<div class="trx-addons-tm-content trx-addons-tm-content-normal">
+				<div class="trx-addons-tm-content">
 					<#
 						member_name();
 						member_position();
@@ -2412,10 +2507,10 @@ class TeamMemberWidget extends BaseWidget {
 						if ( settings.member_social_links == 'yes' && ( settings.overlay_content == 'none' || settings.overlay_content == 'content' ) ) {
 							if ( settings.overlay_content == 'none' ) {
 								if ( settings.social_links_position == 'before_desc' ) {
-									member_social_links();
+									member_social_links( 'content' );
 								}
 							} else {
-								member_social_links();
+								member_social_links( 'content' );
 							}
 						}
 
@@ -2425,7 +2520,7 @@ class TeamMemberWidget extends BaseWidget {
 
 						if ( settings.member_social_links == 'yes' && ( settings.overlay_content == 'none' || settings.overlay_content == 'content' ) ) {
 							if ( settings.social_links_position == 'after_desc' && settings.overlay_content == 'none' ) {
-								member_social_links();
+								member_social_links( 'content' );
 							}
 						}
 					#>

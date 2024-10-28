@@ -78,7 +78,7 @@ if ( !function_exists( 'trx_addons_sc_layouts_logo_merge_scripts' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_layouts_logo' ) ) {
 	function trx_addons_sc_layouts_logo($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_layouts_logo', $atts, trx_addons_sc_common_atts('id,hide', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_layouts_logo', $atts, trx_addons_sc_common_atts( 'trx_sc_layouts_logo', 'id,hide', array(
 			// Individual params
 			"type" => "default",
 			"logo_height" => "",
@@ -86,8 +86,7 @@ if ( !function_exists( 'trx_addons_sc_layouts_logo' ) ) {
 			"logo_retina" => "",
 			"logo_text" => "",
 			"logo_slogan" => "",
-			))
-		);
+		) ) );
 
 		if (trx_addons_is_on(trx_addons_get_option('debug_mode')))
 			wp_enqueue_script( 'trx_addons-sc_layouts_logo', trx_addons_get_file_url(TRX_ADDONS_PLUGIN_CPT_LAYOUTS_SHORTCODES . 'logo/logo.js'), array('jquery'), null, true );

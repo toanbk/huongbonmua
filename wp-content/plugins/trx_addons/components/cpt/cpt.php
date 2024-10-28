@@ -200,7 +200,7 @@ if (!function_exists('trx_addons_cpt_setup')) {
 				'title' => esc_html__('Post', 'trx_addons'),
 				// Always enabled!!!
 				'std' => 1,
-				'hidden' => true
+				'hidden' => false
 				),
 			'properties' => array(
 				'title' => esc_html__('Properties', 'trx_addons'),

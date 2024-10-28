@@ -20,7 +20,7 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_widget_rating_posts' ) ) {
 	function trx_addons_sc_widget_rating_posts($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_widget_rating_posts', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_widget_rating_posts', $atts, trx_addons_sc_common_atts( 'trx_widget_rating_posts', 'id', array(
 			// Individual params
 			"title" => "",
 			"number" => 4,
@@ -31,8 +31,7 @@ if ( !function_exists( 'trx_addons_sc_widget_rating_posts' ) ) {
 			"show_author" => 1,
 			"show_counters" => 1,
 			"show_categories" => 1,
-			))
-		);
+		) ) );
 		if ($atts['show_date']=='') $atts['show_date'] = 0;
 		if ($atts['show_image']=='') $atts['show_image'] = 0;
 		if ($atts['show_author']=='') $atts['show_author'] = 0;

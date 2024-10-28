@@ -148,7 +148,7 @@ if (!function_exists('trx_addons_sc_team_add_in_vc_params')) {
 					),
 					trx_addons_vc_add_query_param( esc_html__('Query', 'trx_addons') ),
 					trx_addons_vc_add_slider_param(),
-					trx_addons_vc_add_title_param(),
+					apply_filters( 'trx_addons_filter_add_title_param', true, 'trx_sc_team' ) ? trx_addons_vc_add_title_param() : array(),
 					trx_addons_vc_add_id_param()
 				)
 			), 'trx_sc_team' );

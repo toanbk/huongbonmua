@@ -121,7 +121,7 @@ if ( ! function_exists( 'trx_addons_sc_blogger' ) ) {
 	function trx_addons_sc_blogger($atts, $content = '') {	
 		// Exit to prevent recursion
 		if ( trx_addons_sc_stack_check( 'trx_sc_blogger' ) ) return '';
-		$defa = trx_addons_sc_common_atts( 'id,title,slider,query', array(
+		$defa = trx_addons_sc_common_atts( 'trx_sc_blogger', 'id,title,slider,query', array(
 			// Individual params
 			"type" => 'default',
 			// Query posts
@@ -165,8 +165,7 @@ if ( ! function_exists( 'trx_addons_sc_blogger' ) ) {
 			'posts_exclude' => '',	// comma-separated list of IDs to exclude from output
 			// Gutenberg specific
 			"align" => 'none'
-			)
-		);
+		) );
 		// 3-rd param - need extra queries to get custom blogger styles
 		$layouts = apply_filters( 'trx_addons_sc_type', trx_addons_components_get_allowed_layouts('sc', 'blogger'), 'trx_sc_blogger', ! empty( $atts['type'] ) && strpos( $atts['type'], 'blog-custom-' ) === 0 );
 		if ( is_array( $layouts ) ) {

@@ -60,12 +60,11 @@ if (!function_exists('trx_addons_sc_button')) {
 				)
 			);
 		}
-		$atts = trx_addons_sc_prepare_atts('trx_sc_button', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_button', $atts, trx_addons_sc_common_atts( 'trx_sc_button', 'id', array(
 			// Individual params
 			"align" => "none",
 			"buttons" => "",
-			))
-		);
+		) ) );
 		if (function_exists('vc_param_group_parse_atts') && !is_array($atts['buttons'])) {
 			$atts['buttons'] = (array) vc_param_group_parse_atts( $atts['buttons'] );
 		}

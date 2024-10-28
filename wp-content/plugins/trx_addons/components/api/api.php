@@ -160,7 +160,6 @@ if ( ! function_exists( 'trx_addons_api_load' ) ) {
 			'sitepress-multilingual-cms' => array(
 							'title' => __('WPML - Sitepress Multilingual CMS', 'trx_addons')
 						),
-			// GDPR Support: uncomment only one of the following plugins
 			'gdpr-framework' => array(
 							'title' => __( 'The GDPR Framework', 'trx_addons' ),
 						),

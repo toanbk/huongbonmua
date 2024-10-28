@@ -122,7 +122,7 @@ if (!function_exists('trx_addons_sc_layouts_blog_item_add_in_elementor')) {
 
 				// Register controls
 				$post_types = ! $is_edit_mode ? array() : trx_addons_get_list_posts_types();
-				$meta_parts = ! $is_edit_mode ? array() : apply_filters('trx_addons_filter_get_list_meta_parts', array());
+				$meta_parts = ! $is_edit_mode ? array() : trx_addons_get_list_meta_parts();
 
 				$this->start_controls_section(
 					'section_sc_layouts_blog_item',

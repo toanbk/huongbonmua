@@ -1586,7 +1586,7 @@ html {
 /* Breadcrumbs
 -----------------------------------------------------------------*/
 .breadcrumbs {
-	@include font(13px, 19px);
+	@include font(13px, 1.4615em);
 }
 .breadcrumbs .breadcrumbs_item {
 	display:inline-block;
@@ -2119,11 +2119,21 @@ body#tinymce {
 	white-space:pre-line;
 }
 
+
+
+
 /* Fixes for the theme-specific styles
 ------------------------------------------------------------ */
-// Chrome, Safari, Edge, Opera - remove arrows from fields with the type "number" */
+
+// Fix for Chrome, Safari, Edge, Opera - remove arrows from fields with the type "number"
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
+}
+
+// Fix for links underline: All links are underlined since WordPress 6.6+
+:root :where(a:where(:not(.wp-block-navigation))),
+:root :where(a:where(:not(.wp-element-button))) {
+	text-decoration: initial;
 }

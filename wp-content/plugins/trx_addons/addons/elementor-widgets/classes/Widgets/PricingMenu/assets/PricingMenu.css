@@ -1,15 +1,29 @@
 .trx-addons-restaurant-menu .trx-addons-restaurant-menu-item-wrap {
-  margin-bottom: 10px;
   position: relative;
 }
 
-.trx-addons-restaurant-menu .trx-addons-restaurant-menu-item {
-  align-items: center;
-  display: flex;
+.trx-addons-restaurant-menu .trx-addons-restaurant-menu-item-wrap + .trx-addons-restaurant-menu-item-wrap {
+  margin-top: 10px;
 }
 
+.trx-addons-restaurant-menu .trx-addons-restaurant-menu-item {
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (max-width: 767px) {
+  .trx-addons-restaurant-menu .trx-addons-restaurant-menu-item {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .trx-addons-restaurant-menu .trx-addons-restaurant-menu-content {
+    width: 100%;
+  }
+}
 .trx-addons-restaurant-menu .trx-addons-restaurant-menu-image {
   flex-grow: 0;
+  flex-shrink: 0;
   margin-right: 10px;
 }
 
@@ -25,11 +39,16 @@
 
 .trx-addons-restaurant-menu .trx-addons-restaurant-menu-title {
   display: inline-block;
+  vertical-align: top;
   margin: 0;
 }
 
 .trx-addons-restaurant-menu .trx-addons-restaurant-menu-title a {
   color: inherit;
+}
+
+.trx-addons-restaurant-menu-style-0 .trx-addons-restaurant-menu-content {
+  padding-bottom: 3.5em;
 }
 
 .trx-addons-restaurant-menu-style-1 .trx-addons-restaurant-menu-price {
@@ -64,22 +83,22 @@
 }
 
 .trx-addons-restaurant-menu-style-0 .trx-addons-restaurant-menu-price {
-  bottom: 0;
-  padding: 10px;
   position: absolute;
+  bottom: 0;
   right: 0;
   z-index: 1;
+  padding: 10px;
 }
 
 .trx-addons-restaurant-menu-style-0 .trx-addons-restaurant-menu-price:after {
+  content: " ";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: -1;
   border-color: transparent #B83D11;
   border-style: solid;
   border-width: 110px 130px 0 0;
-  bottom: 0;
-  content: "";
-  position: absolute;
-  right: 0;
-  z-index: -1;
 }
 
 .trx-addons-restaurant-menu .trx-addons-restaurant-menu-price-original {
@@ -94,6 +113,7 @@
 
 .trx-addons-restaurant-menu-divider {
   display: inline-block;
+  vertical-align: top;
 }
 
 /*# sourceMappingURL=PricingMenu.css.map */

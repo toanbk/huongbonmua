@@ -38,6 +38,7 @@ if ( ! function_exists( 'trx_addons_sc_hotspot_add_in_elementor' ) ) {
 				$this->add_plain_params([
 					'spot_x' => 'size+unit',
 					'spot_y' => 'size+unit',
+					'spot_size' => 'size+unit',
 					'spot_image' => 'url',
 					'image_link' => 'url'
 				]);
@@ -116,6 +117,30 @@ if ( ! function_exists( 'trx_addons_sc_hotspot_add_in_elementor' ) ) {
 			 * @access protected
 			 */
 			protected function register_controls() {
+				$this->register_content_controls();
+				$this->register_style_controls_image();
+				$this->register_style_controls_popup();
+				$this->register_style_controls_popup_image();
+				$this->register_style_controls_popup_subtitle();
+				$this->register_style_controls_popup_title();
+				$this->register_style_controls_popup_price();
+				$this->register_style_controls_popup_description();
+				$this->register_style_controls_popup_link();
+
+				if ( apply_filters( 'trx_addons_filter_add_title_param', true, $this->get_name() ) ) {
+					$this->add_title_param();
+				}
+			}
+
+			/**
+			 * Register widget controls.
+			 *
+			 * Adds different input fields to allow the user to change and customize the widget settings.
+			 *
+			 * @since 1.6.41
+			 * @access protected
+			 */
+			protected function register_content_controls() {
 
 				// Detect edit mode
 				$is_edit_mode = trx_addons_elm_is_edit_mode();
@@ -177,8 +202,9 @@ if ( ! function_exists( 'trx_addons_sc_hotspot_add_in_elementor' ) ) {
 							[
 								// Spot
 								'spot_visible' => 'always',
-								'spot_x' => '50%',
-								'spot_y' => '50%',
+								'spot_x' => ['size' => 50, 'unit' => '%' ],
+								'spot_y' => ['size' => 50, 'unit' => '%' ],
+								'spot_size' => ['size' => 20, 'unit' => 'px' ],
 								'spot_symbol' => 'none',
 								'spot_icon' => trx_addons_elementor_set_settings_icon( 'icon-plus' ),
 								'spot_char' => '',
@@ -215,7 +241,7 @@ if ( ! function_exists( 'trx_addons_sc_hotspot_add_in_elementor' ) ) {
 								],
 								[
 									'name' => 'spot_x',
-									'label' => __( 'X position', 'trx_addons' ),
+									'label' => __( 'X position (in %)', 'trx_addons' ),
 									'type' => \Elementor\Controls_Manager::SLIDER,
 									'default' => [
 										'size' => 0,
@@ -232,7 +258,7 @@ if ( ! function_exists( 'trx_addons_sc_hotspot_add_in_elementor' ) ) {
 								],
 								[
 									'name' => 'spot_y',
-									'label' => __( 'Y position', 'trx_addons' ),
+									'label' => __( 'Y position (in %)', 'trx_addons' ),
 									'type' => \Elementor\Controls_Manager::SLIDER,
 									'default' => [
 										'size' => 0,
@@ -246,6 +272,28 @@ if ( ! function_exists( 'trx_addons_sc_hotspot_add_in_elementor' ) ) {
 										],
 									],
 									'size_units' => [ '%' ]
+								],
+								[
+									'name' => 'spot_size',
+									'label' => __( 'Size', 'trx_addons' ),
+									'type' => \Elementor\Controls_Manager::SLIDER,
+									'range' => [
+										'px' => [
+											'min' => 0,
+											'max' => 200
+										],
+										'em' => [
+											'min' => 0,
+											'max' => 10,
+											'step' => 0.1
+										],
+										'rem' => [
+											'min' => 0,
+											'max' => 10,
+											'step' => 0.1
+										],
+									],
+									'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 								],
 								[
 									'name' => 'spot_symbol',
@@ -476,8 +524,754 @@ if ( ! function_exists( 'trx_addons_sc_hotspot_add_in_elementor' ) ) {
 				);
 
 				$this->end_controls_section();
+			}
 
-				$this->add_title_param();
+			/**
+			 * Register an image style controls.
+			 *
+			 * @access protected
+			 */
+			protected function register_style_controls_image() {
+
+				$this->start_controls_section(
+					'section_sc_hotspot_image_style',
+					[
+						'label' => __( 'Image Style', 'trx_addons' ),
+						'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Border::get_type(),
+					[
+						'name'     => 'image_border',
+						'label'    => esc_html__( 'Border', 'trx_addons' ),
+						'selector' => '{{WRAPPER}} .sc_hotspot_image',
+						'condition' => [
+							'image[url]!' => ''
+						]
+					]
+				);
+
+				$this->add_responsive_control(
+					'image_border_radius',
+					[
+						'label'      => esc_html__( 'Border Radius', 'trx_addons' ),
+						'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors'  => [
+							'{{WRAPPER}} .sc_hotspot_image' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						],
+						'condition' => [
+							'image[url]!' => ''
+						]
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Box_Shadow::get_type(),
+					[
+						'name'      => 'image_box_shadow',
+						'selector'  => '{{WRAPPER}} .sc_hotspot_image',
+					]
+				);
+
+				$this->end_controls_section();
+			}
+
+			/**
+			 * Register a popup style controls.
+			 *
+			 * @access protected
+			 */
+			protected function register_style_controls_popup() {
+
+				$this->start_controls_section(
+					'section_sc_hotspot_popup_style',
+					[
+						'label' => __( 'Popup Style', 'trx_addons' ),
+						'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+					]
+				);
+
+				$this->add_control(
+					'popup_bg_color',
+					[
+						'label' => __( 'Background Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'selectors' => [
+							'{{WRAPPER}} .sc_hotspot_item_popup' => 'background-color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_responsive_control(
+					'popup_padding',
+					[
+						'label'      => esc_html__( 'Padding', 'trx_addons' ),
+						'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors'  => [
+							'{{WRAPPER}} .sc_hotspot_item_popup' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						],
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Border::get_type(),
+					[
+						'name'     => 'popup_border',
+						'label'    => esc_html__( 'Border', 'trx_addons' ),
+						'selector' => '{{WRAPPER}} .sc_hotspot_item_popup',
+					]
+				);
+
+				$this->add_responsive_control(
+					'popup_border_radius',
+					[
+						'label'      => esc_html__( 'Border Radius', 'trx_addons' ),
+						'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors'  => [
+							'{{WRAPPER}} .sc_hotspot_item_popup' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						]
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Box_Shadow::get_type(),
+					[
+						'name'      => 'popup_box_shadow',
+						'selector'  => '{{WRAPPER}} .sc_hotspot_item_popup',
+					]
+				);
+
+				$this->add_control(
+					'popup_close_color',
+					[
+						'label' => __( 'Icon "Close" Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'selectors' => [
+							'{{WRAPPER}} .sc_hotspot_item_popup_close .trx_addons_button_close_icon:before' => 'border-color: {{VALUE}};',
+							'{{WRAPPER}} .sc_hotspot_item_popup_close .trx_addons_button_close_icon:after' => 'border-color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_control(
+					'popup_close_hover',
+					[
+						'label' => __( 'Icon "Close" Hover', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'selectors' => [
+							'{{WRAPPER}} .sc_hotspot_item_popup_close:hover .trx_addons_button_close_icon:before' => 'border-color: {{VALUE}};',
+							'{{WRAPPER}} .sc_hotspot_item_popup_close:hover .trx_addons_button_close_icon:after' => 'border-color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->end_controls_section();
+			}
+
+			/**
+			 * Register a popup image style controls.
+			 *
+			 * @access protected
+			 */
+			protected function register_style_controls_popup_image() {
+
+				$this->start_controls_section(
+					'section_sc_hotspot_popup_image_style',
+					[
+						'label' => __( 'Popup Image', 'trx_addons' ),
+						'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+					]
+				);
+
+				$this->add_responsive_control(
+					'popup_image_size',
+					[
+						'label' => __( 'Image Size (in %)', 'trx_addons' ),
+						'type' => \Elementor\Controls_Manager::SLIDER,
+						'range' => [
+							'%' => [
+								'min' => 0,
+								'max' => 100,
+							],
+						],
+						'size_units' => [ '%' ],
+						'selectors' => [
+							'{{WRAPPER}} .sc_hotspot_item_image img' => 'max-width: {{SIZE}}%;',
+						],
+					]
+				);
+
+				$this->add_control(
+					'popup_image_bg_color',
+					[
+						'label' => __( 'Background Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'selectors' => [
+							'{{WRAPPER}} .sc_hotspot_item_image' => 'background-color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_responsive_control(
+					'popup_image_padding',
+					[
+						'label'      => esc_html__( 'Padding', 'trx_addons' ),
+						'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors'  => [
+							'{{WRAPPER}} .sc_hotspot_item_image' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						],
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Border::get_type(),
+					[
+						'name'     => 'popup_image_border',
+						'label'    => esc_html__( 'Border', 'trx_addons' ),
+						'selector' => '{{WRAPPER}} .sc_hotspot_item_image',
+					]
+				);
+
+				$this->add_responsive_control(
+					'popup_image_border_radius',
+					[
+						'label'      => esc_html__( 'Border Radius', 'trx_addons' ),
+						'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors'  => [
+							'{{WRAPPER}} .sc_hotspot_item_image' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+							'{{WRAPPER}} .sc_hotspot_item_image img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						]
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Box_Shadow::get_type(),
+					[
+						'name'      => 'popup_image_box_shadow',
+						'selector'  => '{{WRAPPER}} .sc_hotspot_item_image',
+					]
+				);
+
+				$this->end_controls_section();
+			}
+
+			/**
+			 * Register a popup subtitle style controls.
+			 *
+			 * @access protected
+			 */
+			protected function register_style_controls_popup_subtitle() {
+
+				$this->start_controls_section(
+					'section_sc_hotspot_popup_subtitle_style',
+					[
+						'label' => __( 'Popup Subtitle', 'trx_addons' ),
+						'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Typography::get_type(),
+					[
+						'name'     => 'popup_subtitle_typography',
+						'selector' => '{{WRAPPER}} .sc_hotspot_item_subtitle',
+						// 'global'   => [
+						// 	'default' => \Elementor\Global_Typography::TYPOGRAPHY_SECONDARY,
+						// ],
+					]
+				);
+
+				$this->add_control(
+					'popup_subtitle_color',
+					[
+						'label' => __( 'Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'selectors' => [
+							'{{WRAPPER}} .sc_hotspot_item_subtitle' => 'color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_responsive_control(
+					'popup_subtitle_offset',
+					[
+						'label' => __( 'Offset', 'trx_addons' ),
+						'type' => \Elementor\Controls_Manager::SLIDER,
+						'range' => [
+							'px' => [
+								'min' => -100,
+								'max' => 100,
+							],
+							'em' => [
+								'min' => -10,
+								'max' => 10,
+								'step' => 0.1
+							],
+							'rem' => [
+								'min' => -10,
+								'max' => 10,
+								'step' => 0.1
+							],
+						],
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors' => [
+							'{{WRAPPER}} .sc_hotspot_item_subtitle' => 'margin-top: {{SIZE}}{{UNIT}};',
+						],
+					]
+				);
+
+				$this->end_controls_section();
+			}
+
+			/**
+			 * Register a popup title style controls.
+			 *
+			 * @access protected
+			 */
+			protected function register_style_controls_popup_title() {
+
+				$this->start_controls_section(
+					'section_sc_hotspot_popup_title_style',
+					[
+						'label' => __( 'Popup Title', 'trx_addons' ),
+						'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Typography::get_type(),
+					[
+						'name'     => 'popup_title_typography',
+						'selector' => '{{WRAPPER}} .sc_hotspot_item_title',
+						// 'global'   => [
+						// 	'default' => \Elementor\Global_Typography::TYPOGRAPHY_PRIMARY,
+						// ],
+					]
+				);
+
+				$this->add_control(
+					'popup_title_color',
+					[
+						'label' => __( 'Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'selectors' => [
+							'{{WRAPPER}} .sc_hotspot_item_title' => 'color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_responsive_control(
+					'popup_title_offset',
+					[
+						'label' => __( 'Offset', 'trx_addons' ),
+						'type' => \Elementor\Controls_Manager::SLIDER,
+						'range' => [
+							'px' => [
+								'min' => -100,
+								'max' => 100,
+							],
+							'em' => [
+								'min' => -10,
+								'max' => 10,
+								'step' => 0.1
+							],
+							'rem' => [
+								'min' => -10,
+								'max' => 10,
+								'step' => 0.1
+							],
+						],
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors' => [
+							'{{WRAPPER}} .sc_hotspot_item_title' => 'margin-top: {{SIZE}}{{UNIT}};',
+						],
+					]
+				);
+
+				$this->end_controls_section();
+			}
+
+			/**
+			 * Register a popup price style controls.
+			 *
+			 * @access protected
+			 */
+			protected function register_style_controls_popup_price() {
+
+				$this->start_controls_section(
+					'section_sc_hotspot_popup_price_style',
+					[
+						'label' => __( 'Popup Price (Meta)', 'trx_addons' ),
+						'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Typography::get_type(),
+					[
+						'name'     => 'popup_price_typography',
+						'selector' => '{{WRAPPER}} .sc_hotspot_item_price',
+						// 'global'   => [
+						// 	'default' => \Elementor\Global_Typography::TYPOGRAPHY_PRIMARY,
+						// ],
+					]
+				);
+
+				$this->add_control(
+					'popup_price_color',
+					[
+						'label' => __( 'Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'selectors' => [
+							'{{WRAPPER}} .sc_hotspot_item_price' => 'color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_responsive_control(
+					'popup_price_offset',
+					[
+						'label' => __( 'Offset', 'trx_addons' ),
+						'type' => \Elementor\Controls_Manager::SLIDER,
+						'range' => [
+							'px' => [
+								'min' => -100,
+								'max' => 100,
+							],
+							'em' => [
+								'min' => -10,
+								'max' => 10,
+								'step' => 0.1
+							],
+							'rem' => [
+								'min' => -10,
+								'max' => 10,
+								'step' => 0.1
+							],
+						],
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors' => [
+							'{{WRAPPER}} .sc_hotspot_item_price' => 'margin-top: {{SIZE}}{{UNIT}};',
+						],
+					]
+				);
+
+				$this->end_controls_section();
+			}
+
+			/**
+			 * Register a popup description style controls.
+			 *
+			 * @access protected
+			 */
+			protected function register_style_controls_popup_description() {
+
+				$this->start_controls_section(
+					'section_sc_hotspot_popup_description_style',
+					[
+						'label' => __( 'Popup Description', 'trx_addons' ),
+						'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Typography::get_type(),
+					[
+						'name'     => 'popup_description_typography',
+						'selector' => '{{WRAPPER}} .sc_hotspot_item_description',
+						// 'global'   => [
+						// 	'default' => \Elementor\Global_Typography::TYPOGRAPHY_PRIMARY,
+						// ],
+					]
+				);
+
+				$this->add_control(
+					'popup_description_color',
+					[
+						'label' => __( 'Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'selectors' => [
+							'{{WRAPPER}} .sc_hotspot_item_description' => 'color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_responsive_control(
+					'popup_description_offset',
+					[
+						'label' => __( 'Offset', 'trx_addons' ),
+						'type' => \Elementor\Controls_Manager::SLIDER,
+						'range' => [
+							'px' => [
+								'min' => -100,
+								'max' => 100,
+							],
+							'em' => [
+								'min' => -10,
+								'max' => 10,
+								'step' => 0.1
+							],
+							'rem' => [
+								'min' => -10,
+								'max' => 10,
+								'step' => 0.1
+							],
+						],
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors' => [
+							'{{WRAPPER}} .sc_hotspot_item_description' => 'margin-top: {{SIZE}}{{UNIT}};',
+						],
+					]
+				);
+
+				$this->end_controls_section();
+			}
+
+			/**
+			 * Register a popup link style controls.
+			 *
+			 * @access protected
+			 */
+			protected function register_style_controls_popup_link() {
+
+				$this->start_controls_section(
+					'section_sc_hotspot_popup_link_style',
+					[
+						'label' => __( 'Popup Link', 'trx_addons' ),
+						'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Typography::get_type(),
+					[
+						'name'     => 'popup_link_typography',
+						'selector' => '{{WRAPPER}} .sc_hotspot_item_link',
+						// 'global'   => [
+						// 	'default' => \Elementor\Global_Typography::TYPOGRAPHY_PRIMARY,
+						// ],
+					]
+				);
+
+				$this->start_controls_tabs( 'popup_link_style_tabs' );
+
+				$this->start_controls_tab(
+					'popup_link_tab_normal',
+					[
+						'label' => __( 'Normal', 'trx_addons' ),
+					]
+				);
+
+				$this->add_control(
+					'popup_link_color',
+					[
+						'label' => __( 'Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'selectors' => [
+							'{{WRAPPER}} .sc_hotspot_item_link' => 'color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_control(
+					'popup_link_bg_color',
+					[
+						'label' => __( 'Background Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'selectors' => [
+							'{{WRAPPER}} .sc_hotspot_item_link' => 'background-color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_responsive_control(
+					'popup_link_padding',
+					[
+						'label'      => esc_html__( 'Padding', 'trx_addons' ),
+						'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors'  => [
+							'{{WRAPPER}} .sc_hotspot_item_link' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						],
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Border::get_type(),
+					[
+						'name'     => 'popup_link_border',
+						'label'    => esc_html__( 'Border', 'trx_addons' ),
+						'selector' => '{{WRAPPER}} .sc_hotspot_item_link',
+					]
+				);
+
+				$this->add_responsive_control(
+					'popup_link_border_radius',
+					[
+						'label'      => esc_html__( 'Border Radius', 'trx_addons' ),
+						'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors'  => [
+							'{{WRAPPER}} .sc_hotspot_item_link' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						]
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Box_Shadow::get_type(),
+					[
+						'name'      => 'popup_link_box_shadow',
+						'selector'  => '{{WRAPPER}} .sc_hotspot_item_link',
+					]
+				);
+
+				$this->add_responsive_control(
+					'popup_link_offset',
+					[
+						'label' => __( 'Offset', 'trx_addons' ),
+						'type' => \Elementor\Controls_Manager::SLIDER,
+						'range' => [
+							'px' => [
+								'min' => -100,
+								'max' => 100,
+							],
+							'em' => [
+								'min' => -10,
+								'max' => 10,
+								'step' => 0.1
+							],
+							'rem' => [
+								'min' => -10,
+								'max' => 10,
+								'step' => 0.1
+							],
+						],
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+						'selectors' => [
+							'{{WRAPPER}} .sc_hotspot_item_link' => 'margin-top: {{SIZE}}{{UNIT}};',
+						],
+					]
+				);
+
+				$this->end_controls_tab();
+
+				$this->start_controls_tab(
+					'popup_link_tab_hover',
+					[
+						'label' => __( 'Hover', 'trx_addons' ),
+					]
+				);
+
+				$this->add_control(
+					'popup_link_hover',
+					[
+						'label' => __( 'Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'selectors' => [
+							'{{WRAPPER}} .sc_hotspot_item_link:hover' => 'color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_control(
+					'popup_link_bg_hover',
+					[
+						'label' => __( 'Background Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'selectors' => [
+							'{{WRAPPER}} .sc_hotspot_item_link:hover' => 'background-color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_control(
+					'popup_link_bd_hover',
+					[
+						'label' => __( 'Border Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'selectors' => [
+							'{{WRAPPER}} .sc_hotspot_item_link:hover' => 'border-color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->end_controls_tab();
+
+				$this->end_controls_tabs();
+
+				$this->end_controls_section();
 			}
 
 			/**

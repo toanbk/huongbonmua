@@ -1688,7 +1688,7 @@ class trx_addons_demo_data_importer {
 
 	// Replace demo site url to current site url
 	function replace_site_url($str) {
-		return trx_addons_url_replace( $this->options['files'][$this->options['demo_type']]['domain_demo'], get_home_url(), $str );
+		return trx_addons_url_replace( $this->options['files'][$this->options['demo_type']]['domain_demo'], home_url(), $str );
 	}
 	
 	// Replace strings then export data

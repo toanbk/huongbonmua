@@ -23,7 +23,7 @@ if ( !function_exists( 'trx_addons_sc_courses' ) ) {
 		// Exit to prevent recursion
 		if (trx_addons_sc_stack_check('trx_sc_courses')) return '';
 
-		$atts = trx_addons_sc_prepare_atts('trx_sc_courses', $atts, trx_addons_sc_common_atts('id,title,slider,query', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_courses', $atts, trx_addons_sc_common_atts( 'trx_sc_courses', 'id,title,slider,query', array(
 			// Individual params
 			"type" => "default",
 			"past" => "0",
@@ -32,8 +32,7 @@ if ( !function_exists( 'trx_addons_sc_courses' ) ) {
 			"pagination" => "none",
 			"page" => 1,
 			'posts_exclude' => '',	// comma-separated list of IDs to exclude from output
-			))
-		);
+		) ) );
 
 		if (!empty($atts['ids'])) {
 			if ( is_array( $atts['ids'] ) ) {

@@ -64,7 +64,7 @@ if (!function_exists('trx_addons_sc_blogger_add_in_vc_params')) {
 				);
 			}
 		}
-		$meta_parts = apply_filters('trx_addons_filter_get_list_meta_parts', array());
+		$meta_parts = trx_addons_get_list_meta_parts();
 
 		$params = array(
 				"base" => "trx_sc_blogger",
@@ -513,7 +513,7 @@ if (!function_exists('trx_addons_sc_blogger_add_in_vc_params')) {
 						),
 					),
 					trx_addons_vc_add_slider_param(),
-					trx_addons_vc_add_title_param(),
+					apply_filters( 'trx_addons_filter_add_title_param', true, 'trx_sc_blogger' ) ? trx_addons_vc_add_title_param() : array(),
 					trx_addons_vc_add_id_param()
 				)
 			);

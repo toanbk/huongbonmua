@@ -111,7 +111,7 @@ if ( ! function_exists( 'trx_addons_localize_scripts_admin' ) ) {
 			// REST API url
 			'rest_url'						=> esc_url(get_rest_url()),
 			// Site base url
-			'site_url'						=> esc_url(get_home_url()),
+			'site_url'						=> esc_url(home_url()),
 			// Theme-specific columns class
 			'columns_wrap_class' 			=> trx_addons_get_columns_wrap_class(),
 			'column_class_template' 		=> trx_addons_get_column_class_template(),

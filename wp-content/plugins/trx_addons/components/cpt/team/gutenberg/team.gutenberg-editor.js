@@ -53,8 +53,8 @@
 				},
 				trx_addons_gutenberg_get_param_query(),
 				trx_addons_gutenberg_get_param_slider(),
-				trx_addons_gutenberg_get_param_title(),
-				trx_addons_gutenberg_get_param_button(),
+				! trx_addons_apply_filters( 'trx_addons_filter_add_title_param', true, 'trx-addons/team' ) ? {} : trx_addons_gutenberg_get_param_title(),
+				! trx_addons_apply_filters( 'trx_addons_filter_add_title_param', true, 'trx-addons/team' ) ? {} : trx_addons_gutenberg_get_param_button(),
 				trx_addons_gutenberg_get_param_id()
 			), 'trx-addons/team' ),
 			edit: function(props) {
@@ -155,7 +155,7 @@
 							// Query params
 							trx_addons_gutenberg_add_param_query( props ),
 							// Title params
-							trx_addons_gutenberg_add_param_title( props, true ),
+							! trx_addons_apply_filters( 'trx_addons_filter_add_title_param', true, 'trx-addons/team' ) ? null : trx_addons_gutenberg_add_param_title( props, true ),
 							// Slider params
 							trx_addons_gutenberg_add_param_slider( props ),
 							// ID, Class, CSS params

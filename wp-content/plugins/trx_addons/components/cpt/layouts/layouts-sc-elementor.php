@@ -402,8 +402,11 @@ if ( !function_exists( 'trx_addons_cpt_layouts_elm_layout_content' ) ) {
 						// Add inline css to the output
 						$inline_css = $force_styles
 										|| ( empty( $TRX_ADDONS_STORAGE['cur_page_built_with_elementor'] )
-											&& empty( $styles_included[ $post_id ] )
-											&& ( ! defined( 'ELEMENTOR_VERSION' ) || version_compare( ELEMENTOR_VERSION, '3.0.0', '<' ) || $is_edit_mode )
+											&& ( apply_filters( 'trx_addons_filter_sc_layout_content_need_inline_css', false, $post_id )
+												|| ( empty( $styles_included[ $post_id ] )
+													&& ( ! defined( 'ELEMENTOR_VERSION' ) || version_compare( ELEMENTOR_VERSION, '3.0.0', '<' ) || $is_edit_mode )
+													)
+												)
 											);
 
 						// Attention! Recommended method get_builder_content_for_display() is damage sliders with custom layouts inside
@@ -423,10 +426,11 @@ if ( !function_exists( 'trx_addons_cpt_layouts_elm_layout_content' ) ) {
 						
 						trx_addons_sc_stack_pop();
 
-						$styles_included[$post_id] = $inline_css;	// true
-
 						if ( ! empty($post_content) ) {
 							$content = apply_filters( 'trx_addons_filter_sc_layout_content_from_builder', $post_content, $post_id, 'elementor' );
+							if ( ! isset( $styles_included[ $post_id ] ) || $inline_css ) {
+								$styles_included[ $post_id ] = $inline_css;
+							}
 						}
 
 						// Check if a last call contains a recursive calls

@@ -82,11 +82,13 @@ if ($query->post_count > 0) {
 
 		set_query_var('trx_addons_args_sc_services', $args);
 
-		$trx_addons_number = $args['offset'] + ( $args['page'] > 1 ? $args['count'] * ( $args['page'] - 1 ) : 0 );
+		$trx_addons_number_offset = apply_filters( 'trx_addons_filter_services_number_use_offset', true, $args ) ? $args['offset'] : 0;
+		$trx_addons_number = $trx_addons_number_offset + ( $args['page'] > 1 ? $args['count'] * ( $args['page'] - 1 ) : 0 );
 
 		$add_html = '';
 
 		while ( $query->have_posts() ) { $query->the_post();
+
 			$trx_addons_number++;
 			
 			trx_addons_get_template_part(array(
@@ -106,7 +108,7 @@ if ($query->post_count > 0) {
 				if ( empty( $add_html ) ) {
 					$thumb_class .= ' sc_qw_panel_thumb_active';
 				}
-				$add_html .= '<div class="sc_qw_panel_thumb ' . esc_attr( $thumb_class ) . '" data-thumb-number="' . esc_attr($trx_addons_number) . '"></div>';
+				$add_html .= '<div class="sc_qw_panel_thumb ' . esc_attr( $thumb_class ) . '" data-thumb-number="' . esc_attr( $trx_addons_number ) . '"></div>';
 			}
 		}
 

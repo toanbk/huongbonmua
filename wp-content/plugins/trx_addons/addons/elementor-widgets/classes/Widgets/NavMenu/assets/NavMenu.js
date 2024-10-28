@@ -296,7 +296,7 @@
 				$scope.find('.trx-addons-ver-toggler').css('display', 'none');
 				$scope.addClass('trx-addons-hamburger-menu');
 				$scope.find('.trx-addons-active-menu').removeClass('trx-addons-active-menu');
-				stretchDropdown( $scope.find('.trx-addons-stretch-dropdown .trx-addons-mobile-menu-container') );
+				// stretchDropdown( $scope.find('.trx-addons-stretch-dropdown .trx-addons-mobile-menu-container') );
 
 				isMobileMenu = true;
 				isDesktopMenu = false;
@@ -319,6 +319,11 @@
 				isMobileMenu = false;
 			}
 
+			// Stretch dropdown menu.
+			if ( $scope.hasClass( 'trx-addons-hamburger-menu' ) || $scope.hasClass( 'trx-addons-nav-dropdown' ) ) {
+				stretchDropdown( $scope.find('.trx-addons-stretch-dropdown .trx-addons-mobile-menu-container') );
+			}
+
 		}
 
 		// Full Width Option. Shows the mobile menu beneath the widget's parent(section).
@@ -333,12 +338,12 @@
 
 			$parentSec = ! isContainer || $parentSec.length < 1 ? $scope.closest('.elementor-top-section') : $parentSec;
 
-			var width = $($parentSec).outerWidth(),
+			var width = Math.min( trx_addons_window_width(), $($parentSec).outerWidth() ),
 				widgetTop = $scope.offset().top,
 				parentBottom = $($parentSec).offset().top + $($parentSec).outerHeight(),
 				stretchTop = parentBottom - widgetTop,
-				stretchLeft = $scope.offset().left - $($parentSec).offset().left;
-
+				stretchLeft = $scope.offset().left - Math.max( 0, $($parentSec).offset().left );
+			
 			$( $menu ).css({
 				width: width + 'px',
 				left: '-' + stretchLeft + 'px',

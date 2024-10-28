@@ -19,13 +19,12 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_widget_custom_links' ) ) {
 	function trx_addons_sc_widget_custom_links($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_widget_custom_links', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_widget_custom_links', $atts, trx_addons_sc_common_atts( 'trx_widget_custom_links', 'id', array(
 			// Individual params
 			"title" => "",
 			"icons_animation" => "0",
 			"links" => "",
-			))
-		);
+		) ) );
 		if (function_exists('vc_param_group_parse_atts') && !is_array($atts['links']))
 			$atts['links'] = (array) vc_param_group_parse_atts( $atts['links'] );
 		if (is_array($atts['links']) && count($atts['links']) > 0) {

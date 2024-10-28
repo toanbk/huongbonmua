@@ -39,7 +39,7 @@ if ( !function_exists( 'trx_addons_sc_layouts_blog_item_merge_styles' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_layouts_blog_item' ) ) {
 	function trx_addons_sc_layouts_blog_item($atts, $content = ''){
-		$atts = trx_addons_sc_prepare_atts('trx_sc_layouts_blog_item', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_layouts_blog_item', $atts, trx_addons_sc_common_atts( 'trx_sc_layouts_blog_item', 'id', array(
 				// Individual params
 				"type" => "",
 				"thumb_bg" => 0,
@@ -66,8 +66,7 @@ if ( !function_exists( 'trx_addons_sc_layouts_blog_item' ) ) {
 				"text_hover" => '',
 				"font_zoom" => 1,
 				"post_type" => array(),
-			))
-		);
+		) ) );
 		
 		$output = '';
 

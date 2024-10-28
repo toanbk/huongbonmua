@@ -8,7 +8,7 @@
 
 // Prepare popup
 $trx_addons_login_via_socials = do_shortcode(apply_filters('trx_addons_filter_login_via_socials', trx_addons_get_option('login_via_socials')));
-$trx_addons_form_style = 'iconed';	//trx_addons_get_option('input_hover');
+$trx_addons_form_style = 'iconed';	//trx_addons_get_option( 'input_hover', 'default' );
 ?>
 <div id="trx_addons_login_popup" class="trx_addons_popup mfp-hide">
 	<div class="trx_addons_tabs">

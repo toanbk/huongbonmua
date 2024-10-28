@@ -122,7 +122,7 @@ if ( !function_exists( 'trx_addons_sc_icons_localize_script' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_icons' ) ) {
 	function trx_addons_sc_icons($atts, $content = '') {	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_icons', $atts, trx_addons_sc_common_atts('id,title,slider', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_icons', $atts, trx_addons_sc_common_atts( 'trx_sc_icons', 'id,title,slider', array(
 			// Individual params
 			"type" => "default",
 			"align" => "center",
@@ -135,8 +135,7 @@ if ( !function_exists( 'trx_addons_sc_icons' ) ) {
 			"columns_mobile" => "",
 			"icons" => "",
 			"icons_animation" => "0",
-			))
-		);
+		) ) );
 		if (function_exists('vc_param_group_parse_atts') && !is_array($atts['icons'])) {
 			$atts['icons'] = (array) vc_param_group_parse_atts( $atts['icons'] );
 		}

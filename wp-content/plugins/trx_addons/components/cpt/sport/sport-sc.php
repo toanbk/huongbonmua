@@ -25,7 +25,7 @@ if ( !function_exists( 'trx_addons_sc_matches' ) ) {
 		// Exit to prevent recursion
 		if (trx_addons_sc_stack_check('trx_sc_matches')) return '';
 
-		$atts = trx_addons_sc_prepare_atts('trx_sc_matches', $atts, trx_addons_sc_common_atts('id,title,query', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_matches', $atts, trx_addons_sc_common_atts( 'trx_sc_matches', 'id,title,query', array(
 			// Individual params
 			"type" => "default",
 			"main_matches" => 0,
@@ -34,8 +34,7 @@ if ( !function_exists( 'trx_addons_sc_matches' ) ) {
 			"sport" => '',
 			"competition" => '',
 			"round" => '',
-			))
-		);
+		) ) );
 
 		if (empty($atts['sport'])) 
 			$atts['sport'] = trx_addons_get_option('sport_favorite');
@@ -89,7 +88,7 @@ if (!function_exists('trx_addons_sc_matches_add_shortcode')) {
 */
 if ( !function_exists( 'trx_addons_sc_points' ) ) {
 	function trx_addons_sc_points($atts, $content = '') {	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_points', $atts, trx_addons_sc_common_atts('id,title', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_points', $atts, trx_addons_sc_common_atts( 'trx_sc_points', 'id,title', array(
 			// Individual params
 			"type" => "default",
 			"sport" => '',
@@ -97,8 +96,7 @@ if ( !function_exists( 'trx_addons_sc_points' ) ) {
 			"logo" => 0,
 			"accented_top" => 3,
 			"accented_bottom" => 3,
-			))
-		);
+		) ) );
 
 		$atts['accented_top'] = empty($atts['accented_top']) ? 0 : max(0, (int) $atts['accented_top']);
 		$atts['accented_bottom'] = empty($atts['accented_bottom']) ? 0 : max(0, (int) $atts['accented_bottom']);

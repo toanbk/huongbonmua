@@ -63,16 +63,21 @@ if ($query->post_count > 0) {
 			?><div class="sc_services_tabs_content">
 				<?php
 				$tabs_list = array();
+
 				set_query_var('trx_addons_args_sc_services', $args);
-				$trx_addons_number = $args['offset'] + ( $args['page'] > 1 ? $args['count'] * ( $args['page'] - 1 ) : 0 );
+				
+				$trx_addons_number_offset = apply_filters( 'trx_addons_filter_services_number_use_offset', true, $args ) ? $args['offset'] : 0;
+				$trx_addons_number = $trx_addons_number_offset + ( $args['page'] > 1 ? $args['count'] * ( $args['page'] - 1 ) : 0 );
+				
 				while ( $query->have_posts() ) { $query->the_post();
+
 					$trx_addons_number++;
 					set_query_var('trx_addons_args_item_number', $trx_addons_number);
 					
 					$meta = (array)get_post_meta(get_the_ID(), 'trx_addons_options', true);
 					set_query_var('trx_addons_args_item_meta', $meta);
 					
-					$tabs_item = '<div class="sc_services_tabs_list_item' . ($trx_addons_number-1 == $args['offset'] ? ' sc_services_tabs_list_item_active' : '') . '">';
+					$tabs_item = '<div class="sc_services_tabs_list_item' . ( $trx_addons_number - 1 == $trx_addons_number_offset ? ' sc_services_tabs_list_item_active' : '') . '">';
 					$tabs_add = '';
 					if ($args['featured']=='icon') {
 						$svg = $img = '';
@@ -89,7 +94,7 @@ if ($query->post_count > 0) {
 						}
 						$tabs_add = '<span'
 										. ( $svg_present && !empty($args['id'])
-											? ' id="'.esc_attr($args['id'].'_'.trim($meta['icon']).'_'.trim($trx_addons_number)).'"'
+											? ' id="' . esc_attr( $args['id'] . '_' . trim( $meta['icon'] ) . '_' . trim( $trx_addons_number ) ) . '"'
 											: ''
 											)
 										. ' class="sc_services_item_icon'
