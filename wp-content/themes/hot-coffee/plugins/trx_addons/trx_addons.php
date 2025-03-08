@@ -182,7 +182,7 @@ if ( ! function_exists( 'hot_coffee_trx_addons_tgmpa_required_plugins' ) ) {
 				$list[] = array(
 					'name'     => hot_coffee_storage_get_array( 'required_plugins', 'trx_addons', 'title' ),
 					'slug'     => 'trx_addons',
-					'version'  => '2.29.0',
+					'version'  => '2.30.0',
 					'source'   => ! empty( $path ) ? $path : 'upload://trx_addons.zip',
 					'required' => true,
 				);
@@ -260,6 +260,8 @@ if ( ! function_exists( 'hot_coffee_trx_addons_get_list_cpt_options' ) ) {
 			if ( 'info' == $v['type'] ) {
 				$options[ $k ]['desc'] = wp_kses_data( __( 'In order to see changes made by settings of this section, click "Save" and refresh the page', 'hot-coffee' ) );
 			}
+			// Replace class 'trx_addons_column-' with 'hot_coffee_column-'
+			$options[ $k ] = hot_coffee_array_str_replace( 'trx_addons_column-', 'hot_coffee_column-', 'class', $options[ $k ] );
 		}
 		return $options;
 	}

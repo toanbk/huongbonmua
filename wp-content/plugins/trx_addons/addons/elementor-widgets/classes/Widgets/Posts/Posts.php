@@ -209,7 +209,7 @@ class Posts extends BaseWidgetModule {
 			'title',
 			'meta',
 			'excerpt',
-			'button',
+			// 'button',
 		];
 
 		return $post_parts;

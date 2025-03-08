@@ -77,5 +77,19 @@ if (!empty($meta['details']) && count($meta['details']) > 0 && !empty($meta['det
 				?></span><?php
 			}
 		}
+		// A link (button) to book this item
+		if ( ! empty( $meta['button_link'] ) ) {
+			?><span class="<?php echo esc_attr( $class ); ?>_item <?php echo esc_attr( $class ); ?>_button_link"><?php
+				trx_addons_show_layout( trx_addons_sc_button( apply_filters( 'trx_addons_filter_portfolio_single_button_link_args', array( 'buttons' => array( array(
+					"type" => ! empty( $meta['button_link_style'] ) ? $meta['button_link_style'] : "bordered",
+					"size" => "small",
+					"text_align" => "none",
+					"icon" => ! empty( $meta['button_link_icon'] ) ? $meta['button_link_icon'] : '',
+					"icon_position" => "left",
+					"title" => ! empty( $meta['button_link_text'] ) ? $meta['button_link_text'] : __( 'Book Now', 'trx_addons' ),
+					"link" => $meta['button_link']
+				) ) ) ) ) );
+			?></span><?php
+		}
 	?></div><?php
 }

@@ -404,7 +404,7 @@ if (!function_exists('trx_addons_ocdi_process_attachment')){
 // Replace site url to current site url
 if (!function_exists('trx_addons_ocdi_replace_site_url')) {
 	function trx_addons_ocdi_replace_site_url($str, $old_url = '') {
-		$site_url = get_home_url();
+		$site_url = home_url();
 		if (substr($site_url, -1) == '/') {
 			$site_url = substr($site_url, 0, strlen($site_url)-1);
 		}

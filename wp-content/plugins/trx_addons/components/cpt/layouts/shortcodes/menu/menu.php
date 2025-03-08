@@ -131,7 +131,7 @@ if (!function_exists('trx_addons_sc_layouts_menu_add_menu_item_description')) {
 */
 if ( !function_exists( 'trx_addons_sc_layouts_menu' ) ) {
 	function trx_addons_sc_layouts_menu($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_layouts_menu', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_layouts_menu', $atts, trx_addons_sc_common_atts( 'trx_sc_layouts_menu', 'id', array(
 			// Individual params
 			"type" => "default",
 			"direction" => "horizontal",
@@ -144,8 +144,7 @@ if ( !function_exists( 'trx_addons_sc_layouts_menu' ) ) {
 			"animation_out" => "",
 			"hover" => "fade",
 			"hide_on_mobile" => "0",
-			))
-		);
+		) ) );
 
 		if (trx_addons_is_off($atts['menu'])) $atts['menu'] = '';
 		if (trx_addons_is_off($atts['location'])) $atts['location'] = '';

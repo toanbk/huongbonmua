@@ -188,6 +188,10 @@ if ( ! function_exists( 'trx_addons_get_theme_fonts' ) ) {
 		// 		if ( in_array( $css_prop, array( 'title', 'description' ) ) ) {
 		// 			continue;
 		// 		}
+		//		// Skip responsive values
+		//		if ( strpos( $css_prop, '_' ) !== false ) {
+		//			continue;
+		//		}
 		// 		foreach ( ! empty( $options["{$tag}_{$css_prop}"]['responsive'] ) ? $breakpoints : array( 'desktop' => array() ) as $bp => $bpv ) {
 		// 			$suffix = $bp == 'desktop' ? '' : '_' . $bp;
 		// 			if ( isset( $values[ "{$tag}_{$css_prop}{$suffix}" ] ) ) {

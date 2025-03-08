@@ -136,7 +136,7 @@ if ( !function_exists( 'trx_addons_sc_osmap_localize_admin_script' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_osmap' ) ) {
 	function trx_addons_sc_osmap($atts, $content=''){	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_osmap', $atts, trx_addons_sc_common_atts('id,title', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_osmap', $atts, trx_addons_sc_common_atts( 'trx_sc_osmap', 'id,title', array(
 			// Individual params
 			"type" => "default",
 			"zoom" => 16,
@@ -150,8 +150,7 @@ if ( !function_exists( 'trx_addons_sc_osmap' ) ) {
 			"prevent_scroll" => 0,
 			// Content from non-containers PageBuilder
 			"content" => ""
-			))
-		);
+		) ) );
 
 		if (empty($atts['id'])) {
 			$atts['id'] = trx_addons_generate_id( 'sc_osmap_' );

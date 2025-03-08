@@ -20,14 +20,13 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_widget_socials' ) ) {
 	function trx_addons_sc_widget_socials($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_widget_socials', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_widget_socials', $atts, trx_addons_sc_common_atts( 'trx_widget_socials', 'id', array(
 			// Individual params
 			"title" => "",
 			"description" => "",
 			"align" => "left",
 			"type" => "socials",
-			))
-		);
+		) ) );
 		extract($atts);
 		$type = 'trx_addons_widget_socials';
 		$output = '';

@@ -460,7 +460,7 @@ class NavMenuWalker extends \Walker_Nav_Menu {
 
 		$item_output  = $args->before;
 		$item_output .= '<a' . $attributes . '>';
-		$item_output .= $args->link_before . $item_icon . $title . $item_badge . $dropdown_icon . $args->link_after;
+		$item_output .= '<span class="trx-addons-menu-link-text' . ( 0 < $depth ? ' trx-addons-submenu-link-text' : '' ) . '">' . $args->link_before . $item_icon . $title . $item_badge . $dropdown_icon . $args->link_after . '</span>';
 		$item_output .= '</a>';
 		$item_output .= $args->after;
 

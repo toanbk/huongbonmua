@@ -20,7 +20,7 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_widget_flickr' ) ) {
 	function trx_addons_sc_widget_flickr($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_widget_flickr', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_widget_flickr', $atts, trx_addons_sc_common_atts( 'trx_widget_flickr', 'id', array(
 			// Individual params
 			"title"			=> "",
 			'flickr_count'	=> 8,
@@ -28,8 +28,7 @@ if ( !function_exists( 'trx_addons_sc_widget_flickr' ) ) {
 			'flickr_columns_gap' => 0,
 			'flickr_username' => '',
 			'flickr_api_key' => '',
-			))
-		);
+		) ) );
 		extract($atts);
 		$type = 'trx_addons_widget_flickr';
 		$output = '';

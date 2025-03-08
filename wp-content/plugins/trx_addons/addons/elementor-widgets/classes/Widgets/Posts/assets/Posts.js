@@ -19,7 +19,7 @@
 			i, post, postHeight;
 		// Detect max height of visible posts in the current slider
 		for ( i = 0; i < perView; i++ ) {
-			post = curSlide.find( '.trx-addons-post' );
+			post = curSlide.find( '.trx-addons-posts-item' );
 			postHeight = post.outerHeight();
 			if ( maxHeight < postHeight ) {
 				maxHeight = postHeight;
@@ -29,7 +29,7 @@
 		// Set equal height for visible posts in the current slider
 		curSlide = activeSlide;
 		for ( i = 0; i < perView; i++ ) {
-			post = curSlide.find('.trx-addons-post');
+			post = curSlide.find('.trx-addons-posts-item');
 			if ( Math.abs( post.height() - maxHeight ) > 1 ) {
 				post.animate( { height: maxHeight }, { duration: 200, easing: 'linear' } );
 			}
@@ -53,7 +53,7 @@
 			}, 100 );
 
 			// Reset height of each slide to recalculate it
-			$scope.find( '.trx-addons-post' ).css( { height: 'auto' } );
+			$scope.find( '.trx-addons-posts-item' ).css( { height: 'auto' } );
 			equalHeight( $scope, mySwiper );
 		}, 100 ) );
 
@@ -135,19 +135,14 @@
 
 	$( 'body' ).on( 'click', '.trx-addons-posts-pagination-ajax .page-numbers', function(e) {
 
-		var $self = $( this );
-		$scope = $self.closest( '.elementor-widget-trx_elm_posts' );
+		var $self = $( this ),
+			$scope = $self.closest( '.elementor-widget-trx_elm_posts' );
 
 		if ( 'main' == $scope.find( '.trx-addons-posts-grid' ).data( 'query-type' ) ) {
 			return;
 		}
 
 		e.preventDefault();
-
-		// $scope
-		// 	.find( '.trx-addons-posts-grid .trx-addons-post' )
-		// 	.last()
-		// 		.after( '<div class="trx-addons-post-loader"><div class="trx-addons-loader"></div><div class="trx-addons-loader-overlay"></div></div>' );
 
 		var page_number = 1;
 		var curr = parseInt( $scope.find('.trx-addons-posts-pagination .page-numbers.current').html() );
@@ -161,9 +156,8 @@
 		}
 
 		$scope
-			.find( '.trx-addons-posts-grid .trx-addons-post' )
-			.last()
-				.after( '<div class="trx-addons-post-loader"><div class="trx-addons-loader"></div><div class="trx-addons-loader-overlay"></div></div>' );
+			.find( '.trx-addons-posts-grid' )
+			.append( '<div class="trx-addons-posts-loader"><div class="trx-addons-loader"></div><div class="trx-addons-loader-overlay"></div></div>' );
 
 		var $args = {
 			'page_id': $scope.find('.trx-addons-posts-grid').data('page'),
@@ -178,11 +172,13 @@
 
 		_callAjax( $scope, $args );
 
+		return false;
+
 	} );
 
 	var _callAjax = function( $scope, $obj, $append, $count ) {
 
-		var loader = $scope.find('.trx-addons-posts-loader');
+		var loader = $scope.find('.trx-addons-posts-loader').fadeIn();
 
 		$.ajax( {
 			url: trx_addons_posts_script.ajax_url,
@@ -224,7 +220,7 @@
 				//	Complete the process 'loadStatus'
 				loadStatus = true;
 				if ( true == $append ) {
-					loader.hide();
+					loader.fadeOut();
 				}
 
 				$count = $count + 1;

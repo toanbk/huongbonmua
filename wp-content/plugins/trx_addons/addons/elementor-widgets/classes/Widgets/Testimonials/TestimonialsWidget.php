@@ -51,7 +51,7 @@ class TestimonialsWidget extends BaseWidget {
 		$this->register_style_heading_controls();
 		$this->register_style_image_controls();
 		$this->register_style_author_controls();
-		$this->register_style_job_controls();
+		$this->register_style_company_controls();
 		$this->register_style_rating_controls();
 		$this->register_style_content_controls();
 		$this->register_style_quote_controls();
@@ -103,10 +103,9 @@ class TestimonialsWidget extends BaseWidget {
 			'heading',
 			array(
 				'label'       => __( 'Heading', 'trx_addons' ),
-				'type'        => Controls_Manager::TEXT,
-				'description' => __( 'Leave empty if not needed.', 'trx_addons' ),
+				'label_block' => false,
 				// 'dynamic'     => array( 'active' => true ),
-				'label_block' => true,
+				'type'        => Controls_Manager::TEXT,
 			)
 		);
 
@@ -114,21 +113,21 @@ class TestimonialsWidget extends BaseWidget {
 			'person_name',
 			array(
 				'label'       => __( 'Name', 'trx_addons' ),
-				'type'        => Controls_Manager::TEXT,
+				'label_block' => false,
 				// 'dynamic'     => array( 'active' => true ),
 				'default'     => __( 'Joseph L.Mabie', 'trx_addons' ),
-				'label_block' => true,
+				'type'        => Controls_Manager::TEXT,
 			)
 		);
 
 		$repeater->add_control(
 			'company_name',
 			array(
-				'label'       => __( 'Job Title', 'trx_addons' ),
-				'type'        => Controls_Manager::TEXT,
+				'label'       => __( 'Job/Company', 'trx_addons' ),
+				'label_block' => false,
 				// 'dynamic'     => array( 'active' => true ),
 				'default'     => __( 'Influencer', 'trx_addons' ),
-				'label_block' => true,
+				'type'        => Controls_Manager::TEXT,
 			)
 		);
 
@@ -136,11 +135,11 @@ class TestimonialsWidget extends BaseWidget {
 			'link',
 			array(
 				'label'       => __( 'Link', 'trx_addons' ),
+				'label_block' => false,
 				'type'        => Controls_Manager::URL,
 				'default'     => array(
 					'is_external' => true,
 				),
-				'label_block' => true,
 			)
 		);
 
@@ -148,11 +147,13 @@ class TestimonialsWidget extends BaseWidget {
 			'rating',
 			array(
 				'label'       => __( 'Rating Score', 'trx_addons' ),
+				'label_block' => false,
 				'type'        => Controls_Manager::NUMBER,
                 // 'dynamic'     => array( 'active' => true ),
 				'description' => __( 'Leave empty if not needed.', 'trx_addons' ),
 				'min'         => 0,
 				'max'         => 5,
+				'step'        => 0.1,
 			)
 		);
 
@@ -237,7 +238,7 @@ class TestimonialsWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Spacing', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'default'    => array(
 					'top'    => 5,
 					'right'  => 5,
@@ -425,7 +426,7 @@ class TestimonialsWidget extends BaseWidget {
 		$this->add_control(
 			'company_name_size',
 			array(
-				'label'       => __( 'Job HTML Tag', 'trx_addons' ),
+				'label'       => __( 'Job/Company HTML Tag', 'trx_addons' ),
 				'label_block' => false,
 				'type'        => Controls_Manager::SELECT,
 				'options'     => array(
@@ -473,6 +474,7 @@ class TestimonialsWidget extends BaseWidget {
 					'before' => __( 'Before Content', 'trx_addons' ),
 					'after'  => __( 'After Content', 'trx_addons' ),
 				),
+				'render_type'  => 'template',
 				'default'      => 'after',
 				'prefix_class' => 'trx-addons-testimonials-rating-position-',
 			)
@@ -554,36 +556,9 @@ class TestimonialsWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-testimonials-content-wrapper' => 'border-radius: {{SIZE}}{{UNIT}}',
-				),
-				'condition'  => array(
-					'container_adv_radius!' => 'yes',
-				),
-			)
-		);
-
-		$this->add_control(
-			'container_adv_radius',
-			array(
-				'label'       => __( 'Advanced Border Radius', 'trx_addons' ),
-				'type'        => Controls_Manager::SWITCHER,
-				'description' => __( 'Apply custom radius values. Get the radius value from ', 'trx_addons' ) . '<a href="https://9elements.github.io/fancy-border-radius/" target="_blank">here</a>',
-			)
-		);
-
-		$this->add_control(
-			'container_adv_radius_value',
-			array(
-				'label'     => __( 'Border Radius', 'trx_addons' ),
-				'type'      => Controls_Manager::TEXT,
-				// 'dynamic'   => array( 'active' => true ),
-				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-testimonials-content-wrapper' => 'border-radius: {{VALUE}};',
-				),
-				'condition' => array(
-					'container_adv_radius' => 'yes',
 				),
 			)
 		);
@@ -601,7 +576,7 @@ class TestimonialsWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-testimonials-content-wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				),
@@ -657,7 +632,7 @@ class TestimonialsWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Margin', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-testimonials-heading' => 'margin: {{top}}{{UNIT}} {{right}}{{UNIT}} {{bottom}}{{UNIT}} {{left}}{{UNIT}};',
 				),
@@ -689,7 +664,7 @@ class TestimonialsWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Size', 'trx_addons' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'default'    => array(
 					'unit' => 'px',
 					'size' => 100,
@@ -728,9 +703,10 @@ class TestimonialsWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-testimonials-img-wrapper' => 'border-radius: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-testimonials-img-wrapper img' => 'border-radius: {{SIZE}}{{UNIT}};',
 				),
 			)
 		);
@@ -753,11 +729,23 @@ class TestimonialsWidget extends BaseWidget {
 		);
 
 		$this->add_responsive_control(
+			'image_padding',
+			array(
+				'label'      => __( 'Padding', 'trx_addons' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'selectors'  => array(
+					'{{WRAPPER}} .trx-addons-testimonials-img-wrapper' => 'padding: {{top}}{{UNIT}} {{right}}{{UNIT}} {{bottom}}{{UNIT}} {{left}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_responsive_control(
 			'image_margin',
 			array(
 				'label'      => __( 'Margin', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-testimonials-img-wrapper' => 'margin: {{top}}{{UNIT}} {{right}}{{UNIT}} {{bottom}}{{UNIT}} {{left}}{{UNIT}};',
 				),
@@ -813,7 +801,7 @@ class TestimonialsWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Margin', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-testimonials-person-name' => 'margin: {{top}}{{UNIT}} {{right}}{{UNIT}} {{bottom}}{{UNIT}} {{left}}{{UNIT}};',
 				),
@@ -824,21 +812,21 @@ class TestimonialsWidget extends BaseWidget {
 	}
 
 	/**
-	 * Register job style controls
+	 * Register job/company style controls
 	 *
 	 * @return void
 	 */
-	protected function register_style_job_controls() {
+	protected function register_style_company_controls() {
 		$this->start_controls_section(
-			'company_style_section',
+			'comoany_style_section',
 			array(
-				'label' => __( 'Job Title', 'trx_addons' ),
+				'label' => __( 'Job/Company', 'trx_addons' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			)
 		);
 
 		$this->add_responsive_control(
-			'job_align',
+			'company_align',
 			array(
 				'label'     => __( 'Alignment', 'trx_addons' ),
 				'type'      => Controls_Manager::CHOOSE,
@@ -864,6 +852,23 @@ class TestimonialsWidget extends BaseWidget {
 			)
 		);
 
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'company_name_typography',
+				'selector' => '{{WRAPPER}} .trx-addons-testimonials-company-link',
+			)
+		);
+
+		$this->start_controls_tabs( 'tabs_company_name_style' );
+
+		$this->start_controls_tab(
+			'tab_company_name_normal',
+			array(
+				'label' => __( 'Normal', 'trx_addons' ),
+			)
+		);
+
 		$this->add_control(
 			'company_name_color',
 			array(
@@ -879,14 +884,6 @@ class TestimonialsWidget extends BaseWidget {
 		);
 
 		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			array(
-				'name'     => 'company_name_typography',
-				'selector' => '{{WRAPPER}} .trx-addons-testimonials-company-link',
-			)
-		);
-
-		$this->add_group_control(
 			Group_Control_Text_Shadow::get_type(),
 			array(
 				'name'     => 'company_name_shadow',
@@ -895,16 +892,51 @@ class TestimonialsWidget extends BaseWidget {
 		);
 
 		$this->add_responsive_control(
-			'job_margin',
+			'company_margin',
 			array(
 				'label'      => __( 'Margin', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-testimonials-job' => 'margin: {{top}}{{UNIT}} {{right}}{{UNIT}} {{bottom}}{{UNIT}} {{left}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-testimonials-company' => 'margin: {{top}}{{UNIT}} {{right}}{{UNIT}} {{bottom}}{{UNIT}} {{left}}{{UNIT}};',
 				),
 			)
 		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'tab_company_name_hover',
+			array(
+				'label' => __( 'Hover', 'trx_addons' ),
+			)
+		);
+
+		$this->add_control(
+			'company_name_color_hover',
+			array(
+				'label'     => __( 'Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'global'    => array(
+					'default' => Global_Colors::COLOR_SECONDARY,
+				),
+				'selectors' => array(
+					'{{WRAPPER}} a.trx-addons-testimonials-company-link:hover' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Text_Shadow::get_type(),
+			array(
+				'name'     => 'company_name_shadow_hover',
+				'selector' => '{{WRAPPER}} a.trx-addons-testimonials-company-link:hover',
+			)
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
 
 		$this->end_controls_section();
 	}
@@ -970,7 +1002,7 @@ class TestimonialsWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Margin', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-testimonials__rating-wrapper' => 'margin: {{top}}{{UNIT}} {{right}}{{UNIT}} {{bottom}}{{UNIT}} {{left}}{{UNIT}};',
 				),
@@ -1024,7 +1056,7 @@ class TestimonialsWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Margin', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-testimonials-text-wrapper' => 'margin: {{top}}{{UNIT}} {{right}}{{UNIT}} {{bottom}}{{UNIT}} {{left}}{{UNIT}};',
 				),
@@ -1071,7 +1103,7 @@ class TestimonialsWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Size', 'trx_addons' ),
 				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'      => array(
 					'px' => array(
 						'min' => 5,
@@ -1092,7 +1124,7 @@ class TestimonialsWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Top Icon Position', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-testimonials-upper-quote' => 'top: {{TOP}}{{UNIT}}; left:{{LEFT}}{{UNIT}};',
 				),
@@ -1107,7 +1139,7 @@ class TestimonialsWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Bottom Icon Position', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-testimonials-lower-quote' => 'right: {{RIGHT}}{{UNIT}}; bottom: {{BOTTOM}}{{UNIT}};',
 				),
@@ -1122,11 +1154,11 @@ class TestimonialsWidget extends BaseWidget {
 
 
 	/*-----------------------------------------------------------------------------------*/
-	/*	RENDER FUNCTIONS
+	/*	RENDER
 	/*-----------------------------------------------------------------------------------*/
 
 	/**
-	 * Render Testimonials widget output on the frontend.
+	 * Render a widget output on the frontend.
 	 *
 	 * @access protected
 	 */
@@ -1134,9 +1166,9 @@ class TestimonialsWidget extends BaseWidget {
 
 		$settings = $this->get_settings_for_display();
 
-		$heading_tag = TrxAddonsUtils::validate_html_tag( $settings['heading_size'] );
+		$heading_tag      = TrxAddonsUtils::validate_html_tag( $settings['heading_size'] );
 		$person_title_tag = TrxAddonsUtils::validate_html_tag( $settings['person_name_size'] );
-		$job_tag          = TrxAddonsUtils::validate_html_tag( $settings['company_name_size'] );
+		$company_tag      = TrxAddonsUtils::validate_html_tag( $settings['company_name_size'] );
 
 		$show_image = $settings['show_image'];
 
@@ -1249,7 +1281,7 @@ class TestimonialsWidget extends BaseWidget {
 								</<?php echo wp_kses_post( $person_title_tag ); ?>>
 
 								<?php if ( ! empty( $testimonial['company_name'] ) ) : ?>
-									<<?php echo wp_kses_post( $job_tag ); ?> class="trx-addons-testimonials-job">
+									<<?php echo wp_kses_post( $company_tag ); ?> class="trx-addons-testimonials-company">
 									<?php if ( ! empty( $testimonial['link']['url'] ) ) : ?>
 										<a <?php echo wp_kses_post( $this->get_render_attribute_string( 'link_' . $index ) ); ?>>
 											<span <?php echo wp_kses_post( $this->get_render_attribute_string( 'testimonials_company_name' ) ); ?>>
@@ -1261,7 +1293,7 @@ class TestimonialsWidget extends BaseWidget {
 											<?php echo wp_kses_post( $testimonial['company_name'] ); ?>
 										</span>
 									<?php endif; ?>
-									</<?php echo wp_kses_post( $job_tag ); ?>>
+									</<?php echo wp_kses_post( $company_tag ); ?>>
 								<?php endif; ?>
 							</div>
 

@@ -500,6 +500,10 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.portfolio_page_details_button_link {
+  margin-top: 1.5em;
+}
+
 .portfolio_page_details_wrap {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;

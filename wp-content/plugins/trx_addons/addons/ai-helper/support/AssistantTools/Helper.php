@@ -262,17 +262,18 @@ if ( ! class_exists( 'Helper' ) ) {
 			}
 			// Get the scheme color
 			$color = '';
-			if ( isset( $schemes[ $args['scheme'] ]['colors'][ $args['color'] ] ) ) {
-				$color = $schemes[ $args['scheme'] ]['colors'][ $args['color'] ];
+			$color_name = apply_filters( 'trx_addons_filter_get_theme_color_name', $args['color'] );
+			if ( isset( $schemes[ $args['scheme'] ]['colors'][ $color_name ] ) ) {
+				$color = $schemes[ $args['scheme'] ]['colors'][ $color_name ];
 			} else {
-				return array( 'status' => 'error', 'message' => sprintf( __( 'Can\'t get a "%1$s" color from the scheme "%2$s"', 'trx_addons' ), $args['color'], $args['scheme'] ) );
+				return array( 'status' => 'error', 'message' => sprintf( __( 'Can\'t get a "%1$s" color from the scheme "%2$s"', 'trx_addons' ), $color_name, $args['scheme'] ) );
 			}
 			// Return the result
 			return array(
 				'status' => 'success',
 				'message' => sprintf(
 								__( 'A "%1$s" color from the scheme "%2$s" is "%3$s"', 'trx_addons'),
-								$args['color'],
+								$color_name,
 								$args['scheme'],
 								$color
 							),
@@ -318,21 +319,22 @@ if ( ! class_exists( 'Helper' ) ) {
 				return array( 'status' => 'error', 'message' => sprintf( __( 'Wrong color value "%s"', 'trx_addons' ), $args['value'] ) );
 			}
 			// Set the scheme color
-			if ( isset( $schemes[ $args['scheme'] ]['colors'][ $args['color'] ] ) ) {
-				$schemes[ $args['scheme'] ]['colors'][ $args['color'] ] = $args['value'];
+			$color_name = apply_filters( 'trx_addons_filter_get_theme_color_name', $args['color'] );
+			if ( isset( $schemes[ $args['scheme'] ]['colors'][ $color_name ] ) ) {
+				$schemes[ $args['scheme'] ]['colors'][ $color_name ] = $args['value'];
 				// Update the scheme colors in the theme options
 				$options['scheme_storage'] = serialize( $schemes );
 				// Update the theme options and set an action to update the styles
 				trx_addons_update_theme_options( $options, true );
 			} else {
-				return array( 'status' => 'error', 'message' => sprintf( __( 'Can\'t set a new "%1$s" color value for the scheme "%2$s"', 'trx_addons' ), $args['color'], $args['scheme'] ) );
+				return array( 'status' => 'error', 'message' => sprintf( __( 'Can\'t set a new "%1$s" color value for the scheme "%2$s"', 'trx_addons' ), $color_name, $args['scheme'] ) );
 			}
 			// Return the result
 			return array(
 				'status' => 'success',
 				'message' => sprintf(
 								__( 'The "%1$s" color value for the scheme "%2$s" is updated', 'trx_addons'),
-								$args['color'],
+								$color_name,
 								$args['scheme']
 							),
 				//'value' => $color

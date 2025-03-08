@@ -15,6 +15,10 @@ if ( ! defined( 'TRX_ADDONS_GUTENBERG_EDITOR_MSG_BLOCK_IS_EMPTY' ) ) {
 	define( 'TRX_ADDONS_GUTENBERG_EDITOR_MSG_BLOCK_IS_EMPTY', esc_html__( 'Block is cannot be rendered because has not content. Try to change attributes or add a content.', 'trx_addons' ) );
 }
 
+if ( ! defined( 'TRX_ADDONS_GUTENBERG_EDITOR_BLOCK_REGISTRATION_PRIORITY' ) ) {
+	define( 'TRX_ADDONS_GUTENBERG_EDITOR_BLOCK_REGISTRATION_PRIORITY', 20 );
+}
+
 // Check if plugin 'Gutenberg' is installed and activated
 // Attention! This function is used in many files and was moved to the api.php
 /*
@@ -304,6 +308,7 @@ if ( ! function_exists( 'trx_addons_gutenberg_add_editor_style_remove_theme_url'
 								);
 			}
 		}
+
 		return $styles;
 	}
 }

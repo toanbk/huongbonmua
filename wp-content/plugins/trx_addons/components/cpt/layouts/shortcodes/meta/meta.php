@@ -39,15 +39,14 @@ if ( !function_exists( 'trx_addons_sc_layouts_meta_merge_styles' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_layouts_meta' ) ) {
 	function trx_addons_sc_layouts_meta($atts, $content = ''){
-		$atts = trx_addons_sc_prepare_atts('trx_sc_layouts_meta', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_layouts_meta', $atts, trx_addons_sc_common_atts( 'trx_sc_layouts_meta', 'id', array(
 				// Individual params
 				"type" => "",
 				"components" => "",
 				"share_type" => 'drop',
 				"seo" => "",
 				"post_type" => array(),
-			))
-		);
+		) ) );
 		
 		$output = '';
 

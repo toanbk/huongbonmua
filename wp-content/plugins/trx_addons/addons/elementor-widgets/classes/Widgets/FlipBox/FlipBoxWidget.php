@@ -38,12 +38,13 @@ class FlipBoxWidget extends BaseWidget {
 	 */
 	protected function register_controls() {
 		/* Content Tab */
+		$this->register_content_flipbox_controls();
 		$this->register_content_front_controls();
 		$this->register_content_back_controls();
-		$this->register_content_settings_controls();
 		$this->register_content_help_docs_controls();
 
 		/* Style Tab */
+		$this->register_style_flipbox_controls();
 		$this->register_style_front_controls();
 		$this->register_style_back_controls();
 		$this->register_style_button_controls();
@@ -54,10 +55,78 @@ class FlipBoxWidget extends BaseWidget {
 	/*	CONTENT TAB
 	/*-----------------------------------------------------------------------------------*/
 
+	/**
+	 * Content Tab: Flip Box
+	 */
+	protected function register_content_flipbox_controls() {
+		$this->start_controls_section(
+			'section_flipbox',
+			[
+				'label'                 => esc_html__( 'Flip Box', 'trx_addons' ),
+			]
+		);
+
+		$this->add_control(
+			'show_back',
+			[
+				'label'                 => esc_html__( 'Show Back in preview', 'trx_addons' ),
+				'label_block'           => false,
+				'description'           => esc_html__( 'Display the backside of the widget in the preview area and lock it for easy customization of content and styles. Does not affect the frontend.', 'trx_addons' ),
+				'type'                  => Controls_Manager::SWITCHER,
+				'return_value'          => 'show',
+				'prefix_class'          => 'trx-addons-flipbox-back-',
+			]
+		);
+
+		$this->add_control(
+			'flip_effect',
+			[
+				'label'                 => esc_html__( 'Flip Effect', 'trx_addons' ),
+				'type'                  => Controls_Manager::SELECT,
+				'default'               => 'flip',
+				'label_block'           => false,
+				'options'               => [
+					'flip'     => esc_html__( 'Flip', 'trx_addons' ),
+					'slide'    => esc_html__( 'Slide', 'trx_addons' ),
+					'push'     => esc_html__( 'Push', 'trx_addons' ),
+					'zoom-in'  => esc_html__( 'Zoom In', 'trx_addons' ),
+					'zoom-out' => esc_html__( 'Zoom Out', 'trx_addons' ),
+					'fade'     => esc_html__( 'Fade', 'trx_addons' ),
+				],
+				'separator'             => 'before',
+			]
+		);
+
+		$this->add_control(
+			'flip_direction',
+			[
+				'label'                 => esc_html__( 'Flip Direction', 'trx_addons' ),
+				'type'                  => Controls_Manager::SELECT,
+				'default'               => 'left',
+				'label_block'           => false,
+				'options'               => [
+					'left'     => esc_html__( 'Left', 'trx_addons' ),
+					'right'    => esc_html__( 'Right', 'trx_addons' ),
+					'up'       => esc_html__( 'Top', 'trx_addons' ),
+					'down'     => esc_html__( 'Bottom', 'trx_addons' ),
+				],
+				'condition'             => [
+					'flip_effect!' => [
+						'fade',
+						'zoom-in',
+						'zoom-out',
+					],
+				],
+			]
+		);
+
+		$this->end_controls_section();
+	}
+
+	/**
+	 * Content Tab: Front
+	 */
 	protected function register_content_front_controls() {
-		/**
-		 * Content Tab: Front
-		 */
 		$this->start_controls_section(
 			'section_front',
 			[
@@ -201,11 +270,11 @@ class FlipBoxWidget extends BaseWidget {
 
 		$this->end_controls_section();
 	}
-
+	
+	/**
+	 * Content Tab: Back
+	 */
 	protected function register_content_back_controls() {
-		/**
-		 * Content Tab: Back
-		 */
 		$this->start_controls_section(
 			'section_back',
 			[
@@ -432,14 +501,19 @@ class FlipBoxWidget extends BaseWidget {
 		$this->end_controls_section();
 	}
 
-	protected function register_content_settings_controls() {
-		/**
-		 * Content Tab: Settings
-		 */
+	/*-----------------------------------------------------------------------------------*/
+	/*	STYLE TAB
+	/*-----------------------------------------------------------------------------------*/
+
+	/**
+	 * Content Tab: Common
+	 */
+	protected function register_style_flipbox_controls() {
 		$this->start_controls_section(
-			'section_settings',
+			'section_flipbox_style',
 			[
-				'label'                 => esc_html__( 'Settings', 'trx_addons' ),
+				'label'                 => esc_html__( 'Flip Box', 'trx_addons' ),
+				'tab'                   => Controls_Manager::TAB_STYLE,
 			]
 		);
 
@@ -448,7 +522,7 @@ class FlipBoxWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Height', 'trx_addons' ),
 				'type'                  => Controls_Manager::SLIDER,
-				'size_units'            => [ 'px', 'vh' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px' => [
 						'min' => 100,
@@ -470,7 +544,7 @@ class FlipBoxWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Border Radius', 'trx_addons' ),
 				'type'                  => Controls_Manager::SLIDER,
-				'size_units'            => [ 'px', '%', 'em' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px' => [
 						'min' => 0,
@@ -483,59 +557,13 @@ class FlipBoxWidget extends BaseWidget {
 			]
 		);
 
-		$this->add_control(
-			'flip_effect',
-			[
-				'label'                 => esc_html__( 'Flip Effect', 'trx_addons' ),
-				'type'                  => Controls_Manager::SELECT,
-				'default'               => 'flip',
-				'label_block'           => false,
-				'options'               => [
-					'flip'     => esc_html__( 'Flip', 'trx_addons' ),
-					'slide'    => esc_html__( 'Slide', 'trx_addons' ),
-					'push'     => esc_html__( 'Push', 'trx_addons' ),
-					'zoom-in'  => esc_html__( 'Zoom In', 'trx_addons' ),
-					'zoom-out' => esc_html__( 'Zoom Out', 'trx_addons' ),
-					'fade'     => esc_html__( 'Fade', 'trx_addons' ),
-				],
-				'separator'             => 'before',
-			]
-		);
-
-		$this->add_control(
-			'flip_direction',
-			[
-				'label'                 => esc_html__( 'Flip Direction', 'trx_addons' ),
-				'type'                  => Controls_Manager::SELECT,
-				'default'               => 'left',
-				'label_block'           => false,
-				'options'               => [
-					'left'     => esc_html__( 'Left', 'trx_addons' ),
-					'right'    => esc_html__( 'Right', 'trx_addons' ),
-					'up'       => esc_html__( 'Top', 'trx_addons' ),
-					'down'     => esc_html__( 'Bottom', 'trx_addons' ),
-				],
-				'condition'             => [
-					'flip_effect!' => [
-						'fade',
-						'zoom-in',
-						'zoom-out',
-					],
-				],
-			]
-		);
-
 		$this->end_controls_section();
 	}
 
-	/*-----------------------------------------------------------------------------------*/
-	/*	STYLE TAB
-	/*-----------------------------------------------------------------------------------*/
-
+	/**
+	 * Style Tab: Front
+	 */
 	protected function register_style_front_controls() {
-		/**
-		 * Style Tab: Front
-		 */
 		$this->start_controls_section(
 			'section_front_style',
 			[
@@ -549,7 +577,7 @@ class FlipBoxWidget extends BaseWidget {
 			[
 				'label'                 => esc_html__( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-flipbox-front .trx-addons-flipbox-overlay' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -679,9 +707,37 @@ class FlipBoxWidget extends BaseWidget {
 			[
 				'label'                 => esc_html__( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-flipbox-front .trx-addons-flipbox-inner' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			[
+				'name'                  => 'content_border_front',
+				'label'                 => esc_html__( 'Border Style', 'trx_addons' ),
+				'selector'              => '{{WRAPPER}} .trx-addons-flipbox-front .trx-addons-flipbox-inner',
+				'separator'             => 'before',
+			]
+		);
+
+		$this->add_control(
+			'content_border_radius_front',
+			[
+				'label'                 => __( 'Border Radius', 'trx_addons' ),
+				'type'                  => Controls_Manager::SLIDER,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'range'                 => [
+					'px' => [
+						'min' => 0,
+						'max' => 200,
+					],
+				],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-flipbox-front .trx-addons-flipbox-inner' => 'border-radius: {{SIZE}}{{UNIT}}',
 				],
 			]
 		);
@@ -703,6 +759,7 @@ class FlipBoxWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Spacing', 'trx_addons' ),
 				'type'                  => Controls_Manager::SLIDER,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'                 => [
 					'px' => [
 						'min' => 0,
@@ -721,14 +778,15 @@ class FlipBoxWidget extends BaseWidget {
 		$this->add_responsive_control(
 			'image_size_front',
 			[
-				'label'                 => esc_html__( 'Size (%)', 'trx_addons' ),
+				'label'                 => esc_html__( 'Size', 'trx_addons' ),
 				'type'                  => Controls_Manager::SLIDER,
 				'default'               => [
 					'size' => '',
 				],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
-					//'{{WRAPPER}} .trx-addons-flipbox-icon-image > img' => 'width: {{SIZE}}%;',
-					'{{WRAPPER}} .trx-addons-flipbox-icon-image' => 'width: {{SIZE}}%;',
+					//'{{WRAPPER}} .trx-addons-flipbox-icon-image > img' => 'width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-flipbox-icon-image' => 'width: {{SIZE}}{{UNIT}};',
 				],
 				'condition'             => [
 					'icon_type' => 'image',
@@ -779,6 +837,7 @@ class FlipBoxWidget extends BaseWidget {
 						'max' => 300,
 					],
 				],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					// '{{WRAPPER}} .trx-addons-flipbox-icon-image, {{WRAPPER}} .trx-addons-flipbox-icon-image i' => 'font-size: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}} .trx-addons-flipbox-icon-image, {{WRAPPER}} .trx-addons-flipbox-icon-image i' => 'font-size: {{SIZE}}{{UNIT}};',
@@ -815,6 +874,7 @@ class FlipBoxWidget extends BaseWidget {
 						'max' => 100,
 					],
 				],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-flipbox-icon-image' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
@@ -855,7 +915,7 @@ class FlipBoxWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'condition'  => array(
 					'icon_type!' => 'none',
 				),
@@ -870,7 +930,7 @@ class FlipBoxWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-flipbox-icon-image' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -926,6 +986,7 @@ class FlipBoxWidget extends BaseWidget {
 						'max' => 100,
 					],
 				],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-flipbox-front .trx-addons-flipbox-heading' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
@@ -993,7 +1054,7 @@ class FlipBoxWidget extends BaseWidget {
 			[
 				'label'                 => esc_html__( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-flipbox-back .trx-addons-flipbox-overlay' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1123,9 +1184,37 @@ class FlipBoxWidget extends BaseWidget {
 			[
 				'label'                 => esc_html__( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-flipbox-back .trx-addons-flipbox-inner' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Border::get_type(),
+			[
+				'name'                  => 'content_border_back',
+				'label'                 => esc_html__( 'Border Style', 'trx_addons' ),
+				'selector'              => '{{WRAPPER}} .trx-addons-flipbox-back .trx-addons-flipbox-inner',
+				'separator'             => 'before',
+			]
+		);
+
+		$this->add_control(
+			'content_border_radius_back',
+			[
+				'label'                 => __( 'Border Radius', 'trx_addons' ),
+				'type'                  => Controls_Manager::SLIDER,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'range'                 => [
+					'px' => [
+						'min' => 0,
+						'max' => 200,
+					],
+				],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-flipbox-back .trx-addons-flipbox-inner' => 'border-radius: {{SIZE}}{{UNIT}}',
 				],
 			]
 		);
@@ -1153,6 +1242,7 @@ class FlipBoxWidget extends BaseWidget {
 						'max' => 100,
 					],
 				],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-flipbox-icon-image-back' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
@@ -1165,14 +1255,15 @@ class FlipBoxWidget extends BaseWidget {
 		$this->add_responsive_control(
 			'image_size_back',
 			[
-				'label'                 => esc_html__( 'Size (%)', 'trx_addons' ),
+				'label'                 => esc_html__( 'Size', 'trx_addons' ),
 				'type'                  => Controls_Manager::SLIDER,
 				'default'               => [
 					'size' => '',
 				],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
-					// '{{WRAPPER}} .trx-addons-flipbox-icon-image-back > img' => 'width: {{SIZE}}%;',
-					'{{WRAPPER}} .trx-addons-flipbox-icon-image-back' => 'width: {{SIZE}}%;',
+					// '{{WRAPPER}} .trx-addons-flipbox-icon-image-back > img' => 'width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-flipbox-icon-image-back' => 'width: {{SIZE}}{{UNIT}};',
 				],
 				'condition'             => [
 					'icon_type_back'    => 'image',
@@ -1223,6 +1314,7 @@ class FlipBoxWidget extends BaseWidget {
 						'max' => 300,
 					],
 				],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					// '{{WRAPPER}} .trx-addons-flipbox-icon-image-back, {{WRAPPER}} .trx-addons-flipbox-icon-image-back i' => 'font-size: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}} .trx-addons-flipbox-icon-image-back, {{WRAPPER}} .trx-addons-flipbox-icon-image-back i' => 'font-size: {{SIZE}}{{UNIT}};',
@@ -1259,6 +1351,7 @@ class FlipBoxWidget extends BaseWidget {
 						'max' => 100,
 					],
 				],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-flipbox-icon-image-back' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
@@ -1299,7 +1392,7 @@ class FlipBoxWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'condition'  => array(
 					'icon_type!' => 'none',
 				),
@@ -1314,7 +1407,7 @@ class FlipBoxWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-flipbox-icon-image-back' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1370,6 +1463,7 @@ class FlipBoxWidget extends BaseWidget {
 						'max' => 100,
 					],
 				],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-flipbox-back .trx-addons-flipbox-heading' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
@@ -1426,7 +1520,7 @@ class FlipBoxWidget extends BaseWidget {
 		 * ------------------
 		 */
 		$this->start_controls_section(
-			'section_info_box_button_style',
+			'section_flipbox_button_style',
 			[
 				'label'                 => __( 'Button', 'trx_addons' ),
 				'tab'                   => Controls_Manager::TAB_STYLE,
@@ -1450,6 +1544,7 @@ class FlipBoxWidget extends BaseWidget {
 						'max' => 100,
 					],
 				],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-flipbox-button' => 'margin-top: {{SIZE}}{{UNIT}};',
 				],
@@ -1521,7 +1616,7 @@ class FlipBoxWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Border Radius', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%', 'em' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-flipbox-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1551,7 +1646,7 @@ class FlipBoxWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-flipbox-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1573,7 +1668,7 @@ class FlipBoxWidget extends BaseWidget {
 		);
 
 		$this->add_control(
-			'info_box_button_icon_heading',
+			'flipbox_button_icon_heading',
 			[
 				'label'                 => __( 'Button Icon', 'trx_addons' ),
 				'type'                  => Controls_Manager::HEADING,
@@ -1590,7 +1685,7 @@ class FlipBoxWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Margin', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'placeholder'       => [
 					'top'      => '',
 					'right'    => '',
@@ -1602,7 +1697,7 @@ class FlipBoxWidget extends BaseWidget {
 					'select_button_icon[value]!' => '',
 				],
 				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-info-box .trx-addons-button-icon' => 'margin-top: {{TOP}}{{UNIT}}; margin-left: {{LEFT}}{{UNIT}}; margin-right: {{RIGHT}}{{UNIT}}; margin-bottom: {{BOTTOM}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-flipbox-button .trx-addons-button-icon' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -1642,6 +1737,7 @@ class FlipBoxWidget extends BaseWidget {
 				'default'               => '',
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-flipbox-button:hover' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-flipbox-button:hover .trx-addons-button-icon svg' => 'fill: {{VALUE}}',
 				],
 				'condition'             => [
 					'link_type'    => 'button',
@@ -1690,6 +1786,51 @@ class FlipBoxWidget extends BaseWidget {
 		$this->end_controls_tabs();
 
 		$this->end_controls_section();
+	}
+
+	
+	/*-----------------------------------------------------------------------------------*/
+	/*	RENDER
+	/*-----------------------------------------------------------------------------------*/
+
+	/**
+	 * Render a widget output on the frontend.
+	 *
+	 * @access protected
+	 */
+	protected function render() {
+		$settings = $this->get_settings_for_display();
+		$flipbox_if_html_tag = 'div';
+
+		$this->add_render_attribute(
+			[
+				'flipbox-card' => [
+					'class' => [
+						'trx-addons-flipbox-flip-card',
+					],
+				],
+				'flipbox-container' => [
+					'class' => [
+						'trx-addons-flipbox-container',
+						'trx-addons-animate-' . esc_attr( $settings['flip_effect'] ),
+						'trx-addons-direction-' . esc_attr( $settings['flip_direction'] ),
+					],
+				],
+			]
+		);
+		?>
+		<div <?php echo wp_kses_post( $this->get_render_attribute_string( 'flipbox-container' ) ); ?>>
+			<div <?php echo wp_kses_post( $this->get_render_attribute_string( 'flipbox-card' ) ); ?>>
+				<?php
+					// Front
+					$this->render_front();
+
+					// Back
+					$this->render_back();
+				?>
+			</div>
+		</div>
+		<?php
 	}
 
 	protected function render_front() {
@@ -1821,6 +1962,10 @@ class FlipBoxWidget extends BaseWidget {
 
 					$this->add_render_attribute( 'button', 'class', [ 'elementor-button', 'trx-addons-flipbox-button' ] );
 
+					if ( $settings['button_animation'] ) {
+						$this->add_render_attribute( 'button', 'class', 'elementor-animation-' . $settings['button_animation'] );
+					}
+			
 					$this->add_link_attributes( 'button', $settings['link'] );
 
 				}
@@ -1912,7 +2057,7 @@ class FlipBoxWidget extends BaseWidget {
 		$is_new_button_icon = ! isset( $settings['button_icon'] ) && Icons_Manager::is_migration_allowed();
 
 		if ( $has_button_icon ) { ?>
-			<span class="trx-addons-button-icon">
+			<span class="trx-addons-button-icon trx-addons-icon">
 				<?php
 				if ( $is_new_button_icon || $migrated_button_icon ) {
 					Icons_Manager::render_icon( $settings['select_button_icon'], [ 'aria-hidden' => 'true' ] );
@@ -1926,53 +2071,10 @@ class FlipBoxWidget extends BaseWidget {
 	}
 
 	/**
-	 * Render flipbox widget output on the frontend.
-	 *
-	 * Written in PHP and used to generate the final HTML.
-	 *
-	 * @access protected
-	 */
-	protected function render() {
-		$settings = $this->get_settings_for_display();
-		$flipbox_if_html_tag = 'div';
-
-		$this->add_render_attribute(
-			[
-				'flipbox-card' => [
-					'class' => [
-						'trx-addons-flipbox-flip-card',
-					],
-				],
-				'flipbox-container' => [
-					'class' => [
-						'trx-addons-flipbox-container',
-						'trx-addons-animate-' . esc_attr( $settings['flip_effect'] ),
-						'trx-addons-direction-' . esc_attr( $settings['flip_direction'] ),
-					],
-				],
-			]
-		);
-		?>
-		<div <?php echo wp_kses_post( $this->get_render_attribute_string( 'flipbox-container' ) ); ?>>
-			<div <?php echo wp_kses_post( $this->get_render_attribute_string( 'flipbox-card' ) ); ?>>
-				<?php
-					// Front
-					$this->render_front();
-
-					// Back
-					$this->render_back();
-				?>
-			</div>
-		</div>
-		<?php
-	}
-
-	/**
 	 * Render flipbox widget output in the editor.
 	 *
 	 * Written as a Backbone JavaScript template and used to generate the live preview.
 	 *
-	 * @since 2.4.1
 	 * @access protected
 	 */
 	protected function content_template() {
@@ -1997,7 +2099,7 @@ class FlipBoxWidget extends BaseWidget {
 					buttonMigrated = elementor.helpers.isIconMigrated( settings, 'select_button_icon' );
 
 				if ( settings.button_icon || settings.select_button_icon ) { #>
-					<span class="trx-addons-button-icon">
+					<span class="trx-addons-button-icon trx-addons-icon">
 					<#
 					if ( buttonIconHTML && buttonIconHTML.rendered && ( ! settings.button_icon || buttonMigrated ) ) { #>
 						{{{ buttonIconHTML.value }}}
@@ -2102,6 +2204,9 @@ class FlipBoxWidget extends BaseWidget {
 								],
 							} );
 
+							if ( settings.button_animation ) {
+								view.addRenderAttribute( 'button', 'class', 'elementor-animation-' + settings.button_animation );
+							}
 						}
 					}
 				}

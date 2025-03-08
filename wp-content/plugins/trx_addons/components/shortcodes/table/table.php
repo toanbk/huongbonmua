@@ -66,14 +66,13 @@ if ( !function_exists( 'trx_addons_sc_table_check_in_html_output' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_table' ) ) {
 	function trx_addons_sc_table($atts, $content=''){	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_table', $atts, trx_addons_sc_common_atts('id,title', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_table', $atts, trx_addons_sc_common_atts( 'trx_sc_table', 'id,title', array(
 			// Individual params
 			"type" => "default",
 			"width" => "100%",
 			"align" => "none",
 			"content" => '',
-			))
-		);
+		) ) );
 		
 		if (!empty($content)) {
 			if ( strpos( $content, '&lt;table' ) !== false ) {

@@ -306,10 +306,12 @@ body:not(.fixed_blocks_sticky) {
 /* Elm 3.16.0+ Container max width. Attention! A theme-specific CSS-var "--theme-var-page" is used */
 body.elementor-use-container {
 	.e-con {
-		--container-max-width: calc( var(--theme-var-page) + var(--theme-var-elm_add_page_margins, 30px) );
-	}
-	.e-con-gap-no {
 		--container-max-width: var(--theme-var-page);
+	}
+	&.elementor-use-container-with-paddings {
+		.e-con:not(.e-con-gap-no) {
+			--container-max-width: calc( var(--theme-var-page) + var(--theme-var-elm_add_page_margins, 30px) );
+		}	
 	}
 }
 

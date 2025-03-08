@@ -92,15 +92,14 @@ if ( !function_exists( 'trx_addons_sc_price_check_in_html_output' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_price' ) ) {
 	function trx_addons_sc_price($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_price', $atts, trx_addons_sc_common_atts('id,title,slider', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_price', $atts, trx_addons_sc_common_atts( 'trx_sc_price', 'id,title,slider', array(
 			// Individual params
 			"type" => 'default',
 			"columns" => "",
 			"columns_tablet" => "",
 			"columns_mobile" => "",
 			"prices" => "",
-			))
-		);
+		) ) );
 
 		if (function_exists('vc_param_group_parse_atts') && !is_array($atts['prices'])) {
 			$atts['prices'] = (array) vc_param_group_parse_atts( $atts['prices'] );

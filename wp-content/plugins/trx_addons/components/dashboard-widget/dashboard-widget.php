@@ -90,7 +90,7 @@ if ( !function_exists( 'trx_addons_dashboard_widget_display' ) ) {
 						<li class="trx_addons_dashboard_widget_section_item trx_addons_dashboard_widget_section_item_status_info">
 							<?php foreach( $visits as $data ) { ?>
 								<h3 class="trx_addons_dashboard_widget_section_item_header">
-									<a href="<?php echo esc_url( trim( get_home_url(), '/' ) . $data['url'] ); ?>" target="_blank" class="trx_addons_dashboard_widget_section_item_title">
+									<a href="<?php echo esc_url( trim( home_url(), '/' ) . $data['url'] ); ?>" target="_blank" class="trx_addons_dashboard_widget_section_item_title">
 										<span class="trx_addons_dashboard_widget_section_item_header_text"><?php echo esc_html( $data['title'] ); ?></span>
 										<span class="trx_addons_dashboard_widget_section_item_header_data"><?php echo esc_html( trx_addons_num2kilo( $data['count'], 1 ) ) . ' (' . esc_html( $data['percent'] ) . '%)'; ?></span>
 									</a>

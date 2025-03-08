@@ -4,13 +4,18 @@
   height: 300px;
   width: 100%;
 }
+.trx-addons-flipbox-container.trx-addons-animate-flip {
+  overflow: visible;
+}
 .trx-addons-flipbox-container h1, .trx-addons-flipbox-container h2, .trx-addons-flipbox-container h3, .trx-addons-flipbox-container h4, .trx-addons-flipbox-container h5, .trx-addons-flipbox-container h6 {
+  letter-spacing: 0;
   margin: 0;
 }
 
 .trx-addons-flipbox-icon-image,
 .trx-addons-flipbox-icon-image-back {
   display: inline-block;
+  vertical-align: top;
   margin: 0 auto 0px auto;
   line-height: 1;
   box-sizing: border-box;
@@ -18,6 +23,7 @@
 
 .trx-addons-flipbox-icon-type-image {
   width: 30%;
+  overflow: hidden;
 }
 .trx-addons-flipbox-icon-type-image img {
   width: 100%;
@@ -108,21 +114,25 @@
 }
 
 /*--- Flip ---*/
+.elementor-element-edit-mode.trx-addons-flipbox-back-show .trx-addons-animate-flip.trx-addons-direction-up .trx-addons-flipbox-flip-card,
 .trx-addons-animate-flip.trx-addons-direction-up.trx-addons-flipbox-container:hover .trx-addons-flipbox-flip-card,
 .trx-addons-animate-flip.trx-addons-direction-up .trx-addons-flipbox-back {
   transform: rotateX(180deg);
 }
 
+.elementor-element-edit-mode.trx-addons-flipbox-back-show .trx-addons-animate-flip.trx-addons-direction-down .trx-addons-flipbox-flip-card,
 .trx-addons-animate-flip.trx-addons-direction-down.trx-addons-flipbox-container:hover .trx-addons-flipbox-flip-card,
 .trx-addons-animate-flip.trx-addons-direction-down .trx-addons-flipbox-back {
   transform: rotateX(-180deg);
 }
 
+.elementor-element-edit-mode.trx-addons-flipbox-back-show .trx-addons-animate-flip.trx-addons-direction-left .trx-addons-flipbox-flip-card,
 .trx-addons-animate-flip.trx-addons-direction-left.trx-addons-flipbox-container:hover .trx-addons-flipbox-flip-card,
 .trx-addons-animate-flip.trx-addons-direction-left .trx-addons-flipbox-back {
   transform: rotateY(-180deg);
 }
 
+.elementor-element-edit-mode.trx-addons-flipbox-back-show .trx-addons-animate-flip.trx-addons-direction-right .trx-addons-flipbox-flip-card,
 .trx-addons-animate-flip.trx-addons-direction-right.trx-addons-flipbox-container:hover .trx-addons-flipbox-flip-card,
 .trx-addons-animate-flip.trx-addons-direction-right .trx-addons-flipbox-back {
   transform: rotateY(180deg);
@@ -144,6 +154,8 @@
   top: 100%;
 }
 
+.elementor-element-edit-mode.trx-addons-flipbox-back-show .trx-addons-animate-push.trx-addons-direction-up .trx-addons-flipbox-back,
+.elementor-element-edit-mode.trx-addons-flipbox-back-show .trx-addons-animate-slide.trx-addons-direction-up .trx-addons-flipbox-back,
 .trx-addons-animate-push.trx-addons-direction-up.trx-addons-flipbox-container:hover .trx-addons-flipbox-back,
 .trx-addons-animate-slide.trx-addons-direction-up.trx-addons-flipbox-container:hover .trx-addons-flipbox-back {
   top: 0;
@@ -155,6 +167,8 @@
   bottom: 100%;
 }
 
+.elementor-element-edit-mode.trx-addons-flipbox-back-show .trx-addons-animate-push.trx-addons-direction-down .trx-addons-flipbox-back,
+.elementor-element-edit-mode.trx-addons-flipbox-back-show .trx-addons-animate-slide.trx-addons-direction-down .trx-addons-flipbox-back,
 .trx-addons-animate-push.trx-addons-direction-down.trx-addons-flipbox-container:hover .trx-addons-flipbox-back,
 .trx-addons-animate-slide.trx-addons-direction-down.trx-addons-flipbox-container:hover .trx-addons-flipbox-back {
   top: auto;
@@ -166,6 +180,8 @@
   left: 100%;
 }
 
+.elementor-element-edit-mode.trx-addons-flipbox-back-show .trx-addons-animate-push.trx-addons-direction-left .trx-addons-flipbox-back,
+.elementor-element-edit-mode.trx-addons-flipbox-back-show .trx-addons-animate-slide.trx-addons-direction-left .trx-addons-flipbox-back,
 .trx-addons-animate-push.trx-addons-direction-left.trx-addons-flipbox-container:hover .trx-addons-flipbox-back,
 .trx-addons-animate-slide.trx-addons-direction-left.trx-addons-flipbox-container:hover .trx-addons-flipbox-back {
   left: 0;
@@ -177,6 +193,8 @@
   right: 100%;
 }
 
+.elementor-element-edit-mode.trx-addons-flipbox-back-show .trx-addons-animate-push.trx-addons-direction-right .trx-addons-flipbox-back,
+.elementor-element-edit-mode.trx-addons-flipbox-back-show .trx-addons-animate-slide.trx-addons-direction-right .trx-addons-flipbox-back,
 .trx-addons-animate-push.trx-addons-direction-right.trx-addons-flipbox-container:hover .trx-addons-flipbox-back,
 .trx-addons-animate-slide.trx-addons-direction-right.trx-addons-flipbox-container:hover .trx-addons-flipbox-back {
   left: auto;
@@ -184,18 +202,22 @@
 }
 
 /*--- Push + Slide Above ---*/
+.elementor-element-edit-mode.trx-addons-flipbox-back-show .trx-addons-animate-push.trx-addons-direction-up .trx-addons-flipbox-front,
 .trx-addons-animate-push.trx-addons-direction-up.trx-addons-flipbox-container:hover .trx-addons-flipbox-front {
   top: -100%;
 }
 
+.elementor-element-edit-mode.trx-addons-flipbox-back-show .trx-addons-animate-push.trx-addons-direction-down .trx-addons-flipbox-front,
 .trx-addons-animate-push.trx-addons-direction-down.trx-addons-flipbox-container:hover .trx-addons-flipbox-front {
   top: 100%;
 }
 
+.elementor-element-edit-mode.trx-addons-flipbox-back-show .trx-addons-animate-push.trx-addons-direction-left .trx-addons-flipbox-front,
 .trx-addons-animate-push.trx-addons-direction-left.trx-addons-flipbox-container:hover .trx-addons-flipbox-front {
   left: -100%;
 }
 
+.elementor-element-edit-mode.trx-addons-flipbox-back-show .trx-addons-animate-push.trx-addons-direction-right .trx-addons-flipbox-front,
 .trx-addons-animate-push.trx-addons-direction-right.trx-addons-flipbox-container:hover .trx-addons-flipbox-front {
   left: 100%;
 }
@@ -207,6 +229,7 @@
   z-index: 3;
 }
 
+.elementor-element-edit-mode.trx-addons-flipbox-back-show .trx-addons-animate-zoom-in .trx-addons-flipbox-back,
 .trx-addons-animate-zoom-in.trx-addons-flipbox-container:hover .trx-addons-flipbox-back {
   opacity: 1;
   transform: scale(1);
@@ -221,6 +244,7 @@
   transition: transform .5s, opacity .35s, width .1ms;
 }
 
+.elementor-element-edit-mode.trx-addons-flipbox-back-show .trx-addons-animate-zoom-out .trx-addons-flipbox-front,
 .trx-addons-animate-zoom-out.trx-addons-flipbox-container:hover .trx-addons-flipbox-front {
   opacity: 0;
   width: 0;
@@ -228,6 +252,7 @@
   transition: transform .8s, opacity .5s .1s, width .1ms .5s;
 }
 
+.elementor-element-edit-mode.trx-addons-flipbox-back-show .trx-addons-animate-fade .trx-addons-flipbox-front,
 .trx-addons-animate-fade.trx-addons-flipbox-container:hover .trx-addons-flipbox-front {
   opacity: 0;
   visibility: hidden;

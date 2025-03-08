@@ -124,7 +124,9 @@ if ( ! function_exists( 'trx_addons_banners_init' ) ) {
 	 * Add banners parameters to the Meta Box support
 	 */
 	function trx_addons_banners_init() {
-		trx_addons_meta_box_register( 'post', trx_addons_banners_params( 'meta' ) );
+		if ( apply_filters( 'trx_addons_filter_allow_post_banners', true ) ) {
+			trx_addons_meta_box_register( 'post', trx_addons_banners_params( 'meta' ) );
+		}
 	}
 }
 
@@ -137,7 +139,7 @@ if ( ! function_exists( 'trx_addons_show_post_banner' ) ) {
 	 */
 	function trx_addons_show_post_banner( $pos = '', $banners = false ) {
 		static $post_options = array();
-		if ( '' !== $pos && ( ! empty( $banners ) || trx_addons_is_singular( 'post' ) || trx_addons_is_singular( 'attachment' ) ) ) {
+		if ( apply_filters( 'trx_addons_filter_allow_post_banners', true ) && '' !== $pos && ( ! empty( $banners ) || trx_addons_is_singular( 'post' ) || trx_addons_is_singular( 'attachment' ) ) ) {
 			if ( empty( $banners ) ) {
 				$post_id = get_the_ID();
 				if ( ! isset( $post_options[ $post_id ] ) ) {

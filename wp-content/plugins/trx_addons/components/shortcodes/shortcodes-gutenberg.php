@@ -98,7 +98,7 @@ if ( ! function_exists( 'trx_addons_gutenberg_sc_params' ) ) {
 		$vars['list_categories'] = ! $is_edit_mode ? array() : trx_addons_array_merge( array( 0 => trx_addons_get_not_selected_text( esc_html__( 'Select category', 'trx_addons' ) ) ), trx_addons_get_list_categories() );
 
 		// List of meta parts
-		$vars['meta_parts'] = ! $is_edit_mode ? array() : apply_filters('trx_addons_filter_get_list_meta_parts', array());
+		$vars['meta_parts'] = ! $is_edit_mode ? array() : trx_addons_get_list_meta_parts();
 
 		// Return input hover effects
 		$vars['input_hover'] = ! $is_edit_mode ? array() : trx_addons_get_list_input_hover( true );

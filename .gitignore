@@ -28,6 +28,7 @@ wp-content/upgrade/
 # Replace 'your-theme-name' with your actual theme directory
 wp-content/themes/*
 !wp-content/themes/hot-coffee/
+!wp-content/themes/hot-coffee-child/
 
 # Ignore uploads except placeholder files
 wp-content/uploads/*

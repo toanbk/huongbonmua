@@ -19,11 +19,10 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_widget_cars_compare' ) ) {
 	function trx_addons_sc_widget_cars_compare($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_widget_cars_compare', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_widget_cars_compare', $atts, trx_addons_sc_common_atts( 'trx_widget_cars_compare', 'id', array(
 			// Individual params
 			"title" => "",
-			))
-		);
+		) ) );
 		extract($atts);
 		$type = 'trx_addons_widget_cars_compare';
 		$output = '';

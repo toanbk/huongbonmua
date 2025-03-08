@@ -109,7 +109,7 @@ if ( !function_exists( 'trx_addons_sc_squeeze_check_in_html_output' ) ) {
 */
 if ( ! function_exists( 'trx_addons_sc_squeeze' ) ) {
 	function trx_addons_sc_squeeze( $atts, $content = '' ) {	
-		$atts = trx_addons_sc_prepare_atts( 'trx_sc_squeeze', $atts, trx_addons_sc_common_atts( 'id,query', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_squeeze', $atts, trx_addons_sc_common_atts( 'trx_sc_squeeze', 'id,query', array(
 			// Individual params
 			"type" => "default",
 			// Query posts
@@ -125,8 +125,7 @@ if ( ! function_exists( 'trx_addons_sc_squeeze' ) ) {
 			"progress" => "",
 			"progress_position" => "bottom",
 			"disable_on_mobile" => 1,
-			) )
-		);
+		) ) );
 		// Prepare atts
 		if ( function_exists( 'vc_param_group_parse_atts' ) && ! is_array( $atts['slides'] ) ) {
 			$atts['slides'] = (array) vc_param_group_parse_atts( $atts['slides'] );

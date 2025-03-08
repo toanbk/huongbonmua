@@ -1,5 +1,5 @@
 == Hot Coffee ==
-Version: 2.14.0
+Version: 2.15.0
 Copyright: 2021, ThemeREX
 WordPress version: required at least 5.0, tested up to 5.8.2
 License: GNU General Public License v2.0 or later

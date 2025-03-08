@@ -2044,7 +2044,7 @@ html {
 -----------------------------------------------------------------*/
 .breadcrumbs {
   font-size: 13px;
-  line-height: 19px;
+  line-height: 1.4615em;
 }
 
 .breadcrumbs .breadcrumbs_item {
@@ -3007,6 +3007,11 @@ input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+:root :where(a:where(:not(.wp-block-navigation))),
+:root :where(a:where(:not(.wp-element-button))) {
+  text-decoration: initial;
 }
 
 /*# sourceMappingURL=trx_addons.front.css.map */

@@ -23,7 +23,7 @@ if ( !function_exists( 'trx_addons_sc_portfolio' ) ) {
 		// Exit to prevent recursion
 		if (trx_addons_sc_stack_check('trx_sc_portfolio')) return '';
 
-		$atts = trx_addons_sc_prepare_atts('trx_sc_portfolio', $atts, trx_addons_sc_common_atts('id,title,slider,query', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_portfolio', $atts, trx_addons_sc_common_atts( 'trx_sc_portfolio', 'id,title,slider,query', array(
 			// Individual params
 			"type" => "default",
 			"more_text" => esc_html__('Read more', 'trx_addons'),
@@ -33,8 +33,7 @@ if ( !function_exists( 'trx_addons_sc_portfolio' ) ) {
 			'posts_exclude' => '',	// comma-separated list of IDs to exclude from output
 			"use_masonry" => 0,
 			"use_gallery" => trx_addons_get_option( 'portfolio_use_gallery' ),
-			))
-		);
+		) ) );
 
 		if (!empty($atts['ids'])) {
 			if ( is_array( $atts['ids'] ) ) {

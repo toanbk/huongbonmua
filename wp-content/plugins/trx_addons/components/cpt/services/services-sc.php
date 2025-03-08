@@ -23,7 +23,7 @@ if ( !function_exists( 'trx_addons_sc_services' ) ) {
 		// Exit to prevent recursion
 		if (trx_addons_sc_stack_check('trx_sc_services')) return '';
 
-		$atts = trx_addons_sc_prepare_atts('trx_sc_services', $atts, trx_addons_sc_common_atts('id,title,slider,query', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_services', $atts, trx_addons_sc_common_atts( 'trx_sc_services', 'id,title,slider,query', array(
 			// Individual params
 			"type" => "default",
 			"featured" => "image",
@@ -42,8 +42,7 @@ if ( !function_exists( 'trx_addons_sc_services' ) ) {
 			'taxonomy' => TRX_ADDONS_CPT_SERVICES_TAXONOMY,
 			"popup" => 0,
 			"more_text" => esc_html__('Read more', 'trx_addons'),
-			))
-		);
+		) ) );
 
 		if ( in_array( $atts['type'], array( 'tabs', 'tabs_simple' ) ) ) {
 			wp_enqueue_script( 'trx_addons-cpt_services', trx_addons_get_file_url(TRX_ADDONS_PLUGIN_CPT . 'services/services.js'), array('jquery'), null, true );

@@ -117,7 +117,7 @@ if (!function_exists('trx_addons_sc_form_add_in_vc_params')) {
 							"type" => "checkbox"
 						),
 					),
-					trx_addons_vc_add_title_param(false, false),
+					apply_filters( 'trx_addons_filter_add_title_param', true, 'trx_sc_form' ) ? trx_addons_vc_add_title_param(false, false) : array(),
 					trx_addons_vc_add_id_param()
 				)
 			), 'trx_sc_form' );

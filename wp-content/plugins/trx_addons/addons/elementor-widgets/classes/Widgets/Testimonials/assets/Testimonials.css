@@ -12,6 +12,7 @@
   transition: all 0.3s ease;
 }
 .trx-addons-testimonials-box h1, .trx-addons-testimonials-box h2, .trx-addons-testimonials-box h3, .trx-addons-testimonials-box h4, .trx-addons-testimonials-box h5, .trx-addons-testimonials-box h6, .trx-addons-testimonials-box p {
+  letter-spacing: 0;
   margin: 0;
 }
 
@@ -38,7 +39,7 @@
 
 .trx-addons-testimonials-heading,
 .trx-addons-testimonials-person-name,
-.trx-addons-testimonials-job {
+.trx-addons-testimonials-company {
   color: #212121;
 }
 
@@ -47,18 +48,12 @@
 }
 
 .trx-addons-testimonials-box .trx-addons-testimonials-heading {
-  font-size: 24px;
-  font-weight: 700;
   margin-bottom: 10px;
 }
 .trx-addons-testimonials-box .trx-addons-testimonials-person-name {
-  font-size: 21px;
-  font-weight: 600;
   margin-bottom: 5px;
 }
-.trx-addons-testimonials-box .trx-addons-testimonials-job {
-  font-size: 18px;
-  font-weight: 500;
+.trx-addons-testimonials-box .trx-addons-testimonials-company {
   margin-bottom: 5px;
 }
 
@@ -78,6 +73,7 @@
   object-fit: cover;
   width: 100%;
   height: 100% !important;
+  border-radius: 50%;
 }
 
 .trx-addons-testimonials__img-info {
@@ -120,6 +116,10 @@
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
+}
+
+.trx-addons-testimonials-rating-position-hide .trx-addons-testimonials__rating-wrapper {
+  display: none;
 }
 
 .trx-addons-testimonials-rating-position-before .trx-addons-testimonials-heading {

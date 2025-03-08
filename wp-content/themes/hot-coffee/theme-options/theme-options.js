@@ -184,6 +184,15 @@ jQuery( document ).ready( function() {
 										item.attr('checked', 'checked');
 									}
 								} );
+							} else if ( fld.hasClass('hot_coffee_color_selector') ) {
+								fld.val( val ).wpColorPicker( 'color', val );
+							} else if ( fld.next().hasClass('hot_coffee_icon_selector') ) {
+								if ( val == '' || val == 'none' ) {
+									fld.next().attr( 'class', 'hot_coffee_icon_selector' );
+								} else {
+									fld.next().addClass( val ).css('background-image', 'none');
+								}
+								fld.val( val );
 							} else {
 								fld.val( val );
 							}
@@ -632,7 +641,7 @@ jQuery( document ).ready( function() {
 					// Enable/Disable clone buttons
 					hot_coffee_options_clone_toggle_buttons(group);
 					// Mark group as changed
-					group.find('[data-param]').data( 'param-changed', 1 );
+					group.data( 'param-changed', 1 ).find('[data-param]').data( 'param-changed', 1 );
 					// Prevent bubble event
 					e.preventDefault();
 					return false;
@@ -642,11 +651,11 @@ jQuery( document ).ready( function() {
 					var clone_obj = jQuery(this).parents('.hot_coffee_options_clone'),
 						group = clone_obj.parents('.hot_coffee_options_group');
 					// Clone fields
-					hot_coffee_options_clone(clone_obj);
+					hot_coffee_options_clone(clone_obj, true);
 					// Enable/Disable clone buttons
 					hot_coffee_options_clone_toggle_buttons(group);
 					// Mark group as changed
-					group.find('[data-param]').data( 'param-changed', 1 );
+					group.data( 'param-changed', 1 ).find('[data-param]').data( 'param-changed', 1 );
 					// Prevent bubble event
 					e.preventDefault();
 					return false;
@@ -663,7 +672,7 @@ jQuery( document ).ready( function() {
 					// Enable/Disable clone buttons
 					hot_coffee_options_clone_toggle_buttons(group);
 					// Mark group as changed
-					group.find('[data-param]').data( 'param-changed', 1 );
+					group.data( 'param-changed', 1 ).find('[data-param]').data( 'param-changed', 1 );
 					// Prevent bubble event
 					e.preventDefault();
 					return false;
@@ -688,7 +697,7 @@ jQuery( document ).ready( function() {
 							// Change fields index
 							hot_coffee_options_clone_change_index( ui.item.parents('.hot_coffee_options_group'), 0 );
 							// Mark group as changed
-							ui.item.parents('.hot_coffee_options_group').find('[data-param]').data( 'param-changed', 1 );
+							ui.item.parents('.hot_coffee_options_group').data( 'param-changed', 1 ).find('[data-param]').data( 'param-changed', 1 );
 						}
 					});
 			}
@@ -772,7 +781,7 @@ jQuery( document ).ready( function() {
 		}
 		
 		// Clone set of the fields
-		function hot_coffee_options_clone( obj ) {
+		function hot_coffee_options_clone( obj, copy_values ) {
 			var group = obj.parent(),
 				clone = obj.clone(),
 				obj_idx = obj.prevAll('.hot_coffee_options_clone').length;
@@ -787,7 +796,7 @@ jQuery( document ).ready( function() {
 			// Reset value for other fields
 			clone.find('.hot_coffee_options_item_field :input').each( function() {
 				var input = jQuery(this),
-					std = input.data('std');
+					std = copy_values ? input.val() : input.data('std');
 				if ( input.is(':radio') || input.is(':checkbox') ) {
 					input.prop( 'checked', std !== undefined && std == input.val() );
 				} else if ( input.is('select') ) {
@@ -808,7 +817,7 @@ jQuery( document ).ready( function() {
 				// Mark all cloned fields as 'changed' on any cloned field is changed
 				if (input.attr('name') && input.attr('name').indexOf("hot_coffee_options_field_") === 0) {
 					input.on( 'change', function () {
-						jQuery( this ).parents('.hot_coffee_options_group').find('[data-param]').data( 'param-changed', 1 );
+						jQuery( this ).parents('.hot_coffee_options_group').data( 'param-changed', 1 ).find('[data-param]').data( 'param-changed', 1 );
 					} );
 				}
 			});
@@ -948,7 +957,7 @@ jQuery( document ).ready( function() {
 		var par = obj.parents('.hot_coffee_options_group');
 		if ( par.length > 0 ) {
 			// On change any field of a group - mark all fields in this group as changed
-			par.find('[data-param]').data( 'param-changed', 1 );
+			par.data( 'param-changed', 1 ).find('[data-param]').data( 'param-changed', 1 );
 		} else {
 			// On change other fields - mark only this field
 			obj.parents('[data-param]').eq(0).data( 'param-changed', 1 );

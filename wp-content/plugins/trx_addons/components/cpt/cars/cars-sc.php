@@ -41,7 +41,7 @@ if ( !function_exists( 'trx_addons_sc_cars' ) ) {
 		// Exit to prevent recursion
 		if (trx_addons_sc_stack_check('trx_sc_cars')) return '';
 
-		$atts = trx_addons_sc_prepare_atts('trx_sc_cars', $atts, trx_addons_sc_common_atts('id,title,slider,query', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_cars', $atts, trx_addons_sc_common_atts( 'trx_sc_cars', 'id,title,slider,query', array(
 			// Individual params
 			"type" => "default",
 			"cars_maker" => '',
@@ -61,8 +61,7 @@ if ( !function_exists( 'trx_addons_sc_cars' ) ) {
 			"page" => 1,
 			'posts_exclude' => '',	// comma-separated list of IDs to exclude from output
 			"more_text" => esc_html__('Read more', 'trx_addons'),
-			))
-		);
+		) ) );
 		if (!empty($atts['ids'])) {
 			if ( is_array( $atts['ids'] ) ) {
 				$atts['ids'] = join(',', $atts['ids']);

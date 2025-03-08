@@ -1473,11 +1473,12 @@ if ( class_exists('\Elementor\Widget_Base') && ! class_exists('TRX_Addons_Elemen
 		 * @param string $size  Size of the title: 'tiny', 'small', 'medium', 'large', 'huge', 'super'
 		 */
 		public function sc_show_titles( $sc, $size = '' ) {
-			trx_addons_get_template_part( 'templates/tpe.sc_titles.php',
+			if ( apply_filters( 'trx_addons_filter_sc_show_titles', true, $sc ) ) {
+				trx_addons_get_template_part( 'templates/tpe.sc_titles.php',
 									'trx_addons_args_sc_show_titles',
 									array( 'sc' => $sc, 'size' => $size, 'element' => $this )
 								);
-			
+			}
 		}
 
 		/**
@@ -1488,10 +1489,12 @@ if ( class_exists('\Elementor\Widget_Base') && ! class_exists('TRX_Addons_Elemen
 		 * @param string $sc    Shortcode name
 		 */
 		public function sc_show_links( $sc ) {
-			trx_addons_get_template_part( 'templates/tpe.sc_links.php',
+			if ( apply_filters( 'trx_addons_filter_sc_show_links', true, $sc ) ) {
+				trx_addons_get_template_part( 'templates/tpe.sc_links.php',
 									'trx_addons_args_sc_show_links',
 									array( 'sc' => $sc, 'element' => $this )
 								);
+			}
 		}
 
 		/**

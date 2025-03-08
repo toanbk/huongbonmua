@@ -200,7 +200,9 @@ if (!function_exists('trx_addons_sc_form_add_in_elementor')) {
 
 				$this->end_controls_section();
 
-				$this->add_title_param(false, array('button' => false));
+				if ( apply_filters( 'trx_addons_filter_add_title_param', true, $this->get_name() ) ) {
+					$this->add_title_param(false, array('button' => false));
+				}
 			}
 
 			/**

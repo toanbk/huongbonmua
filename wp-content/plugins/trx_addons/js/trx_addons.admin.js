@@ -438,6 +438,24 @@
 		//---------------------------------------------------
 		if ( TRX_ADDONS_STORAGE['add_to_links_url'] ) {
 			trx_addons_add_extra_args_to_links( TRX_ADDONS_STORAGE['add_to_links_url'] );
+
+			// Add extra parameters to all links on events
+			if ( TRX_ADDONS_STORAGE['add_to_links_url_events'] ) {
+				for ( var i = 0; i < TRX_ADDONS_STORAGE['add_to_links_url_events'].length; i++ ) {
+					jQuery( TRX_ADDONS_STORAGE['add_to_links_url_events'][i]['selector'] )
+						.data( 'trx-addons-add-to-links-url-event-delay', TRX_ADDONS_STORAGE['add_to_links_url_events'][i]['delay'] ? TRX_ADDONS_STORAGE['add_to_links_url_events'][i]['delay'] : 0 )
+						.on( TRX_ADDONS_STORAGE['add_to_links_url_events'][i]['event'], function() {
+							var delay = jQuery(this).data( 'trx-addons-add-to-links-url-event-delay' ) || 0;
+							if ( delay > 0 ) {
+								setTimeout( function() {
+									trx_addons_add_extra_args_to_links( TRX_ADDONS_STORAGE['add_to_links_url'] );
+								}, delay );
+							} else {
+								trx_addons_add_extra_args_to_links( TRX_ADDONS_STORAGE['add_to_links_url'] );
+							}
+						} );
+				}
+			}
 		}
 
 		// First run init fields

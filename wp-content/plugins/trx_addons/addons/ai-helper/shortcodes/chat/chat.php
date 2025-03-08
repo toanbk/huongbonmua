@@ -119,7 +119,7 @@ if ( ! function_exists( 'trx_addons_sc_chat' ) ) {
 				$num++;
 			}
 		}
-		$atts = trx_addons_sc_prepare_atts( 'trx_sc_chat', $atts, trx_addons_sc_common_atts( 'id,title', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_chat', $atts, trx_addons_sc_common_atts( 'trx_sc_chat', 'id,title', array(
 			// Individual params
 			"type" => "default",
 			"position" => "",

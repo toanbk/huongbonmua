@@ -2373,6 +2373,7 @@ input[type="button"].trx_addons_media_selector {
 
 .select2-container .select2-search--inline {
   float: left;
+  margin-top: 5px;
 }
 
 .select2-container .select2-search--inline .select2-search__field {

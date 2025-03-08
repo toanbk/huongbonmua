@@ -103,14 +103,13 @@ if ( !function_exists( 'trx_addons_sc_hotspot_check_in_html_output' ) ) {
 */
 if ( ! function_exists( 'trx_addons_sc_hotspot' ) ) {
 	function trx_addons_sc_hotspot( $atts, $content = '' ) {	
-		$atts = trx_addons_sc_prepare_atts( 'trx_sc_hotspot', $atts, trx_addons_sc_common_atts( 'id,title', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_hotspot', $atts, trx_addons_sc_common_atts( 'trx_sc_hotspot', 'id,title', array(
 			// Individual params
 			"type" => "default",
 			"image" => "",
 			"image_link" => "",
 			"spots" => ""
-			) )
-		);
+		) ) );
 		if ( function_exists( 'vc_param_group_parse_atts' ) && ! is_array( $atts['spots'] ) ) {
 			$atts['spots'] = (array) vc_param_group_parse_atts( $atts['spots'] );
 		}

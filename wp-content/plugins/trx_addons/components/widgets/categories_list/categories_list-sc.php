@@ -20,7 +20,7 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_widget_categories_list' ) ) {
 	function trx_addons_sc_widget_categories_list($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_widget_categories_list', $atts, trx_addons_sc_common_atts('id,slider', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_widget_categories_list', $atts, trx_addons_sc_common_atts( 'trx_widget_categories_list', 'id,slider', array(
 			// Individual params
 			"title" => '',
 			'style' => '1',
@@ -35,8 +35,7 @@ if ( !function_exists( 'trx_addons_sc_widget_categories_list' ) ) {
 			'taxonomy' => 'category',
 			'cat_list' => '',
 			'cat_order' => '',
-			))
-		);
+		) ) );
 		extract($atts);
 		$type = 'trx_addons_widget_categories_list';
 		$output = '';

@@ -456,7 +456,7 @@ abstract class BaseWidget extends Widget_Base {
 						'step' => 1,
 					),
 				),
-				'size_units' => array( 'px' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-slider-arrow' => 'font-size: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}};',
 				),
@@ -479,12 +479,51 @@ abstract class BaseWidget extends Widget_Base {
 						'step' => 1,
 					),
 				),
-				'size_units' => array( 'px' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-arrow-next' => 'right: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}} .trx-addons-arrow-prev' => 'left: {{SIZE}}{{UNIT}};',
 				),
 				'condition'  => array(
+					'slider' => 'yes',
+					'arrows' => 'yes',
+				),
+			)
+		);
+
+		$this->add_control(
+			'arrows_show_on_hover',
+			array(
+				'label'        => __( 'Show on hover', 'trx_addons' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'default'      => '',
+				'label_on'     => __( 'Yes', 'trx_addons' ),
+				'label_off'    => __( 'No', 'trx_addons' ),
+				'return_value' => 'yes',
+				'prefix_class' => 'trx-addons-slider-arrows-show-on-hover-',
+				'render_type'  => 'template',
+				'condition'    => array(
+					'slider' => 'yes',
+					'arrows' => 'yes',
+				),
+			)
+		);
+
+		$this->add_control(
+			'arrows_hide_on',
+			array(
+				'label'        => __( 'Hide on', 'trx_addons' ),
+				'label_block'  => false,
+				'type'         => Controls_Manager::SELECT,
+				'options'      => array(
+					''       => __( 'No hide', 'trx_addons' ),
+					'tablet' => __( 'Tablet', 'trx_addons' ),
+					'mobile' => __( 'Mobile', 'trx_addons' ),
+				),
+				'default'      => '',
+				'prefix_class' => 'trx-addons-slider-arrows-hide-on-',
+				'render_type'  => 'template',
+				'condition'    => array(
 					'slider' => 'yes',
 					'arrows' => 'yes',
 				),
@@ -556,7 +595,7 @@ abstract class BaseWidget extends Widget_Base {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-slider-arrow' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -637,7 +676,7 @@ abstract class BaseWidget extends Widget_Base {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-slider-arrow' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -697,7 +736,7 @@ abstract class BaseWidget extends Widget_Base {
 						'step' => 1,
 					),
 				),
-				'size_units' => '',
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .swiper-container-wrap .swiper-pagination-bullet' => 'height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}} .swiper-container-wrap-dots-outside' => 'padding-bottom: calc( 22px + {{SIZE}}{{UNIT}} );',
@@ -721,7 +760,7 @@ abstract class BaseWidget extends Widget_Base {
 						'step' => 1,
 					),
 				),
-				'size_units' => '',
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .swiper-container-wrap .swiper-pagination-bullet' => 'margin-left: {{SIZE}}{{UNIT}}; margin-right: {{SIZE}}{{UNIT}}',
 				),
@@ -781,7 +820,7 @@ abstract class BaseWidget extends Widget_Base {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .swiper-container-wrap .swiper-pagination-bullet' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -797,7 +836,7 @@ abstract class BaseWidget extends Widget_Base {
 			array(
 				'label'              => __( 'Margin', 'trx_addons' ),
 				'type'               => Controls_Manager::DIMENSIONS,
-				'size_units'         => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'allowed_dimensions' => 'vertical',
 				'placeholder'        => array(
 					'top'    => '',
@@ -934,9 +973,9 @@ abstract class BaseWidget extends Widget_Base {
 		$slides_to_show          = ( $settings['columns'] !== '' ) ? absint( $settings['columns'] ) : 3;
 		$slides_to_show_tablet   = ( $settings['columns_tablet'] !== '' ) ? absint( $settings['columns_tablet'] ) : 2;
 		$slides_to_show_mobile   = ( $settings['columns_mobile'] !== '' ) ? absint( $settings['columns_mobile'] ) : 2;
-		$slides_to_scroll        = ( $settings['slides_to_scroll'] !== '' ) ? absint( $settings['slides_to_scroll'] ) : 1;
-		$slides_to_scroll_tablet = ( $settings['slides_to_scroll_tablet'] !== '' ) ? absint( $settings['slides_to_scroll_tablet'] ) : 1;
-		$slides_to_scroll_mobile = ( $settings['slides_to_scroll_mobile'] !== '' ) ? absint( $settings['slides_to_scroll_mobile'] ) : 1;
+		$slides_to_scroll        = ( $settings['slides_to_scroll'] !== '' ) ? min( $slides_to_show, absint( $settings['slides_to_scroll'] ) ) : 1;
+		$slides_to_scroll_tablet = ( $settings['slides_to_scroll_tablet'] !== '' ) ? min( $slides_to_show_tablet, absint( $settings['slides_to_scroll_tablet'] ) ) : 1;
+		$slides_to_scroll_mobile = ( $settings['slides_to_scroll_mobile'] !== '' ) ? min( $slides_to_show_mobile, absint( $settings['slides_to_scroll_mobile'] ) ) : 1;
 
 		/* if ( 'right' === $direction ) {
 			$slider_options['rtl'] = true;
@@ -946,6 +985,7 @@ abstract class BaseWidget extends Widget_Base {
 			'direction'             => 'horizontal',
 			'speed'                 => ( $animation_speed ) ? absint( $animation_speed ) : 600,
 			'slidesPerView'         => $slides_to_show,
+			'slidesPerGroup'        => $slides_to_scroll,
 			'autoHeight'            => ( 'yes' === $adaptive_height ),
 			'watchSlidesVisibility' => true,
 			'centeredSlides'        => ( 'yes' === $center_mode ),
@@ -995,14 +1035,17 @@ abstract class BaseWidget extends Widget_Base {
 		$slider_options['breakpoints'] = [
 			$bp_desktop => [
 				'slidesPerView' => $slides_to_show,
+				'slidesPerGroup' => $slides_to_scroll,
 				//'spaceBetween'  => $margin,
 			],
 			$bp_tablet  => [
-				'slidesPerView' => $slides_to_show_tablet,
-				//'spaceBetween'  => $margin_tablet,
+				'slidesPerView'  => $slides_to_show_tablet,
+				'slidesPerGroup' => $slides_to_scroll_tablet,
+				//'spaceBetween'   => $margin_tablet,
 			],
 			$bp_mobile  => [
 				'slidesPerView' => $slides_to_show_mobile,
+				'slidesPerGroup' => $slides_to_scroll_mobile,
 				//'spaceBetween'  => $margin_mobile,
 			],
 		];

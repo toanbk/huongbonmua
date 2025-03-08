@@ -19,7 +19,7 @@ if ( image1 && image2 ) {
 
 	#><div id="{{ id }}"
 		class="<#
-			print( trx_addons_apply_filters( 'trx_addons_filter_sc_classes', 'sc_icompare sc_icompare' + settings.type
+			print( trx_addons_apply_filters( 'trx_addons_filter_sc_classes', 'sc_icompare sc_icompare_' + settings.type
 						+ ' sc_icompare_direction_' + settings.direction
 						+ ' sc_icompare_event_' + settings.event
 						+ ( settings.class ? ' ' + settings.class : '' ),

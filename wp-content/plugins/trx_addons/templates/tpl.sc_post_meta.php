@@ -78,7 +78,7 @@ if ( empty( $tag ) ) $tag = 'div';
 
 		// Likes (Emotions)
 		} else if ($comp == 'likes') {
-			$emotions_allowed = trx_addons_is_on(trx_addons_get_option('emotions_allowed'));
+			$emotions_allowed = apply_filters( 'trx_addons_filter_emotions_allowed', trx_addons_is_on( trx_addons_get_option( 'emotions_allowed', 0 ) ) );
 			if ($emotions_allowed) {
 				$post_emotions = trx_addons_get_post_emotions($post_id);
 				$post_likes = 0;

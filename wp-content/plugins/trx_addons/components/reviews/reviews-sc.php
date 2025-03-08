@@ -21,12 +21,11 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 // Reviews are used on single posts and comments. Use parameter "post_id" if you want to show reviews in blog archive or shortcodes.
 if ( !function_exists( 'trx_addons_sc_reviews' ) ) {
 	function trx_addons_sc_reviews($atts, $content = '') {	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_reviews', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_reviews', $atts, trx_addons_sc_common_atts( 'trx_sc_reviews', 'id', array(
 			// Individual params
 			"type" => "short",
 			"align" => "right"
-			))
-		);
+		) ) );
 		$output = '';
 		$reviews_enable = trx_addons_get_option('reviews_enable');
 		$reviews_post_types = trx_addons_get_option('reviews_post_types');

@@ -399,8 +399,8 @@ if ( !function_exists( 'trx_addons_image_effects_before_render_elements' ) ) {
 					// Add data-parameters to the image wrapper
 					$data = array(
 						'data-image-effect' => $settings['trx_addons_image_effect'],
-						'data-image-effect-scale' => (int) $settings['trx_addons_image_effect_scale'],
-						'data-image-effect-strength' => 60 - max( 5, min( 50, $settings['trx_addons_image_effect_strength']['size'] ) ),
+						'data-image-effect-scale' => (int)$settings['trx_addons_image_effect_scale'] ?? 0,
+						'data-image-effect-strength' => 60 - max( 5, min( 50, $settings['trx_addons_image_effect_strength']['size'] ?? 20 ) ),
 					);
 					if ( in_array( $settings['trx_addons_image_effect'], array('on_waves', 'on_waves2') ) ) {
 						$data['data-image-effect-waves-factor'] = isset( $settings['trx_addons_image_effect_waves_factor']['size'] )

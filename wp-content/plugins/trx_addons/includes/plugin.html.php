@@ -860,7 +860,8 @@ if ( ! function_exists( 'trx_addons_is_external_url' ) ) {
 	 * @return bool True if string is external URL
 	 */
 	function trx_addons_is_external_url( $url ) {
-		return trx_addons_is_url( $url ) && strpos( $url, trx_addons_remove_protocol( apply_filters( 'trx_addons_filter_home_url', get_home_url() ), true ) ) === false;
+		$parts = explode( '?', apply_filters( 'trx_addons_filter_home_url', home_url() ) );   // With activated WPML home_url() contain ?lang=xx and equal to external link
+		return trx_addons_is_url( $url ) && strpos( $url, trx_addons_remove_protocol( $parts[0], true ) ) === false;
 	}
 }
 
@@ -1160,7 +1161,7 @@ if ( ! function_exists( 'trx_addons_set_cookie' ) ) {
 							apply_filters( 'trx_addons_filter_cookie_options', array(
 								'expires'  => $expire,
 								'path'     => defined( 'COOKIEPATH' ) && ! empty( COOKIEPATH ) ? COOKIEPATH : '/',
-								'domain'   => defined( 'COOKIE_DOMAIN' ) && ! empty( COOKIE_DOMAIN ) ? COOKIE_DOMAIN : '',	//trx_addons_get_domain_from_url( get_home_url() ),
+								'domain'   => defined( 'COOKIE_DOMAIN' ) && ! empty( COOKIE_DOMAIN ) ? COOKIE_DOMAIN : '',	//trx_addons_get_domain_from_url( home_url() ),
 								'secure'   => $secure,
 								'httponly' => $httponly,
 								'samesite' => 'None'	// Strict | Lax | None
@@ -1172,7 +1173,7 @@ if ( ! function_exists( 'trx_addons_set_cookie' ) ) {
 							$value,
 							$expire,
 							defined( 'COOKIEPATH' ) && ! empty( COOKIEPATH ) ? COOKIEPATH : '/',
-							defined( 'COOKIE_DOMAIN' ) && ! empty( COOKIE_DOMAIN ) ? COOKIE_DOMAIN : '',	//trx_addons_get_domain_from_url( get_home_url() ),
+							defined( 'COOKIE_DOMAIN' ) && ! empty( COOKIE_DOMAIN ) ? COOKIE_DOMAIN : '',	//trx_addons_get_domain_from_url( home_url() ),
 							$secure,
 							$httponly
 						);

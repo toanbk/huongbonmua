@@ -1,6 +1,10 @@
 .trx-addons-info-list-container {
   overflow: hidden;
 }
+.trx-addons-info-list-container h1, .trx-addons-info-list-container h2, .trx-addons-info-list-container h3, .trx-addons-info-list-container h4, .trx-addons-info-list-container h5, .trx-addons-info-list-container h6, .trx-addons-info-list-container p {
+  letter-spacing: 0;
+  margin: 0;
+}
 
 .trx-addons-info-list-container li {
   overflow: hidden;
@@ -27,6 +31,18 @@
 
 .trx-addons-info-list-container .trx-addons-info-list-number {
   text-align: center;
+}
+
+.trx-addons-info-list-container .trx-addons-info-list-image {
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .trx-addons-info-list-container .trx-addons-info-list-item:last-child {
@@ -198,7 +214,8 @@
 }
 
 .trx-addons-info-list-item .trx-addons-info-list-button {
-  display: flex;
+  display: inline-flex;
+  vertical-align: top;
 }
 
 .trx-addons-info-list-item .trx-addons-info-list-button .trx-addons-button-icon {

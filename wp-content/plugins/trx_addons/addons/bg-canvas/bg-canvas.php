@@ -82,7 +82,7 @@ if ( ! function_exists( 'trx_addons_elm_add_params_bg_canvas' ) ) {
 				'type' => \Elementor\Controls_Manager::SELECT,
 				'label' => __( 'Breakpoint type', 'trx_addons' ),
 				'label_block' => false,
-				'options' => apply_filters( 'trx_addons_filter_bg_canvas_effects', array(
+				'options' => apply_filters( 'trx_addons_filter_bg_canvas_types', array(
 					'none' => esc_html__( 'None', 'trx_addons' ),
 					'start' => esc_html__( 'Start', 'trx_addons' ),
 					'end'  => esc_html__( 'End', 'trx_addons' ),
@@ -182,12 +182,12 @@ if ( !function_exists( 'trx_addons_elm_add_bg_canvas_data' ) ) {
 				// Add data-parameters to the element wrapper
 				$settings = $element->get_settings();
 				$element->add_render_attribute( '_wrapper', array(
-					'data-bg-canvas-id'     => $settings['bg_canvas_id'],
+					'data-bg-canvas-id'     => $settings['bg_canvas_id'] ?? '',
 					'data-bg-canvas-type'   => $settings['bg_canvas_type'],
-					'data-bg-canvas-effect' => $settings['bg_canvas_effect'],
-					'data-bg-canvas-size'   => $settings['bg_canvas_size']['size'],
-					'data-bg-canvas-shift'  => $settings['bg_canvas_shift']['size'],
-					'data-bg-canvas-color'  => $settings['bg_canvas_color']
+					'data-bg-canvas-effect' => $settings['bg_canvas_effect'] ?? 'round',
+					'data-bg-canvas-size'   => $settings['bg_canvas_size']['size'] ?? 0,
+					'data-bg-canvas-shift'  => $settings['bg_canvas_shift']['size'] ?? 0,
+					'data-bg-canvas-color'  => $settings['bg_canvas_color'] ?? ''
 				) );
 			}
 		}

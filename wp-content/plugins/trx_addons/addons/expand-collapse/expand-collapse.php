@@ -455,7 +455,8 @@ if ( !function_exists( 'trx_addons_elm_add_expand_collapse_data' ) ) {
 				ob_end_clean();
 				// Add data-parameters to the element wrapper
 				$element->add_render_attribute( '_wrapper', array(
-					'data-trx-expcol-collapsed-height' => $settings['trx_expcol_collapsed_height']['size'] . $settings['trx_expcol_collapsed_height']['unit'],
+					'data-trx-expcol-collapsed-height' => ( $settings['trx_expcol_collapsed_height']['size'] ?? 100 )
+															. ( $settings['trx_expcol_collapsed_height']['unit'] ?? 'px' ),
 					'data-trx-expcol-button' => apply_filters( 'trx_addons_filter_expcol_button_layout', $output ),
 				) );
 			}

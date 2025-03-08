@@ -125,7 +125,7 @@ if ( !function_exists( 'trx_addons_sc_googlemap_localize_script' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_googlemap' ) ) {
 	function trx_addons_sc_googlemap($atts, $content=''){	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_googlemap', $atts, trx_addons_sc_common_atts('id,title', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_googlemap', $atts, trx_addons_sc_common_atts( 'trx_sc_googlemap', 'id,title', array(
 			// Individual params
 			"type" => "default",
 			"zoom" => 16,
@@ -139,8 +139,7 @@ if ( !function_exists( 'trx_addons_sc_googlemap' ) ) {
 			"prevent_scroll" => 0,
 			// Content from non-containers PageBuilder
 			"content" => ""
-			))
-		);
+		) ) );
 		
 		if (empty($atts['id'])) {
 			$atts['id'] = trx_addons_generate_id( 'sc_googlemap_' );

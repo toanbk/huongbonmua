@@ -1,12 +1,19 @@
-.trx-addons-counter {
-  display: inline-block;
+.trx-addons-counter h1, .trx-addons-counter h2, .trx-addons-counter h3, .trx-addons-counter h4, .trx-addons-counter h5, .trx-addons-counter h6, .trx-addons-counter p {
+  letter-spacing: 0;
+  margin: 0;
+}
+
+.trx-addons-counter-num-divider-wrap,
+.trx-addons-counter-icon-divider-wrap {
+  line-height: 0;
+  margin-bottom: 12px;
 }
 
 .trx-addons-counter-number,
 .trx-addons-counter-number-prefix,
 .trx-addons-counter-number-suffix {
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: baseline;
 }
 
 .trx-addons-counter-icon-wrap,
@@ -14,19 +21,29 @@
 .trx-addons-counter-icon-divider,
 .trx-addons-counter-num-divider {
   display: inline-block;
+  vertical-align: top;
+}
+
+.trx-addons-counter-icon-wrap {
+  margin-bottom: 12px;
 }
 
 .trx-addons-counter-icon {
   line-height: 1;
 }
 
-.trx-addons-counter-layout-3-number-wrap,
+.trx-addons-counter-layout-3 .trx-addons-counter-number-wrap,
 .trx-addons-counter-layout-3 .trx-addons-icon-title-wrap,
-.trx-addons-counter-layout-4-number-wrap,
+.trx-addons-counter-layout-4 .trx-addons-counter-number-wrap,
 .trx-addons-counter-layout-4 .trx-addons-icon-title-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.trx-addons-counter-layout-3 .trx-addons-counter-title-wrap,
+.trx-addons-counter-layout-4 .trx-addons-counter-title-wrap {
+  flex-shrink: 0;
 }
 
 .trx-addons-counter-layout-5,
@@ -52,6 +69,7 @@
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
+  flex-shrink: 0;
 }
 
 .trx-addons-counter-layout-7 .trx-addons-counter-title-wrap,

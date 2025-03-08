@@ -19,14 +19,13 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_layouts_iconed_text' ) ) {
 	function trx_addons_sc_layouts_iconed_text($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_layouts_iconed_text', $atts, trx_addons_sc_common_atts('id,icon,hide', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_layouts_iconed_text', $atts, trx_addons_sc_common_atts( 'trx_sc_layouts_iconed_text', 'id,icon,hide', array(
 			// Individual params
 			"type" => "default",
 			"text1" => "",
 			"text2" => "",
 			"link" => "",
-			))
-		);
+		) ) );
 
 		if (empty($atts['icon'])) {
 			$atts['icon'] = isset( $atts['icon_' . $atts['icon_type']] ) && $atts['icon_' . $atts['icon_type']] != 'empty' 

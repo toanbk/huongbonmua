@@ -19,14 +19,13 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_layouts_login' ) ) {
 	function trx_addons_sc_layouts_login($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_layouts_login', $atts, trx_addons_sc_common_atts('id,hide', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_layouts_login', $atts, trx_addons_sc_common_atts( 'trx_sc_layouts_login', 'id,hide', array(
 			// Individual params
 			"type" => "default",
 			"text_login" => "",
 			"text_logout" => "",
 			"user_menu" => "0",
-			))
-		);
+		) ) );
 
 		ob_start();
 		trx_addons_get_template_part(array(

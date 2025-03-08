@@ -1911,7 +1911,7 @@ if ( ! function_exists('trx_addons_make_video_autoplay' ) ) {
 			if ( false !== $pos ) {
 				if ( preg_match( '/(<iframe[^>]*src=[\'"])([^\'"]+)([\'"][^>]*>)(.*)/is', $video, $matches ) ) {
 					$video = ( $pos > 0 ? substr( $video, 0, $pos ) : '' ) . $matches[1];
-					if ( ! empty( $matches[2] ) ) {
+					if ( ! empty( $matches[2] ) && strpos( $matches[2], 'instagram.com' ) === false ) {		// Adds parameters to the Instagram url breaks the video
 						// Add parameters to the 'src'
 						$matches[2] = trx_addons_add_to_url(
 							$matches[2],
@@ -2038,7 +2038,7 @@ if ( ! function_exists( 'trx_addons_get_embed_video' ) ) {
 									'height' => $height
 									), $ratio );
 			$embed_video  = '<iframe'
-								. ' src="' . esc_url( $video ) . '"'
+								. ' src="' . ( strpos( $video, 'instagram.com' ) !== false ? esc_attr( $video ) : esc_url( $video ) ) . '"'		// esc_url() is damage video url from Instagram
 								//. ' allow="autoplay"'
 								. ' width="' . esc_attr( $dim['width'] ) . '"'
 								. ' height="' . esc_attr( $dim['height'] ) . '"'

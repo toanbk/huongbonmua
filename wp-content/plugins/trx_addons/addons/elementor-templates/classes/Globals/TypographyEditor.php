@@ -295,6 +295,10 @@ class TypographyEditor extends Module {
 								if ( in_array( $css_prop, array( 'title', 'description' ) ) ) {
 									continue;
 								}
+								// Skip responsive values
+								if ( strpos( $css_prop, '_' ) !== false ) {
+									continue;
+								}
 								if ( empty( $suffix ) || ! empty( $font["{$css_prop}{$suffix}"] ) ) {
 									$param = $css_name = $css_prop;
 									if ( strpos( $css_prop, ':' ) !== false ) {

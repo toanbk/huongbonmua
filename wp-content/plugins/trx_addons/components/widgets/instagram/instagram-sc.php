@@ -19,7 +19,7 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_widget_instagram' ) ) {
 	function trx_addons_sc_widget_instagram($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_widget_instagram', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_widget_instagram', $atts, trx_addons_sc_common_atts( 'trx_widget_instagram', 'id', array(
 			// Individual params
 			"title" => "",
 			"type" => "default",
@@ -40,8 +40,7 @@ if ( !function_exists( 'trx_addons_sc_widget_instagram' ) ) {
 			'links' => 'instagram',
 			'follow' => 0,
 			'follow_link' => '',
-			))
-		);
+		) ) );
 		if ( ! is_array($atts['demo_files']) && function_exists('vc_param_group_parse_atts')) {
 			$atts['demo_files'] = (array) vc_param_group_parse_atts( $atts['demo_files'] );
 		}

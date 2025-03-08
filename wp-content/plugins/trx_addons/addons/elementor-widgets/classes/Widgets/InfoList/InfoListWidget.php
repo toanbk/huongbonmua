@@ -347,10 +347,10 @@ class InfoListWidget extends BaseWidget {
 			)
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'items_spacing',
 			array(
-				'label'     => __( 'Items Spacing', 'trx_addons' ),
+				'label'     => __( 'Item Spacing', 'trx_addons' ),
 				'type'      => Controls_Manager::SLIDER,
 				'default'   => array(
 					'size' => 10,
@@ -360,8 +360,10 @@ class InfoListWidget extends BaseWidget {
 						'max' => 50,
 					),
 				),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors' => array(
-					'{{WRAPPER}}.trx-addons-info-list-icon-left .trx-addons-info-list-item:not(:last-child) .trx-addons-info-list-item-inner, {{WRAPPER}}.trx-addons-info-list-icon-right .trx-addons-info-list-item:not(:last-child) .trx-addons-info-list-item-inner' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.trx-addons-info-list-icon-left .trx-addons-info-list-item:not(:last-child) .trx-addons-info-list-item-inner'  => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.trx-addons-info-list-icon-right .trx-addons-info-list-item:not(:last-child) .trx-addons-info-list-item-inner' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}}.trx-addons-info-list-icon-top .trx-addons-info-list-item .trx-addons-info-list-item-inner' => 'margin-right: calc({{SIZE}}{{UNIT}}/2); margin-left: calc({{SIZE}}{{UNIT}}/2);',
 					'{{WRAPPER}}.trx-addons-info-list-icon-top .trx-addons-list-items' => 'margin-right: calc(-{{SIZE}}{{UNIT}}/2); margin-left: calc(-{{SIZE}}{{UNIT}}/2);',
 
@@ -493,15 +495,35 @@ class InfoListWidget extends BaseWidget {
 						'max' => 20,
 					),
 				),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors' => array(
-					'{{WRAPPER}}.trx-addons-info-list-icon-left .trx-addons-info-list-connector .trx-addons-infolist-icon-wrapper:before, {{WRAPPER}}.trx-addons-info-list-icon-left .trx-addons-info-list-connector .trx-addons-infolist-icon-wrapper:after' => 'border-right-width: {{SIZE}}px;',
-					'{{WRAPPER}}.trx-addons-info-list-icon-right .trx-addons-info-list-connector .trx-addons-infolist-icon-wrapper:before, {{WRAPPER}}.trx-addons-info-list-icon-right .trx-addons-infolist-icon-wrapper:after' => 'border-left-width: {{SIZE}}px;',
-					'{{WRAPPER}}.trx-addons-info-list-icon-top .trx-addons-info-list-connector .trx-addons-infolist-icon-wrapper:before, {{WRAPPER}}.trx-addons-info-list-icon-top .trx-addons-info-list-connector .trx-addons-infolist-icon-wrapper:after' => 'border-top-width: {{SIZE}}px;',
-
-					'(tablet){{WRAPPER}}.trx-addons-info-list-stack-tablet.trx-addons-info-list-icon-top .trx-addons-info-list-connector .trx-addons-infolist-icon-wrapper:before, {{WRAPPER}}.trx-addons-info-list-icon-top .trx-addons-info-list-connector .trx-addons-infolist-icon-wrapper:after' => 'border-right-width: {{SIZE}}px;',
-
-					'(mobile){{WRAPPER}}.trx-addons-info-list-stack-mobile.trx-addons-info-list-icon-top .trx-addons-info-list-connector .trx-addons-infolist-icon-wrapper:before, {{WRAPPER}}.trx-addons-info-list-icon-top .trx-addons-info-list-connector .trx-addons-infolist-icon-wrapper:after' => 'border-right-width: {{SIZE}}px;',
+					'{{WRAPPER}}.trx-addons-info-list-icon-left .trx-addons-info-list-connector .trx-addons-infolist-icon-wrapper:before, {{WRAPPER}}.trx-addons-info-list-icon-left .trx-addons-info-list-connector .trx-addons-infolist-icon-wrapper:after' => 'border-right-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.trx-addons-info-list-icon-right .trx-addons-info-list-connector .trx-addons-infolist-icon-wrapper:before, {{WRAPPER}}.trx-addons-info-list-icon-right .trx-addons-infolist-icon-wrapper:after' => 'border-left-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.trx-addons-info-list-icon-top .trx-addons-info-list-connector .trx-addons-infolist-icon-wrapper:before, {{WRAPPER}}.trx-addons-info-list-icon-top .trx-addons-info-list-connector .trx-addons-infolist-icon-wrapper:after' => 'border-top-width: {{SIZE}}{{UNIT}};',
+					'(tablet){{WRAPPER}}.trx-addons-info-list-stack-tablet.trx-addons-info-list-icon-top .trx-addons-info-list-connector .trx-addons-infolist-icon-wrapper:before, {{WRAPPER}}.trx-addons-info-list-icon-top .trx-addons-info-list-connector .trx-addons-infolist-icon-wrapper:after' => 'border-right-width: {{SIZE}}{{UNIT}};',
+					'(mobile){{WRAPPER}}.trx-addons-info-list-stack-mobile.trx-addons-info-list-icon-top .trx-addons-info-list-connector .trx-addons-infolist-icon-wrapper:before, {{WRAPPER}}.trx-addons-info-list-icon-top .trx-addons-info-list-connector .trx-addons-infolist-icon-wrapper:after' => 'border-right-width: {{SIZE}}{{UNIT}};',
 				),
+				'condition' => array(
+					'connector' => 'yes',
+				),
+			)
+		);
+
+		$this->add_control(
+			'connector_gap',
+			array(
+				'label'     => __( 'Gap', 'trx_addons' ),
+				'type'      => Controls_Manager::SLIDER,
+				'default'   => array(
+					'size' => 0,
+				),
+				'range'     => array(
+					'px' => array(
+						'min' => 0,
+						'max' => 100,
+					),
+				),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'condition' => array(
 					'connector' => 'yes',
 				),
@@ -571,8 +593,9 @@ class InfoListWidget extends BaseWidget {
 						'max' => 100,
 					),
 				),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-list-items .trx-addons-info-list-icon' => 'font-size: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-list-items .trx-addons-info-list-icon' => 'font-size: {{SIZE}}{{UNIT}}; line-height: {{SIZE}}{{UNIT}};',	// height: {{SIZE}}{{UNIT}}; width: {{SIZE}}{{UNIT}};
 					'{{WRAPPER}} .trx-addons-list-items .trx-addons-info-list-image img' => 'width: {{SIZE}}{{UNIT}};',
 				),
 			)
@@ -592,23 +615,24 @@ class InfoListWidget extends BaseWidget {
 						'max' => 200,
 					),
 				),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors' => array(
 					'{{WRAPPER}} .trx-addons-infolist-icon-wrapper' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
 
-					'{{WRAPPER}}.trx-addons-info-list-icon-left .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:before' => 'left: calc(({{SIZE}}px/2) - ({{connector_width.SIZE}}px/2)); bottom: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}}.trx-addons-info-list-icon-left .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:after' => 'left: calc(({{SIZE}}px/2) - ({{connector_width.SIZE}}px/2)); top: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.trx-addons-info-list-icon-left .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:before' => 'left: calc(({{SIZE}}{{UNIT}}/2) - ({{connector_width.SIZE}}{{connector_width.UNIT}}/2) - (({{icon_border_width.LEFT}}{{icon_border_width.UNIT}} + {{icon_border_width.RIGHT}}{{icon_border_width.UNIT}})/2)); bottom: calc({{SIZE}}{{UNIT}} + {{connector_gap.SIZE}}{{connector_gap.UNIT}});',
+					'{{WRAPPER}}.trx-addons-info-list-icon-left .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:after' => 'left: calc(({{SIZE}}{{UNIT}}/2) - ({{connector_width.SIZE}}{{connector_width.UNIT}}/2) - (({{icon_border_width.LEFT}}{{icon_border_width.UNIT}} + {{icon_border_width.RIGHT}}{{icon_border_width.UNIT}})/2)); top: calc({{SIZE}}{{UNIT}} + {{connector_gap.SIZE}}{{connector_gap.UNIT}});',
 
-					'{{WRAPPER}}.trx-addons-info-list-icon-right .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:before' => 'right: calc(({{SIZE}}px/2) - ({{connector_width.SIZE}}px/2)); bottom: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}}.trx-addons-info-list-icon-right .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:after' => 'right: calc(({{SIZE}}px/2) - ({{connector_width.SIZE}}px/2)); top: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.trx-addons-info-list-icon-right .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:before' => 'right: calc(({{SIZE}}{{UNIT}}/2) - ({{connector_width.SIZE}}{{connector_width.UNIT}}/2)); bottom: calc({{SIZE}}{{UNIT}} + {{connector_gap.SIZE}}{{connector_gap.UNIT}});',
+					'{{WRAPPER}}.trx-addons-info-list-icon-right .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:after' => 'right: calc(({{SIZE}}{{UNIT}}/2) - ({{connector_width.SIZE}}{{connector_width.UNIT}}/2)); top: calc({{SIZE}}{{UNIT}} + {{connector_gap.SIZE}}{{connector_gap.UNIT}});',
 
-					'{{WRAPPER}}.trx-addons-info-list-icon-top .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:before' => 'top: calc(({{SIZE}}px/2) - ({{connector_width.SIZE}}px/2)); right: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}}.trx-addons-info-list-icon-top .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:after' => 'top: calc(({{SIZE}}px/2) - ({{connector_width.SIZE}}px/2)); left: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.trx-addons-info-list-icon-top .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:before' => 'top: calc(({{SIZE}}{{UNIT}}/2) - ({{connector_width.SIZE}}{{connector_width.UNIT}}/2)); right: calc({{SIZE}}{{UNIT}} + {{connector_gap.SIZE}}{{connector_gap.UNIT}});',
+					'{{WRAPPER}}.trx-addons-info-list-icon-top .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:after' => 'top: calc(({{SIZE}}{{UNIT}}/2) - ({{connector_width.SIZE}}{{connector_width.UNIT}}/2)); left: calc({{SIZE}}{{UNIT}} + {{connector_gap.SIZE}}{{connector_gap.UNIT}});',
 
-					'(tablet){{WRAPPER}}.trx-addons-info-list-stack-tablet.trx-addons-info-list-icon-top .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:before' => 'left: calc(({{SIZE}}px/2) - ({{connector_width.SIZE}}px/2)); bottom: {{SIZE}}{{UNIT}}; right: auto; top: auto;',
-					'(tablet){{WRAPPER}}.trx-addons-info-list-stack-tablet.trx-addons-info-list-icon-top .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:after' => 'left: calc(({{SIZE}}px/2) - ({{connector_width.SIZE}}px/2)); top: {{SIZE}}{{UNIT}};',
+					'(tablet){{WRAPPER}}.trx-addons-info-list-stack-tablet.trx-addons-info-list-icon-top .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:before' => 'left: calc(({{SIZE}}{{UNIT}}/2) - ({{connector_width.SIZE}}{{connector_width.UNIT}}/2)); bottom: calc({{SIZE}}{{UNIT}} + {{connector_gap.SIZE}}{{connector_gap.UNIT}}); right: auto; top: auto;',
+					'(tablet){{WRAPPER}}.trx-addons-info-list-stack-tablet.trx-addons-info-list-icon-top .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:after' => 'left: calc(({{SIZE}}{{UNIT}}/2) - ({{connector_width.SIZE}}{{connector_width.UNIT}}/2)); top: calc({{SIZE}}{{UNIT}} + {{connector_gap.SIZE}}{{connector_gap.UNIT}});',
 
-					'(mobile){{WRAPPER}}.trx-addons-info-list-stack-mobile.trx-addons-info-list-icon-top .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:before' => 'left: calc(({{SIZE}}px/2) - ({{connector_width.SIZE}}px/2)); bottom: {{SIZE}}{{UNIT}}; right: auto; top: auto;',
-					'(mobile){{WRAPPER}}.trx-addons-info-list-stack-mobile.trx-addons-info-list-icon-top .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:after' => 'left: calc(({{SIZE}}px/2) - ({{connector_width.SIZE}}px/2)); top: {{SIZE}}{{UNIT}};',
+					'(mobile){{WRAPPER}}.trx-addons-info-list-stack-mobile.trx-addons-info-list-icon-top .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:before' => 'left: calc(({{SIZE}}{{UNIT}}/2) - ({{connector_width.SIZE}}{{connector_width.UNIT}}/2)); bottom: calc({{SIZE}}{{UNIT}} + {{connector_gap.SIZE}}{{connector_gap.UNIT}}); right: auto; top: auto;',
+					'(mobile){{WRAPPER}}.trx-addons-info-list-stack-mobile.trx-addons-info-list-icon-top .trx-addons-info-list-container .trx-addons-infolist-icon-wrapper:after' => 'left: calc(({{SIZE}}{{UNIT}}/2) - ({{connector_width.SIZE}}{{connector_width.UNIT}}/2)); top: calc({{SIZE}}{{UNIT}} + {{connector_gap.SIZE}}{{connector_gap.UNIT}});',
 				),
 			)
 		);
@@ -626,6 +650,7 @@ class InfoListWidget extends BaseWidget {
 						'max' => 50,
 					),
 				),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors' => array(
 					'{{WRAPPER}}.trx-addons-info-list-icon-left .trx-addons-infolist-icon-wrapper' => 'margin-right: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}}.trx-addons-info-list-icon-right .trx-addons-infolist-icon-wrapper' => 'margin-left: {{SIZE}}{{UNIT}};',
@@ -643,7 +668,6 @@ class InfoListWidget extends BaseWidget {
 			array(
 				'label'     => __( 'Vertical Offset', 'trx_addons' ),
 				'type'      => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em' ],
 				'default'   => array(
 					'size' => 0,
 				),
@@ -658,6 +682,7 @@ class InfoListWidget extends BaseWidget {
 						'step' => 0.1
 					),
 				),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors' => array(
 					// '{{WRAPPER}} .trx-addons-list-items trx-addons-infolist-icon-wrapper' => 'top: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}}.trx-addons-info-list-icon-left .trx-addons-infolist-icon-wrapper' => 'top: {{SIZE}}{{UNIT}};',
@@ -756,7 +781,7 @@ class InfoListWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-list-items .trx-addons-infolist-icon-wrapper, {{WRAPPER}} .trx-addons-list-items .trx-addons-info-list-image img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -830,7 +855,7 @@ class InfoListWidget extends BaseWidget {
 		$this->add_control(
 			'icon_number_heading',
 			array(
-				'label'     => __( 'Icon Type: Number', 'trx_addons' ),
+				'label'     => __( 'Icon Type: Text', 'trx_addons' ),
 				'type'      => Controls_Manager::HEADING,
 				'separator' => 'before',
 			)
@@ -898,7 +923,7 @@ class InfoListWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-infolist-content-wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -972,6 +997,7 @@ class InfoListWidget extends BaseWidget {
 						'max' => 20,
 					],
 				],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'condition' => [
 					'icon_position!'  => 'top',
 					'show_separator!' => '',
@@ -1044,7 +1070,7 @@ class InfoListWidget extends BaseWidget {
 						'step' => 1,
 					),
 				),
-				'size_units' => array( 'px', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-info-list-title' => 'margin-bottom: {{SIZE}}{{UNIT}}',
 				),
@@ -1120,9 +1146,9 @@ class InfoListWidget extends BaseWidget {
 						'step' => 1,
 					),
 				),
-				'size_units' => array( 'px', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-info-list-button' => 'margin-top: {{SIZE}}{{UNIT}}',
+					'{{WRAPPER}} .trx-addons-info-list-button-wrapper' => 'margin-top: {{SIZE}}{{UNIT}}',
 				),
 			)
 		);
@@ -1180,7 +1206,7 @@ class InfoListWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-info-list-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1204,7 +1230,7 @@ class InfoListWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-info-list-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -1233,7 +1259,7 @@ class InfoListWidget extends BaseWidget {
 			array(
 				'label'       => __( 'Margin', 'trx_addons' ),
 				'type'        => Controls_Manager::DIMENSIONS,
-				'size_units'  => array( 'px', '%' ),
+				'size_units'  => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'placeholder' => array(
 					'top'    => '',
 					'right'  => '',
@@ -1312,6 +1338,11 @@ class InfoListWidget extends BaseWidget {
 
 		$this->end_controls_section();
 	}
+
+	
+	/*-----------------------------------------------------------------------------------*/
+	/*	RENDER
+	/*-----------------------------------------------------------------------------------*/
 
 	/**
 	 * Render info list widget output on the frontend.
@@ -1417,7 +1448,7 @@ class InfoListWidget extends BaseWidget {
 										<?php if ( 'button' === $item['link_type'] && ! empty( $item['link']['url'] ) ) { ?>
 											<div <?php echo wp_kses_post( $this->get_render_attribute_string( $button_key ) ); ?>>
 												<a <?php echo wp_kses_post( $this->get_render_attribute_string( $link_key ) ); ?>>
-													<div <?php echo wp_kses_post( $this->get_render_attribute_string( 'info-list-button' ) ); ?>>
+													<span <?php echo wp_kses_post( $this->get_render_attribute_string( 'info-list-button' ) ); ?>>
 														<?php $this->render_infolist_button_icon( $item ); ?>
 
 														<?php if ( ! empty( $item['button_text'] ) ) { ?>
@@ -1425,7 +1456,7 @@ class InfoListWidget extends BaseWidget {
 																<?php echo wp_kses_post( $item['button_text'] ); ?>
 															</span>
 														<?php } ?>
-													</div>
+													</span>
 												</a>
 											</div>
 										<?php } ?>
@@ -1446,7 +1477,7 @@ class InfoListWidget extends BaseWidget {
 	}
 
 	/**
-	 * Render info-box carousel icon output on the frontend.
+	 * Render a button icon output on the frontend.
 	 *
 	 * Written in PHP and used to generate the final HTML.
 	 *
@@ -1483,7 +1514,7 @@ class InfoListWidget extends BaseWidget {
 	}
 
 	/**
-	 * Render info-box carousel icon output on the frontend.
+	 * Render an icon output on the frontend.
 	 *
 	 * Written in PHP and used to generate the final HTML.
 	 *
@@ -1573,7 +1604,7 @@ class InfoListWidget extends BaseWidget {
 	}
 
 	/**
-	 * Render info list widget output in the editor.
+	 * Render a widget output in the editor.
 	 *
 	 * Written as a Backbone JavaScript template and used to generate the live preview.
 	 *
@@ -1588,7 +1619,7 @@ class InfoListWidget extends BaseWidget {
 				'class': [ 'trx-addons-info-list-container', 'trx-addons-list-container' ],
 			}
 		);
-		   
+
 		if ( settings.connector == 'yes' ) {
 			view.addRenderAttribute( 'info-list', 'class', 'trx-addons-info-list-connector' );  
 			if ( settings.corner_lines == 'yes' ) {
@@ -1680,7 +1711,7 @@ class InfoListWidget extends BaseWidget {
 										<# if ( item.link.url != '' && item.link_type == 'button' ) { #>
 											<div class="trx-addons-info-list-button-wrapper trx-addons-info-list-button-icon-{{ item.button_icon_position }}">
 												<a href="{{ _.escape( item.link.url ) }}">
-													<div class="trx-addons-info-list-button elementor-button elementor-animation-{{ settings.button_animation }}">
+													<span class="trx-addons-info-list-button elementor-button elementor-animation-{{ settings.button_animation }}">
 														<#
 															buttonIconHTML[ index ] = elementor.helpers.renderIcon( view, item.selected_icon, { 'aria-hidden': true }, 'i', 'object' );
 															buttonMigrated[ index ] = elementor.helpers.isIconMigrated( item, 'selected_icon' );
@@ -1700,7 +1731,7 @@ class InfoListWidget extends BaseWidget {
 																{{{ item.button_text }}}
 															</span>
 														<# } #>
-													</div>
+													</span>
 												</a>
 											</div>
 										<# } #>

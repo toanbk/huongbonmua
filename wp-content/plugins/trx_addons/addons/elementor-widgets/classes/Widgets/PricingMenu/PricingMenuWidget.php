@@ -341,9 +341,9 @@ class PricingMenuWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-restaurant-menu-item-wrap' => 'margin-bottom: calc(({{SIZE}}{{UNIT}})/2); padding-bottom: calc(({{SIZE}}{{UNIT}})/2)',
+					'{{WRAPPER}} .trx-addons-restaurant-menu-item-wrap + .trx-addons-restaurant-menu-item-wrap' => 'margin-top: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -353,7 +353,7 @@ class PricingMenuWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-restaurant-menu .trx-addons-restaurant-menu-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -376,7 +376,7 @@ class PricingMenuWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Border Radius', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%', 'em' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-restaurant-menu .trx-addons-restaurant-menu-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -415,7 +415,7 @@ class PricingMenuWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-restaurant-menu-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -499,7 +499,7 @@ class PricingMenuWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-restaurant-menu .trx-addons-restaurant-menu-header' => 'margin-bottom: {{SIZE}}{{UNIT}}',
 				],
@@ -561,7 +561,7 @@ class PricingMenuWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-restaurant-menu .trx-addons-price-menu-divider' => 'border-bottom-width: {{SIZE}}{{UNIT}}',
 				],
@@ -580,14 +580,7 @@ class PricingMenuWidget extends BaseWidget {
 					'size'      => 100,
 					'unit'      => '%',
 				],
-				'range'                 => [
-					'px' => [
-						'min'   => 1,
-						'max'   => 20,
-						'step'  => 1,
-					],
-				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-restaurant-menu .trx-addons-price-menu-divider' => 'width: {{SIZE}}{{UNIT}}',
 				],
@@ -624,7 +617,7 @@ class PricingMenuWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-restaurant-menu .trx-addons-price-menu-divider' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
@@ -721,7 +714,7 @@ class PricingMenuWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Margin', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-restaurant-menu .trx-addons-restaurant-menu-price' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -784,7 +777,7 @@ class PricingMenuWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Margin', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-restaurant-menu .trx-addons-restaurant-menu-price-original' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -843,7 +836,7 @@ class PricingMenuWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-restaurant-menu-description' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
@@ -894,7 +887,7 @@ class PricingMenuWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'default'               => [
 					'unit' => 'px',
 					'size' => 150,
@@ -910,7 +903,7 @@ class PricingMenuWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Margin', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-restaurant-menu-image' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -922,7 +915,7 @@ class PricingMenuWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-restaurant-menu-image img' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -945,7 +938,7 @@ class PricingMenuWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Border Radius', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%', 'em' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-restaurant-menu-image img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1045,7 +1038,7 @@ class PricingMenuWidget extends BaseWidget {
 				'default'   => array(
 					'size' => 0,
 				),
-				'size_units' => [ 'px', 'em' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'range'     => [
 					'px' => [
 						'min' => -50,
@@ -1121,7 +1114,7 @@ class PricingMenuWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-restaurant-menu-style-1 .trx-addons-price-title-connector' => 'border-bottom-width: {{SIZE}}{{UNIT}}; bottom: calc((-{{SIZE}}{{UNIT}})/2)',
 				],
@@ -1135,6 +1128,16 @@ class PricingMenuWidget extends BaseWidget {
 		$this->end_controls_section();
 	}
 
+
+	/*-----------------------------------------------------------------------------------*/
+	/*	RENDER
+	/*-----------------------------------------------------------------------------------*/
+
+	/**
+	 * Render a widget output on the frontend.
+	 *
+	 * @access protected
+	 */
 	protected function render() {
 		$settings = $this->get_settings_for_display();
 		$i = 1;
@@ -1274,6 +1277,13 @@ class PricingMenuWidget extends BaseWidget {
 		<?php
 	}
 
+	/**
+	 * Render a widget output in the editor.
+	 *
+	 * Written as a Backbone JavaScript template and used to generate the live preview.
+	 *
+	 * @access protected
+	 */
 	protected function content_template() {
 		?>
 		<#

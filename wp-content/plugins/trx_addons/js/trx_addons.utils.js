@@ -818,14 +818,17 @@
 
 	// Add extra parameters to all links on page
 	window.trx_addons_add_extra_args_to_links = function( args, cont ) {
-		if ( ! cont ) cont = $body;
+		if ( ! cont ) {
+			cont = $body;
+		}
 		cont.find( 'a' ).each( function() {
 			var link = jQuery( this ),
 				href = link.attr( 'href' );
-			if ( href && href != '#' && ! trx_addons_is_local_link( href ) ) {
+			if ( href && href != '#' && ! trx_addons_is_local_link( href ) && ! link.data( 'trx-addons-extra-args-added' ) ) {
 				var loc = window.location.href,
 					page_valid = true;
 				for ( var i = 0; i < args.length; i++ ) {
+					// Check a current page URL
 					page_valid = true;
 					if ( args[i].page ) {
 						page_valid = false;
@@ -838,13 +841,43 @@
 							page_valid = loc.indexOf( args[i].page ) >= 0;
 						}
 					}
+					// Check a href against mask
 					if ( page_valid && ( ! args[i].mask || href.indexOf( args[i].mask ) >= 0 ) ) {
-						href = typeof args[i].link != 'undefined'
-									? args[i].link
-									: trx_addons_add_to_url( href, args[i].args );
+						// Prepare args to add to the URL
+						var add = false;
+						if ( typeof args[i].args == 'object' ) {
+							add = {};
+							for ( var a in args[i].args ) {
+								// Skip empty args
+								if ( args[i].args[a] === '' ) {
+									continue;
+								}
+								// Replace an arguments starts with the '@' by the value of the specified field
+								if ( args[i].args[a] == '@href' ) {
+									add[a] = href;
+								} else if ( args[i].args[a] == '@location' || args[i].args[a] == '@loc' ) {
+									add[a] = loc;
+								} else if ( args[i].args[a] == '@title' ) {
+									add[a] = document.title;
+								} else {
+									add[a] = args[i].args[a];
+								}
+							}
+						}
+						if ( typeof args[i].link != 'undefined' ) {
+							href = args[i].link;
+						}
+						if ( add !== false ) {
+							href = trx_addons_add_to_url( href, add );
+						}
+						if ( typeof args[i].hash != 'undefined' && href.indexOf('#') < 0 ) {
+							href += '#' + args[i].hash;
+						}
+						link.attr( 'href', href );
+						link.data( 'trx-addons-extra-args-added', 1 );
+						break;
 					}
 				}
-				link.attr( 'href', href );
 			}
 		} );
 	};

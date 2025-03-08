@@ -17,7 +17,7 @@ class TrxAiAssistants extends Api {
 						'src'        => $theme_info['theme_pro_key'],
 						'theme_slug' => $theme_info['theme_slug'],
 						'theme_name' => $theme_info['theme_name'],
-						'domain'     => trx_addons_remove_protocol( get_home_url(), true ),
+						'domain'     => trx_addons_remove_protocol( home_url(), true ),
 						'rnd'		 => mt_rand(),
 					) );
 		$url = trx_addons_get_upgrade_url( $params );

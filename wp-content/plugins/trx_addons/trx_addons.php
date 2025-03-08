@@ -3,7 +3,7 @@
 Plugin Name: ThemeREX Addons
 Plugin URI: http://themerex.net
 Description: Add many widgets, shortcodes and custom post types for your theme
-Version: 2.30.1
+Version: 2.30.2
 Author: ThemeREX
 Author URI: http://themerex.net
 Text Domain: trx_addons
@@ -14,7 +14,7 @@ Domain Path: /languages
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Current version
-if ( ! defined( 'TRX_ADDONS_VERSION' ) ) define( 'TRX_ADDONS_VERSION', '2.30.1' );
+if ( ! defined( 'TRX_ADDONS_VERSION' ) ) define( 'TRX_ADDONS_VERSION', '2.30.2' );
 
 // Hooks order for the plugin and theme on action 'after_setup_theme'
 // 1 - plugin's components and/or theme register hooks for next filters
@@ -391,7 +391,7 @@ if ( !function_exists( 'trx_addons_localize_scripts_front' ) ) {
 			'ajax_url'	=> esc_url(admin_url('admin-ajax.php')),
 			'ajax_nonce'=> esc_attr(wp_create_nonce(admin_url('admin-ajax.php'))),
 			// Site base url
-			'site_url'	=> esc_url( get_home_url() ),
+			'site_url'	=> esc_url( home_url() ),
 			// Is single page/post
 			'post_id' => get_the_ID(),
 			// VC frontend edit mode
@@ -415,10 +415,10 @@ if ( !function_exists( 'trx_addons_localize_scripts_front' ) ) {
 			// Open external links in a new window
 			'add_target_blank' => trx_addons_get_option('add_target_blank'),
 			// Use menu collapse
-			'menu_collapse' => trx_addons_get_option('menu_collapse'),
-			'menu_collapse_icon' => trx_addons_get_option('menu_collapse_icon'),
+			'menu_collapse' => trx_addons_get_option( 'menu_collapse', 1 ),
+			'menu_collapse_icon' => trx_addons_get_option( 'menu_collapse_icon', 'trx_addons_icon-ellipsis-vert' ),
 			// Stretch menu layouts
-			'menu_stretch' => trx_addons_get_option('menu_stretch'),
+			'menu_stretch' => trx_addons_get_option( 'menu_stretch', 0 ),
 			// Resize video and iframe
 			'resize_tag_video' => false,
 			'resize_tag_iframe' => true,

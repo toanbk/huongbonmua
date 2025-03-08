@@ -107,6 +107,19 @@ if ( ! function_exists( 'trx_addons_sc_switcher_add_in_elementor' ) ) {
 			 * @access protected
 			 */
 			protected function register_controls() {
+				$this->register_content_controls();
+				$this->register_style_controls();
+			}
+
+			/**
+			 * Register widget content controls.
+			 *
+			 * Adds different input fields to allow the user to change and customize the widget settings.
+			 *
+			 * @since 1.6.41
+			 * @access protected
+			 */
+			protected function register_content_controls() {
 
 				// Detect edit mode
 				$is_edit_mode = trx_addons_elm_is_edit_mode();
@@ -154,294 +167,6 @@ if ( ! function_exists( 'trx_addons_sc_switcher_add_in_elementor' ) ) {
 						'type' => \Elementor\Controls_Manager::SELECT,
 						'options' => trx_addons_get_list_sc_switcher_effects(),
 						'default' => 'swap'
-					]
-				);
-
-				$this->add_control(
-					'heading1',
-					[
-						'type' => \Elementor\Controls_Manager::HEADING,
-						'label' => esc_html__( 'Slide 1', 'trx_addons' ),
-						'separator' => 'before',
-						'condition' => [
-							'type' => 'default'
-						]
-					]
-				);
-
-				$this->add_control(
-					'slide1_title',
-					[
-						'label' => __( 'Title', 'trx_addons' ),
-						'label_block' => false,
-						'type' => \Elementor\Controls_Manager::TEXT,
-						'default' => '',
-						'condition' => [
-							'type' => 'default'
-						]
-					]
-				);
-
-				$this->add_control(
-					'slide1_title_color',
-					[
-						'label' => __( 'Title Color', 'trx_addons' ),
-						'label_block' => false,
-						'type' => \Elementor\Controls_Manager::COLOR,
-						'default' => '',
-//						'global' => array(
-//							'active' => false,
-//						),
-						'condition' => [
-							'type' => 'default'
-						]
-					]
-				);
-
-				$this->add_control(
-					'slide1_switcher_color',
-					[
-						'label' => __( 'Switcher Color', 'trx_addons' ),
-						'label_block' => false,
-						'type' => \Elementor\Controls_Manager::COLOR,
-						'default' => '',
-//						'global' => array(
-//							'active' => false,
-//						),
-						'condition' => [
-							'type' => 'default'
-						]
-					]
-				);
-
-				$this->add_control(
-					'slide1_type',
-					[
-						'label' => __("Content type", 'trx_addons'),
-						'label_block' => false,
-						'type' => \Elementor\Controls_Manager::SELECT,
-						'options' => trx_addons_get_list_content_types( true ),
-						'default' => 'section',
-						'condition' => [
-							'type' => 'default'
-						]
-					]
-				);
-
-				$this->add_control(
-					'slide1_content',
-					[
-						'label' => __( 'Content', 'trx_addons' ),
-						'type' => \Elementor\Controls_Manager::WYSIWYG,
-						//'separator' => 'none',
-						'default' => '',
-						'condition' => [
-							'slide1_type' => 'content'
-						]
-					]
-				);
-
-				$this->add_control(
-					'slide1_section',
-					[
-						'label' => __( 'Section ID', 'trx_addons' ),
-						'label_block' => false,
-						'type' => \Elementor\Controls_Manager::TEXT,
-						'default' => '',
-						'condition' => [
-							'type' => 'default',
-							'slide1_type' => 'section'
-						]
-					]
-				);
-
-				$this->add_control(
-					'slide1_layout',
-					[
-						'label' => __("Custom Layout", 'trx_addons'),
-						'label_block' => false,
-						'description' => wp_kses( __("Select any previously created layout to insert to this page", 'trx_addons')
-														. '<br>'
-														. sprintf('<a href="%1$s" class="trx_addons_post_editor' . (intval($layout)==0 ? ' trx_addons_hidden' : '').'" target="_blank">%2$s</a>',
-																	admin_url( sprintf( "post.php?post=%d&amp;action=elementor", $layout ) ),
-																	__("Open selected layout in a new tab to edit", 'trx_addons')
-																),
-													'trx_addons_kses_content'
-													),
-						'type' => \Elementor\Controls_Manager::SELECT,
-						'options' => $layouts,
-						'default' => 0,
-						'condition' => [
-							'type' => 'default',
-							'slide1_type' => 'layout'
-						]
-					]
-				);
-
-				$this->add_control(
-					'slide1_template',
-					[
-						'label' => __("Elementor's Template", 'trx_addons'),
-						'label_block' => false,
-						'description' => wp_kses( __("Select any previously created template to insert to this page", 'trx_addons')
-														. '<br>'
-														. sprintf('<a href="%1$s" class="trx_addons_post_editor' . (intval($layout)==0 ? ' trx_addons_hidden' : '').'" target="_blank">%2$s</a>',
-																	admin_url( sprintf( "post.php?post=%d&amp;action=elementor", $layout ) ),
-																	__("Open selected template in a new tab to edit", 'trx_addons')
-																),
-													'trx_addons_kses_content'
-													),
-						'type' => \Elementor\Controls_Manager::SELECT,
-						'options' => $templates,
-						'default' => 0,
-						'condition' => [
-							'type' => 'default',
-							'slide1_type' => 'template'
-						]
-					]
-				);
-
-				$this->add_control(
-					'heading2',
-					[
-						'type' => \Elementor\Controls_Manager::HEADING,
-						'label' => esc_html__( 'Slide 2', 'trx_addons' ),
-						'separator' => 'before',
-						'condition' => [
-							'type' => 'default'
-						]
-					]
-				);
-
-				$this->add_control(
-					'slide2_title',
-					[
-						'label' => __( 'Title', 'trx_addons' ),
-						'label_block' => false,
-						'type' => \Elementor\Controls_Manager::TEXT,
-						'default' => '',
-						'condition' => [
-							'type' => 'default'
-						]
-					]
-				);
-
-				$this->add_control(
-					'slide2_title_color',
-					[
-						'label' => __( 'Title Color', 'trx_addons' ),
-						'label_block' => false,
-						'type' => \Elementor\Controls_Manager::COLOR,
-						'default' => '',
-//						'global' => array(
-//							'active' => false,
-//						),
-						'condition' => [
-							'type' => 'default'
-						]
-					]
-				);
-
-				$this->add_control(
-					'slide2_switcher_color',
-					[
-						'label' => __( 'Switcher Color', 'trx_addons' ),
-						'label_block' => false,
-						'type' => \Elementor\Controls_Manager::COLOR,
-						'default' => '',
-//						'global' => array(
-//							'active' => false,
-//						),
-						'condition' => [
-							'type' => 'default'
-						]
-					]
-				);
-
-				$this->add_control(
-					'slide2_type',
-					[
-						'label' => __("Content type", 'trx_addons'),
-						'label_block' => false,
-						'type' => \Elementor\Controls_Manager::SELECT,
-						'options' => trx_addons_get_list_content_types( true ),
-						'default' => 'section',
-						'condition' => [
-							'type' => 'default'
-						]
-					]
-				);
-
-				$this->add_control(
-					'slide2_content',
-					[
-						'label' => __( 'Content', 'trx_addons' ),
-						'type' => \Elementor\Controls_Manager::WYSIWYG,
-						//'separator' => 'none',
-						'default' => '',
-						'condition' => [
-							'slide2_type' => 'content'
-						]
-					]
-				);
-
-				$this->add_control(
-					'slide2_section',
-					[
-						'label' => __( 'Section ID', 'trx_addons' ),
-						'label_block' => false,
-						'type' => \Elementor\Controls_Manager::TEXT,
-						'default' => '',
-						'condition' => [
-							'type' => 'default',
-							'slide2_type' => 'section'
-						]
-					]
-				);
-
-				$this->add_control(
-					'slide2_layout',
-					[
-						'label' => __("Custom Layout", 'trx_addons'),
-						'label_block' => false,
-						'description' => wp_kses( __("Select any previously created layout to insert to this page", 'trx_addons')
-														. '<br>'
-														. sprintf('<a href="%1$s" class="trx_addons_post_editor' . (intval($layout)==0 ? ' trx_addons_hidden' : '').'" target="_blank">%2$s</a>',
-																	admin_url( sprintf( "post.php?post=%d&amp;action=elementor", $layout ) ),
-																	__("Open selected layout in a new tab to edit", 'trx_addons')
-																),
-													'trx_addons_kses_content'
-													),
-						'type' => \Elementor\Controls_Manager::SELECT,
-						'options' => $layouts,
-						'default' => 0,
-						'condition' => [
-							'type' => 'default',
-							'slide2_type' => 'layout'
-						]
-					]
-				);
-
-				$this->add_control(
-					'slide2_template',
-					[
-						'label' => __("Elementor's Template", 'trx_addons'),
-						'label_block' => false,
-						'description' => wp_kses( __("Select any previously created template to insert to this page", 'trx_addons')
-														. '<br>'
-														. sprintf('<a href="%1$s" class="trx_addons_post_editor' . (intval($layout)==0 ? ' trx_addons_hidden' : '').'" target="_blank">%2$s</a>',
-																	admin_url( sprintf( "post.php?post=%d&amp;action=elementor", $layout ) ),
-																	__("Open selected template in a new tab to edit", 'trx_addons')
-																),
-													'trx_addons_kses_content'
-													),
-						'type' => \Elementor\Controls_Manager::SELECT,
-						'options' => $templates,
-						'default' => 0,
-						'condition' => [
-							'type' => 'default',
-							'slide2_type' => 'template'
-						]
 					]
 				);
 
@@ -546,7 +271,725 @@ if ( ! function_exists( 'trx_addons_sc_switcher_add_in_elementor' ) ) {
 
 				$this->end_controls_section();
 
-				$this->add_title_param();
+				$this->start_controls_section(
+					'section_sc_switcher_slide1',
+					[
+						'label' => __( 'Slide 1', 'trx_addons' ),
+						'condition' => [
+							'type' => ['default', 'modern']
+						]
+					]
+				);
+
+				// $this->add_control(
+				// 	'heading1',
+				// 	[
+				// 		'type' => \Elementor\Controls_Manager::HEADING,
+				// 		'label' => esc_html__( 'Slide 1', 'trx_addons' ),
+				// 		'separator' => 'before',
+				// 		'condition' => [
+				// 			'type' => ['default', 'modern']
+				// 		]
+				// 	]
+				// );
+
+				$this->add_control(
+					'slide1_title',
+					[
+						'label' => __( 'Title', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::TEXT,
+						'default' => '',
+						'condition' => [
+							'type' => ['default', 'modern']
+						]
+					]
+				);
+
+				$this->add_control(
+					'slide1_type',
+					[
+						'label' => __("Content type", 'trx_addons'),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::SELECT,
+						'options' => trx_addons_get_list_content_types( true ),
+						'default' => 'section',
+						'condition' => [
+							'type' => ['default', 'modern']
+						]
+					]
+				);
+
+				$this->add_control(
+					'slide1_content',
+					[
+						'label' => __( 'Content', 'trx_addons' ),
+						'type' => \Elementor\Controls_Manager::WYSIWYG,
+						//'separator' => 'none',
+						'default' => '',
+						'condition' => [
+							'type' => ['default', 'modern'],
+							'slide1_type' => 'content'
+						]
+					]
+				);
+
+				$this->add_control(
+					'slide1_section',
+					[
+						'label' => __( 'Section ID', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::TEXT,
+						'default' => '',
+						'condition' => [
+							'type' => ['default', 'modern'],
+							'slide1_type' => 'section'
+						]
+					]
+				);
+
+				$this->add_control(
+					'slide1_layout',
+					[
+						'label' => __("Custom Layout", 'trx_addons'),
+						'label_block' => false,
+						'description' => wp_kses( __("Select any previously created layout to insert to this page", 'trx_addons')
+														. '<br>'
+														. sprintf('<a href="%1$s" class="trx_addons_post_editor' . (intval($layout)==0 ? ' trx_addons_hidden' : '').'" target="_blank">%2$s</a>',
+																	admin_url( sprintf( "post.php?post=%d&amp;action=elementor", $layout ) ),
+																	__("Open selected layout in a new tab to edit", 'trx_addons')
+																),
+													'trx_addons_kses_content'
+													),
+						'type' => \Elementor\Controls_Manager::SELECT,
+						'options' => $layouts,
+						'default' => 0,
+						'condition' => [
+							'type' => ['default', 'modern'],
+							'slide1_type' => 'layout'
+						]
+					]
+				);
+
+				$this->add_control(
+					'slide1_template',
+					[
+						'label' => __("Elementor's Template", 'trx_addons'),
+						'label_block' => false,
+						'description' => wp_kses( __("Select any previously created template to insert to this page", 'trx_addons')
+														. '<br>'
+														. sprintf('<a href="%1$s" class="trx_addons_post_editor' . (intval($layout)==0 ? ' trx_addons_hidden' : '').'" target="_blank">%2$s</a>',
+																	admin_url( sprintf( "post.php?post=%d&amp;action=elementor", $layout ) ),
+																	__("Open selected template in a new tab to edit", 'trx_addons')
+																),
+													'trx_addons_kses_content'
+													),
+						'type' => \Elementor\Controls_Manager::SELECT,
+						'options' => $templates,
+						'default' => 0,
+						'condition' => [
+							'type' => ['default', 'modern'],
+							'slide1_type' => 'template'
+						]
+					]
+				);
+
+				$this->end_controls_section();
+
+				$this->start_controls_section(
+					'section_sc_switcher_slide2',
+					[
+						'label' => __( 'Slide 2', 'trx_addons' ),
+						'condition' => [
+							'type' => ['default', 'modern']
+						]
+					]
+				);
+
+				// $this->add_control(
+				// 	'heading2',
+				// 	[
+				// 		'type' => \Elementor\Controls_Manager::HEADING,
+				// 		'label' => esc_html__( 'Slide 2', 'trx_addons' ),
+				// 		'separator' => 'before',
+				// 		'condition' => [
+				// 			'type' => ['default', 'modern']
+				// 		]
+				// 	]
+				// );
+
+				$this->add_control(
+					'slide2_title',
+					[
+						'label' => __( 'Title', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::TEXT,
+						'default' => '',
+						'condition' => [
+							'type' => ['default', 'modern']
+						]
+					]
+				);
+
+				$this->add_control(
+					'slide2_type',
+					[
+						'label' => __("Content type", 'trx_addons'),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::SELECT,
+						'options' => trx_addons_get_list_content_types( true ),
+						'default' => 'section',
+						'condition' => [
+							'type' => ['default', 'modern']
+						]
+					]
+				);
+
+				$this->add_control(
+					'slide2_content',
+					[
+						'label' => __( 'Content', 'trx_addons' ),
+						'type' => \Elementor\Controls_Manager::WYSIWYG,
+						//'separator' => 'none',
+						'default' => '',
+						'condition' => [
+							'type' => ['default', 'modern'],
+							'slide2_type' => 'content'
+						]
+					]
+				);
+
+				$this->add_control(
+					'slide2_section',
+					[
+						'label' => __( 'Section ID', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::TEXT,
+						'default' => '',
+						'condition' => [
+							'type' => ['default', 'modern'],
+							'slide2_type' => 'section'
+						]
+					]
+				);
+
+				$this->add_control(
+					'slide2_layout',
+					[
+						'label' => __("Custom Layout", 'trx_addons'),
+						'label_block' => false,
+						'description' => wp_kses( __("Select any previously created layout to insert to this page", 'trx_addons')
+														. '<br>'
+														. sprintf('<a href="%1$s" class="trx_addons_post_editor' . (intval($layout)==0 ? ' trx_addons_hidden' : '').'" target="_blank">%2$s</a>',
+																	admin_url( sprintf( "post.php?post=%d&amp;action=elementor", $layout ) ),
+																	__("Open selected layout in a new tab to edit", 'trx_addons')
+																),
+													'trx_addons_kses_content'
+													),
+						'type' => \Elementor\Controls_Manager::SELECT,
+						'options' => $layouts,
+						'default' => 0,
+						'condition' => [
+							'type' => ['default', 'modern'],
+							'slide2_type' => 'layout'
+						]
+					]
+				);
+
+				$this->add_control(
+					'slide2_template',
+					[
+						'label' => __("Elementor's Template", 'trx_addons'),
+						'label_block' => false,
+						'description' => wp_kses( __("Select any previously created template to insert to this page", 'trx_addons')
+														. '<br>'
+														. sprintf('<a href="%1$s" class="trx_addons_post_editor' . (intval($layout)==0 ? ' trx_addons_hidden' : '').'" target="_blank">%2$s</a>',
+																	admin_url( sprintf( "post.php?post=%d&amp;action=elementor", $layout ) ),
+																	__("Open selected template in a new tab to edit", 'trx_addons')
+																),
+													'trx_addons_kses_content'
+													),
+						'type' => \Elementor\Controls_Manager::SELECT,
+						'options' => $templates,
+						'default' => 0,
+						'condition' => [
+							'type' => ['default', 'modern'],
+							'slide2_type' => 'template'
+						]
+					]
+				);
+
+				$this->end_controls_section();
+
+				if ( apply_filters( 'trx_addons_filter_add_title_param', true, $this->get_name() ) ) {
+					$this->add_title_param();
+				}
+			}
+
+			/*-----------------------------------------------------------------------------------*/
+			/*	STYLE TAB
+			/*-----------------------------------------------------------------------------------*/
+
+			protected function register_style_controls() {
+
+				$this->start_controls_section(
+					'section_sc_switcher_style',
+					[
+						'label' => esc_html__( 'Switcher', 'trx_addons' ),
+						'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+					]
+				);
+
+				// Style for Default, Modern
+				//----------------------------------------------
+				$this->add_control(
+					'switcher_bg_color',
+					[
+						'label' => __( 'Switcher Background', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'condition' => [
+							'type' => ['default', 'modern']
+						],
+						'selectors' => [
+							'{{WRAPPER}} .sc_switcher_controls_toggle' => 'background-color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Box_Shadow::get_type(),
+					[
+						'name'     => 'switcher_box_shadow',
+						'selector' => '{{WRAPPER}} .sc_switcher_controls_toggle',
+						'condition' => [
+							'type' => ['default', 'modern']
+						],
+					]
+				);
+
+				// Slide 1 style for Default, Modern
+				$this->add_control(
+					'sc_switcher_style_heading1',
+					[
+						'type' => \Elementor\Controls_Manager::HEADING,
+						'label' => esc_html__( 'Slide 1', 'trx_addons' ),
+						'separator' => 'before',
+						'condition' => [
+							'type' => ['default', 'modern']
+						]
+					]
+				);
+
+				$this->add_control(
+					'slide1_title_color',
+					[
+						'label' => __( 'Title Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'condition' => [
+							'type' => ['default', 'modern']
+						],
+						'selectors' => [
+							'{{WRAPPER}} .sc_switcher:not(.sc_switcher_toggle_on) .sc_switcher_controls_section1 .sc_switcher_controls_section_title' => 'color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_control(
+					'slide1_active_color',
+					[
+						'label' => __( 'Active Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'condition' => [
+							'type' => ['default', 'modern']
+						],
+						'selectors' => [
+							'{{WRAPPER}} .sc_switcher_toggle_on .sc_switcher_controls_section1 .sc_switcher_controls_section_title' => 'color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_control(
+					'slide1_switcher_color',
+					[
+						'label' => __( 'Switcher Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'condition' => [
+							'type' => ['default', 'modern']
+						],
+						'selectors' => [
+							'{{WRAPPER}} .sc_switcher_controls_toggle_on .sc_switcher_controls_toggle_button' => 'background-color: {{VALUE}};',
+						],
+					]
+				);
+
+				// Slide 2 style for Default, Modern
+				$this->add_control(
+					'sc_switcher_style_heading2',
+					[
+						'type' => \Elementor\Controls_Manager::HEADING,
+						'label' => esc_html__( 'Slide 2', 'trx_addons' ),
+						'separator' => 'before',
+						'condition' => [
+							'type' => ['default', 'modern']
+						]
+					]
+				);
+
+				$this->add_control(
+					'slide2_title_color',
+					[
+						'label' => __( 'Title Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'condition' => [
+							'type' => ['default', 'modern']
+						],
+						'selectors' => [
+							'{{WRAPPER}} .sc_switcher_toggle_on .sc_switcher_controls_section2 .sc_switcher_controls_section_title' => 'color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_control(
+					'slide2_active_color',
+					[
+						'label' => __( 'Active Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'condition' => [
+							'type' => ['default', 'modern']
+						],
+						'selectors' => [
+							'{{WRAPPER}} .sc_switcher:not(.sc_switcher_toggle_on) .sc_switcher_controls_section2 .sc_switcher_controls_section_title' => 'color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_control(
+					'slide2_switcher_color',
+					[
+						'label' => __( 'Switcher Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'condition' => [
+							'type' => ['default', 'modern']
+						],
+						'selectors' => [
+							'{{WRAPPER}} .sc_switcher_controls_toggle:not(.sc_switcher_controls_toggle_on) .sc_switcher_controls_toggle_button' => 'background-color: {{VALUE}};',
+						],
+					]
+				);
+
+				// Style for Tabs
+				//----------------------------------------------
+
+				$this->start_controls_tabs( 'tabs_button_style' );
+
+				$this->start_controls_tab(
+					'switcher_tab_normal',
+					[
+						'label'      => __( 'Normal', 'trx_addons' ),
+						'condition'  => [
+							'type' => 'tabs',
+						],
+					]
+				);
+
+				$this->add_control(
+					'switcher_tab_color',
+					[
+						'label' => __( 'Tab Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'condition' => [
+							'type' => 'tabs'
+						],
+						'selectors' => [
+							'{{WRAPPER}} .sc_switcher_tab' => 'color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_control(
+					'switcher_tab_bg_color',
+					[
+						'label' => __( 'Background Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'condition' => [
+							'type' => 'tabs'
+						],
+						'selectors' => [
+							'{{WRAPPER}} .sc_switcher_tab' => 'background-color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Border::get_type(),
+					[
+						'name'     => 'switcher_tab_border',
+						'label'    => esc_html__( 'Border', 'trx_addons' ),
+						'selector' => '{{WRAPPER}} .sc_switcher_tab',
+						'condition' => [
+							'type' => 'tabs'
+						],
+					]
+				);
+				$this->add_responsive_control(
+					'switcher_tab_border_radius',
+					[
+						'label'      => esc_html__( 'Border Radius', 'trx_addons' ),
+						'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', 'em', '%' ],
+						'selectors'  => [
+							'{{WRAPPER}} .sc_switcher_tab' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						],
+					]
+				);
+
+				$this->add_responsive_control(
+					'switcher_tab_padding',
+					[
+						'label'      => esc_html__( 'Padding', 'trx_addons' ),
+						'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%', 'em', 'rem', 'vw' ],
+						'selectors'  => [
+							'{{WRAPPER}} .sc_switcher_tab' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						],
+					]
+				);
+
+				$this->add_group_control(
+					\Elementor\Group_Control_Box_Shadow::get_type(),
+					[
+						'name'     => 'switcher_tab_box_shadow',
+						'selector' => '{{WRAPPER}} .sc_switcher_tab',
+						'condition' => [
+							'type' => 'tabs'
+						],
+					]
+				);
+
+				$this->add_responsive_control(
+					'switcher_tab_space',
+					[
+						'label'                 => __( 'Space between tabs', 'trx_addons' ),
+						'type'                  => \Elementor\Controls_Manager::SLIDER,
+						'size_units'            => [ 'px', 'em', 'rem', 'vw' ],
+						'range'                 => [
+							'px' => [
+								'min' => 0,
+								'max' => 100,
+							],
+							'em' => [
+								'min' => 0,
+								'max' => 10,
+								'step' => 0.1,
+							],
+							'rem' => [
+								'min' => 0,
+								'max' => 10,
+								'step' => 0.1,
+							],
+							'vw' => [
+								'min' => 0,
+								'max' => 100,
+								'step' => 0.1,
+							],
+						],
+						'selectors'             => [
+							'{{WRAPPER}} .sc_switcher_tab + .sc_switcher_tab' => 'margin-left: {{SIZE}}{{UNIT}};',
+						],
+						'condition' => [
+							'type' => 'tabs'
+						],
+					]
+				);
+		
+				$this->end_controls_tab();
+
+				$this->start_controls_tab(
+					'switcher_tab_hover',
+					[
+						'label'      => __( 'Hover', 'trx_addons' ),
+						'condition'  => [
+							'type' => 'tabs',
+						],
+					]
+				);
+
+				$this->add_control(
+					'switcher_tab_hover_color',
+					[
+						'label' => __( 'Tab Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'condition' => [
+							'type' => 'tabs'
+						],
+						'selectors' => [
+							'{{WRAPPER}} .sc_switcher_tab:hover' => 'color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_control(
+					'switcher_tab_hover_bg_color',
+					[
+						'label' => __( 'Background Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'condition' => [
+							'type' => 'tabs'
+						],
+						'selectors' => [
+							'{{WRAPPER}} .sc_switcher_tab:hover' => 'background-color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_control(
+					'switcher_tab_hover_bd_color',
+					[
+						'label' => __( 'Border Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+//						'global' => array(
+//							'active' => false,
+//						),
+						'condition' => [
+							'type' => 'tabs'
+						],
+						'selectors' => [
+							'{{WRAPPER}} .sc_switcher_tab:hover' => 'border-color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->end_controls_tab();
+
+				$this->start_controls_tab(
+					'switcher_tab_active',
+					[
+						'label'      => __( 'Active', 'trx_addons' ),
+						'condition'  => [
+							'type' => 'tabs',
+						],
+					]
+				);
+
+				$this->add_control(
+					'switcher_tab_active_color',
+					[
+						'label' => __( 'Tab Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+	//						'global' => array(
+	//							'active' => false,
+	//						),
+						'condition' => [
+							'type' => 'tabs'
+						],
+						'selectors' => [
+							'{{WRAPPER}} .sc_switcher_tab_active' => 'color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_control(
+					'switcher_tab_active_bg_color',
+					[
+						'label' => __( 'Background Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+	//						'global' => array(
+	//							'active' => false,
+	//						),
+						'condition' => [
+							'type' => 'tabs'
+						],
+						'selectors' => [
+							'{{WRAPPER}} .sc_switcher_tab_active' => 'background-color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->add_control(
+					'switcher_tab_active_bd_color',
+					[
+						'label' => __( 'Border Color', 'trx_addons' ),
+						'label_block' => false,
+						'type' => \Elementor\Controls_Manager::COLOR,
+						'default' => '',
+	//						'global' => array(
+	//							'active' => false,
+	//						),
+						'condition' => [
+							'type' => 'tabs'
+						],
+						'selectors' => [
+							'{{WRAPPER}} .sc_switcher_tab_active' => 'border-color: {{VALUE}};',
+						],
+					]
+				);
+
+				$this->end_controls_tab();
+
+				$this->end_controls_tabs();
+		
+				$this->end_controls_section();
 			}
 
 		}

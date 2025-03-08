@@ -140,7 +140,7 @@ if ( !function_exists( 'trx_addons_sc_skills_split_by_digits' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_skills' ) ) {
 	function trx_addons_sc_skills($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_skills', $atts, trx_addons_sc_common_atts('id,title', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_skills', $atts, trx_addons_sc_common_atts( 'trx_sc_skills', 'id,title', array(
 			// Individual params
 			"type" => "counter",
 			"style" => "counter",
@@ -160,8 +160,7 @@ if ( !function_exists( 'trx_addons_sc_skills' ) ) {
 			"columns_tablet" => "",
 			"columns_mobile" => "",
 			"values" => "",
-			))
-		);
+		) ) );
 
 		if (function_exists('vc_param_group_parse_atts') && !is_array($atts['values'])) {
 			$atts['values'] = (array) vc_param_group_parse_atts($atts['values']);

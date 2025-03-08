@@ -404,7 +404,8 @@ if ( ! function_exists( 'trx_addons_cpt_cars_add_taxonomy_to_gutenberg' ) ) {
 											TRX_ADDONS_CPT_CARS_TAXONOMY_FEATURES,
 											TRX_ADDONS_CPT_CARS_TAXONOMY_LABELS,
 											TRX_ADDONS_CPT_CARS_TAXONOMY_MAKER,
-											TRX_ADDONS_CPT_CARS_TAXONOMY_MODEL
+											TRX_ADDONS_CPT_CARS_TAXONOMY_MODEL,
+											TRX_ADDONS_CPT_CARS_TAXONOMY_CITY
 											)
 									);
 	}
@@ -759,6 +760,7 @@ if ( !function_exists( 'trx_addons_is_cars_page' ) ) {
 						|| is_tax(TRX_ADDONS_CPT_CARS_TAXONOMY_LABELS)
 						|| is_tax(TRX_ADDONS_CPT_CARS_TAXONOMY_MAKER)
 						|| is_tax(TRX_ADDONS_CPT_CARS_TAXONOMY_MODEL)
+						|| is_tax(TRX_ADDONS_CPT_CARS_TAXONOMY_CITY)
 						);
 	}
 }

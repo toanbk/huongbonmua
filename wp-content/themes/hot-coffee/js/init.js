@@ -293,7 +293,7 @@ jQuery( document ).ready( function() {
 		}
 		var selector = hot_coffee_apply_filters(
 			'hot_coffee_filter_select_container_selector',
-			'select:not(.esg-sorting-select):not([class*="trx_addons_attrib_"])'	//:not([size])
+			'select:not(.esg-sorting-select):not([class*="trx_addons_attrib_"]):not(#rating)'	//:not([size])
 		);
 		if ( selector ) {
 			cont.find( selector ).each( function() {
@@ -461,6 +461,16 @@ jQuery( document ).ready( function() {
 									)
 								)
 						) {
+							// Fix for iOS
+							if ( hot_coffee_browser_is_ios( true ) ) {
+								// Video on the single car and property pages should be preloaded to show the poster
+								if ( $self.parents( '.cars_page_video_wrap,.properties_page_video_wrap' ).length ) {
+									$self.attr( {
+										'preload': 'auto'
+									} );
+								}
+							}
+
 							var media_cont = $self.parents('.post_video').eq(0);
 							if ( media_cont.length === 0 ) {
 								media_cont = $self.parents('.video_frame').eq(0);
@@ -476,8 +486,8 @@ jQuery( document ).ready( function() {
 								cont_h = media_cont.length > 0 ? media_cont.height() : -1,
 								settings = {
 									enableAutosize: true,
-									videoWidth:     cont_w,   // if set, overrides <video width>
-									videoHeight:    cont_h,   // if set, overrides <video height>
+									videoWidth:     '100%', //cont_w,   // if set, overrides <video width>
+									videoHeight:    '100%', //cont_h,   // if set, overrides <video height>
 									audioWidth:     '100%',   // width of audio player
 									audioHeight:    40,	      // height of audio player
 									success: function(mejs) {

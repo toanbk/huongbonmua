@@ -298,6 +298,9 @@ if ( ! function_exists( 'trx_addons_elementor_add_body_class' ) ) {
 	function trx_addons_elementor_add_body_class( $classes ) {
 		if ( defined( 'ELEMENTOR_VERSION' ) && version_compare( ELEMENTOR_VERSION, '3.16.0', '>=' ) && trx_addons_elm_is_experiment_active( 'container' ) ) {
 			$classes[] = 'elementor-use-container';
+			if ( trx_addons_get_setting( 'add_gap_to_elementor_containers' ) ) {
+				$classes[] = 'elementor-use-container-with-paddings';
+			}
 		}
 		return $classes;
 	}

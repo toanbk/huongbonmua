@@ -475,7 +475,7 @@ if (!function_exists('trx_addons_sc_blogger_add_in_elementor')) {
 						'default' => 'inherit',
 					]
 				);
-				$meta_parts = apply_filters('trx_addons_filter_get_list_meta_parts', array());
+				$meta_parts = trx_addons_get_list_meta_parts();
 				$this->add_control(
 					'meta_parts',
 					[
@@ -666,7 +666,10 @@ if (!function_exists('trx_addons_sc_blogger_add_in_elementor')) {
 				$this->end_controls_section();
 
 				$this->add_slider_param();
-				$this->add_title_param();
+
+				if ( apply_filters( 'trx_addons_filter_add_title_param', true, $this->get_name() ) ) {
+					$this->add_title_param();
+				}
 			}
 		}
 		

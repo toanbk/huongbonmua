@@ -426,8 +426,9 @@ if ( !function_exists( 'trx_addons_cpt_matches_admin_clear_cache_rounds' ) ) {
 			//$competition = get_post_meta($post_id, 'trx_addons_competition', true);
 			$post = get_post($post_id);
 			$competition = $post->post_parent;
-			if ( (int) $competition == 0 ) return;
-			set_transient("trx_addons_rounds_filter_".trim($competition), '', 24*60*60);
+			if ( (int) $competition > 0 ) {
+				set_transient("trx_addons_rounds_filter_".trim($competition), '', 24*60*60);
+			}
 		}
 		return $options;
 	}

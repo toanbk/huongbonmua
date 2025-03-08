@@ -127,6 +127,33 @@ if (!function_exists('trx_addons_cpt_portfolio_init')) {
 					)
 				)
 			),
+			"button_link" => array(
+				"title" => esc_html__("Button link",  'trx_addons'),
+				"desc" => wp_kses_data( __("Adds a button under the Details area to make an order with this item (or to book this item)", 'trx_addons') ),
+				"std" => "",
+				"type" => "text"
+			),
+			"button_link_text" => array(
+				"title" => esc_html__("Button text",  'trx_addons'),
+				"desc" => wp_kses_data( __("A caption for the button", 'trx_addons') ),
+				"std" => "",
+				"type" => "text"
+			),
+			"button_link_style" => array(
+				"title" => esc_html__("Button style",  'trx_addons'),
+				"desc" => wp_kses_data( __("A style of the button", 'trx_addons') ),
+				"std" => "bordered",
+				"options" => apply_filters('trx_addons_sc_type', trx_addons_components_get_allowed_layouts('sc', 'button'), 'trx_sc_button'),
+				"type" => "select"
+			),
+			"button_link_icon" => array(
+				"title" => esc_html__("Button icon",  'trx_addons'),
+				"desc" => wp_kses_data( __("An icon for the button", 'trx_addons') ),
+				"std" => "",
+				"options" => array(),
+				"style" => trx_addons_get_setting('icons_type'),
+				"type" => "icons"
+			),
 
 			"gallery_section" => array(
 				"title" => esc_html__('Gallery', 'trx_addons'),

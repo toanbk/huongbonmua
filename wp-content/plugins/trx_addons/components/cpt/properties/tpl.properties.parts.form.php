@@ -11,7 +11,7 @@ $trx_addons_meta = $trx_addons_args['meta'];
 $trx_addons_agent = $trx_addons_args['agent'];
 
 $form_style = $trx_addons_args['style'] = empty($trx_addons_args['style']) || trx_addons_is_inherit($trx_addons_args['style']) 
-					? trx_addons_get_option('input_hover') 
+					? trx_addons_get_option( 'input_hover', 'default' ) 
 					: $trx_addons_args['style'];
 
 ?><div class="sc_form properties_page_agent_form">

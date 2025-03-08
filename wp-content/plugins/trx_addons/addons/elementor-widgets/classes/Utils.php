@@ -384,6 +384,26 @@ class Utils extends Base {
 	}
 
 	/**
+	 * Formats a date meta value according to the specified format.
+	 *
+	 * @param mixed  $date    The date value to format.
+	 * @param string $format  The format to use for formatting the date. Can be 'custom' or a predefined format.
+	 * @param string $custom  The custom format to use if $format is set to 'custom'.
+	 *
+	 * @return string  The formatted date value.
+	 */
+	public static function format_date( $date, $format, $custom ) {
+		if ( 'custom' === $format ) {
+			$date_format = $custom;
+		} else if ( 'default' === $format ) {
+			$date_format = get_option( 'date_format' );
+		} else {
+			$date_format = $format;
+		}
+		return wp_kses_post( date_i18n( $date_format, $date ) );
+	}
+
+	/**
 	 * Check if the post type is tribe events.
 	 *
 	 * @return bool  true if the post type is tribe events, false otherwise.

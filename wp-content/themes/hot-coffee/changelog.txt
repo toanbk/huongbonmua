@@ -1,3 +1,31 @@
+Version: 2.15.0
+    Added:
+        - AI Helper: option to choose the API version for Open AI Assistants
+        - AI Helper: parameter 'output_tokens' for text models
+        - Styling parameters for divider in Images Compare shortcode
+        - Roles and capabilities reset when switching to another skin
+        - Customization options for the submenus in the Menu Editor
+    Fixed:
+        - CSS\PHP fixes (shortcodes and layouts)
+        - AI Helper Chat: title styles
+        - Compatibility with Elementor plugin: widget "Spacer" when its "Size" equals 0 or is not defined
+        - Compatibility with Elementor plugin: priorities for basic classes registration in action 'elementor/init'
+        - Compatibility with Elementor plugin: removing duplicate attributes loading="xxx" and decoding="xxx" for tag <img> with Image Effects
+        - Compatibility with Elementor plugin: elementor-editor.js script for post search
+        - Compatibility with Elementor plugin: Global Colors Preview styles
+        - Compatibility with WPML plugin: icl_get_languages() replaced with filter "wpml_active_languages"
+        - Compatibility with WPML plugin: added wpml-config.xml file
+        - Compatibility with The Events Calendar plugin: category name, tags and breadcrumbs on the listing pages
+        - Dark/Light Switcher script
+        - Animation for dropdown menus
+        - Autoscroll for Swiper Slider v8
+        - Script for the video inserted as a link in the popup
+    Updated:
+        - QW Extension addon (to version 1.5.0)
+        - "Background Text" (marquee) now uses the heading font family by default
+    Removed:
+        - WP GDPR Compliance plugin (Cookie Information | Free WP GDPR Consent Plugin)
+
 Version: 2.14.0
     Added:
         - AI Helper Image Generator & Media Library: support for the new image generation model DALL-E-3

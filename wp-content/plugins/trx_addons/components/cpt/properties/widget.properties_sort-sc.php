@@ -19,13 +19,12 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_widget_properties_sort' ) ) {
 	function trx_addons_sc_widget_properties_sort($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_widget_properties_sort', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_widget_properties_sort', $atts, trx_addons_sc_common_atts( 'trx_widget_properties_sort', 'id', array(
 			// Individual params
 			"title" => "",
 			"orderby" => "date",
 			"order" => "desc",
-			))
-		);
+		) ) );
 		extract($atts);
 		$type = 'trx_addons_widget_properties_sort';
 		$output = '';

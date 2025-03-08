@@ -23,7 +23,7 @@ if ( !function_exists( 'trx_addons_sc_dishes' ) ) {
 		// Exit to prevent recursion
 		if (trx_addons_sc_stack_check('trx_sc_dishes')) return '';
 
-		$atts = trx_addons_sc_prepare_atts('trx_sc_dishes', $atts, trx_addons_sc_common_atts('id,title,slider,query', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_dishes', $atts, trx_addons_sc_common_atts( 'trx_sc_dishes', 'id,title,slider,query', array(
 			// Individual params
 			"type" => "default",
 			"no_margin" => 0,
@@ -34,8 +34,7 @@ if ( !function_exists( 'trx_addons_sc_dishes' ) ) {
 			"pagination" => "none",
 			"page" => 1,
 			'posts_exclude' => '',	// comma-separated list of IDs to exclude from output
-			))
-		);
+		) ) );
 
 		if (!empty($atts['ids'])) {
 			if ( is_array( $atts['ids'] ) ) {

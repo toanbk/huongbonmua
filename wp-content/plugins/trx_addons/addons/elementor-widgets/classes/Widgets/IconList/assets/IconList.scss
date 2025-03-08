@@ -1,3 +1,8 @@
+@import "../../../../../../css/_mixins.scss";
+@import "../../../../../../css/_trx_addons.vars.scss";
+@import "../../../../../../css/_trx_addons.colors.scss";
+
+
 .trx-addons-list-container {
 
 	.trx-addons-icon-list-icon {
@@ -15,6 +20,12 @@
 	flex-wrap: wrap;
 }
 
-.trx-addons-list-items.trx-addons-inline-items li:not(:last-child) {
-	margin-right: 8px;
+.trx-addons-list-items.trx-addons-inline-items {
+	gap: 8px;
+}
+
+.trx-addons-icon-list-image {
+	@include inline-flex;
+	@include flex-justify-content(center);
+	@include flex-align-items(center);
 }

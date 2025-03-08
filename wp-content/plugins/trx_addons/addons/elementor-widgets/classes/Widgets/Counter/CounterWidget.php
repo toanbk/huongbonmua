@@ -147,9 +147,9 @@ class CounterWidget extends BaseWidget {
 				'label'     => __( 'Separator', 'trx_addons' ),
 				'type'      => Controls_Manager::SELECT,
 				'options'   => [
-					''  => 'Default',
-					'.' => 'Dot',
-					' ' => 'Space',
+					''  => __( 'Comma', 'trx_addons' ),
+					'.' => __( 'Dot', 'trx_addons' ),
+					' ' => __( 'Space', 'trx_addons' ),
 				],
 				'condition' => [
 					'thousand_separator' => 'yes',
@@ -457,7 +457,7 @@ class CounterWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px', 'em' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'default'               => [
 					'unit' => 'px',
 					'size' => 40,
@@ -483,7 +483,7 @@ class CounterWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'default'               => [
 					'unit' => 'px',
 					'size' => 80,
@@ -492,7 +492,8 @@ class CounterWidget extends BaseWidget {
 					'trx_addons_icon_type'  => 'image',
 				],
 				'selectors'             => [
-					'{{WRAPPER}} .trx-addons-counter-icon img' => 'width: {{SIZE}}{{UNIT}};',
+					// '{{WRAPPER}} .trx-addons-counter-icon img' => 'width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-counter-icon' => 'width: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -538,7 +539,7 @@ class CounterWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Border Radius', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%', 'em' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-counter-icon' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -553,7 +554,7 @@ class CounterWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'placeholder'           => [
 					'top'      => '',
 					'right'    => '',
@@ -574,7 +575,7 @@ class CounterWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Margin', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'placeholder'           => [
 					'top'      => '',
 					'right'    => '',
@@ -640,7 +641,7 @@ class CounterWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-counter-icon-divider' => 'border-bottom-width: {{SIZE}}{{UNIT}}',
 				],
@@ -671,7 +672,7 @@ class CounterWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-counter-icon-divider' => 'width: {{SIZE}}{{UNIT}}',
 				],
@@ -715,7 +716,7 @@ class CounterWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-counter-icon-divider-wrap' => 'margin-bottom: {{SIZE}}{{UNIT}}',
 				],
@@ -773,7 +774,7 @@ class CounterWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Margin', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'placeholder'           => [
 					'top'      => '',
 					'right'    => '',
@@ -846,7 +847,7 @@ class CounterWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-counter-num-divider' => 'border-bottom-width: {{SIZE}}{{UNIT}}',
 				],
@@ -882,7 +883,7 @@ class CounterWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-counter-num-divider' => 'width: {{SIZE}}{{UNIT}}',
 				],
@@ -936,7 +937,7 @@ class CounterWidget extends BaseWidget {
 						'step'  => 1,
 					],
 				],
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'             => [
 					'{{WRAPPER}} .trx-addons-counter-num-divider-wrap' => 'margin-bottom: {{SIZE}}{{UNIT}}',
 				],
@@ -1005,7 +1006,7 @@ class CounterWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Margin', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'placeholder'           => [
 					'top'      => '',
 					'right'    => '',
@@ -1071,7 +1072,7 @@ class CounterWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Margin', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', 'em', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'placeholder'           => [
 					'top'      => '',
 					'right'    => '',
@@ -1162,6 +1163,25 @@ class CounterWidget extends BaseWidget {
 			]
 		);
 
+		$this->add_responsive_control(
+			'counter_title_spacer',
+			[
+				'label'                 => __( 'Spacer', 'trx_addons' ),
+				'type'                  => Controls_Manager::SLIDER,
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
+				'default'               => [
+					'unit' => 'px',
+					'size' => '',
+				],
+				'selectors'             => [
+					'{{WRAPPER}} .trx-addons-counter-title' => 'margin-bottom: {{SIZE}}{{UNIT}}',
+				],
+				'condition'             => [
+					'counter_title!'  => '',
+				],
+			]
+		);
+
 		$this->add_control(
 			'subtitle_style_heading',
 			[
@@ -1212,7 +1232,7 @@ class CounterWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Margin', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'placeholder'           => [
 					'top'      => '',
 					'right'    => '',
@@ -1234,7 +1254,7 @@ class CounterWidget extends BaseWidget {
 			[
 				'label'                 => __( 'Padding', 'trx_addons' ),
 				'type'                  => Controls_Manager::DIMENSIONS,
-				'size_units'            => [ 'px', '%' ],
+				'size_units'            => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'placeholder'           => [
 					'top'      => '',
 					'right'    => '',
@@ -1253,8 +1273,13 @@ class CounterWidget extends BaseWidget {
 		$this->end_controls_section();
 	}
 
+	
+	/*-----------------------------------------------------------------------------------*/
+	/*	RENDER
+	/*-----------------------------------------------------------------------------------*/
+
 	/**
-	 * Render counter widget output on the frontend.
+	 * Render a widget output on the frontend.
 	 *
 	 * Written in PHP and used to generate the final HTML.
 	 *
@@ -1286,32 +1311,23 @@ class CounterWidget extends BaseWidget {
 		]);
 		?>
 		<div class="trx-addons-counter-container">
-			<div <?php echo wp_kses_post( $this->get_render_attribute_string( 'counter' ) ); ?>>
-				<?php if ( 'layout-1' === $settings['counter_layout'] || 'layout-5' === $settings['counter_layout'] || 'layout-6' === $settings['counter_layout'] ) { ?>
-					<?php
-						// Counter Icon
-						$this->render_icon();
-					?>
+			<div <?php echo wp_kses_post( $this->get_render_attribute_string( 'counter' ) ); ?>><?php
+				if ( 'layout-1' === $settings['counter_layout'] || 'layout-5' === $settings['counter_layout'] || 'layout-6' === $settings['counter_layout'] ) {
+					// Counter Icon
+					$this->render_icon();
+					?><div class="trx-addons-counter-number-title-wrap"><?php
+						// Counter Number
+						$this->render_counter_number();
 
-					<div class="trx-addons-counter-number-title-wrap">
-						<?php
-							// Counter Number
-							$this->render_counter_number();
-						?>
+						if ( 'yes' === $settings['num_divider'] ) {
+							?><div class="trx-addons-counter-num-divider-wrap"><span class="trx-addons-counter-num-divider"></span></div><?php
+						}
+						
+						// Counter Title
+						$this->render_counter_title();
+					?></div><?php
 
-						<?php if ( 'yes' === $settings['num_divider'] ) { ?>
-							<div class="trx-addons-counter-num-divider-wrap">
-								<span class="trx-addons-counter-num-divider"></span>
-							</div>
-						<?php } ?>
-
-						<?php
-							// Counter Title
-							$this->render_counter_title();
-						?>
-					</div>
-				<?php } elseif ( 'layout-2' === $settings['counter_layout'] ) { ?>
-					<?php
+				} else if ( 'layout-2' === $settings['counter_layout'] ) {
 					// Counter Icon
 					$this->render_icon();
 
@@ -1321,106 +1337,87 @@ class CounterWidget extends BaseWidget {
 					// Counter Number
 					$this->render_counter_number();
 
-					if ( 'yes' === $settings['num_divider'] ) { ?>
-						<div class="trx-addons-counter-num-divider-wrap">
-							<span class="trx-addons-counter-num-divider"></span>
-						</div>
-						<?php
+					if ( 'yes' === $settings['num_divider'] ) {
+						?><div class="trx-addons-counter-num-divider-wrap"><span class="trx-addons-counter-num-divider"></span></div><?php
 					}
-				} elseif ( 'layout-3' === $settings['counter_layout'] ) {
+
+				} else if ( 'layout-3' === $settings['counter_layout'] ) {
 
 					// Counter Number
 					$this->render_counter_number();
-					?>
-
-					<?php if ( 'yes' === $settings['num_divider'] ) { ?>
-						<div class="trx-addons-counter-num-divider-wrap">
-							<span class="trx-addons-counter-num-divider"></span>
-						</div>
-					<?php } ?>
-
-					<div class="trx-addons-icon-title-wrap">
-						<?php
+					
+					if ( 'yes' === $settings['num_divider'] ) {
+						?><div class="trx-addons-counter-num-divider-wrap"><span class="trx-addons-counter-num-divider"></span></div><?php
+					}
+					
+					?><div class="trx-addons-icon-title-wrap"><?php
 						// Counter Icon
 						$this->render_icon();
 
 						// Counter Title
 						$this->render_counter_title();
-						?>
-					</div>
-				<?php } elseif ( 'layout-4' === $settings['counter_layout'] ) { ?>
-					<div class="trx-addons-icon-title-wrap">
-						<?php
-							// Counter Icon
-							$this->render_icon();
+					?></div><?php
 
-							// Counter Title
-							$this->render_counter_title();
-						?>
-					</div>
+				} else if ( 'layout-4' === $settings['counter_layout'] ) {
+					?><div class="trx-addons-icon-title-wrap"><?php
+						// Counter Icon
+						$this->render_icon();
 
-					<?php
+						// Counter Title
+						$this->render_counter_title();
+					?></div><?php
+					
+					// Counter Number
+					$this->render_counter_number();
+					
+					if ( 'yes' === $settings['num_divider'] ) {
+						?><div class="trx-addons-counter-num-divider-wrap"><span class="trx-addons-counter-num-divider"></span></div><?php
+					}
+
+				} else if ( 'layout-7' === $settings['counter_layout'] || 'layout-8' === $settings['counter_layout'] ) {
+
+					// Counter Number
+					$this->render_counter_number();
+
+					?><div class="trx-addons-icon-title-wrap"><?php
+						// Counter Icon
+						$this->render_icon();
+
+						// Counter Title
+						$this->render_counter_title();
+					?></div><?php
+
+				} else if ( 'layout-9' === $settings['counter_layout'] ) {
+					?><div class="trx-addons-icon-number-wrap"><?php
+						// Counter Icon
+						$this->render_icon();
+
 						// Counter Number
 						$this->render_counter_number();
-					?>
+					?></div><?php
+					
+					// Counter Title
+					$this->render_counter_title();
 
-					<?php if ( 'yes' === $settings['num_divider'] ) { ?>
-						<div class="trx-addons-counter-num-divider-wrap">
-							<span class="trx-addons-counter-num-divider"></span>
-						</div>
-					<?php }
-				} elseif ( 'layout-7' === $settings['counter_layout'] || 'layout-8' === $settings['counter_layout'] ) {
+				} else if ( 'layout-10' === $settings['counter_layout'] ) {
+					?><div class="trx-addons-icon-number-wrap"><?php
+						// Counter Number
+						$this->render_counter_number();
 
-					// Counter Number
-					$this->render_counter_number();
-					?>
-					<div class="trx-addons-icon-title-wrap">
-					<?php
 						// Counter Icon
 						$this->render_icon();
-
-						// Counter Title
-						$this->render_counter_title();
-					?>
-					</div>
-				<?php } elseif ( 'layout-9' === $settings['counter_layout'] ) {
-					?>
-						<div class="trx-addons-icon-number-wrap">
-							<?php
-								// Counter Icon
-								$this->render_icon();
-
-								// Counter Number
-								$this->render_counter_number();
-							?>
-						</div>
-						<?php
-							// Counter Title
-							$this->render_counter_title();
-						?>
-				<?php } elseif ( 'layout-10' === $settings['counter_layout'] ) {
-					?>
-					<div class="trx-addons-icon-number-wrap">
-						<?php
-							// Counter Number
-							$this->render_counter_number();
-
-							// Counter Icon
-							$this->render_icon();
-						?>
-					</div>
-					<?php
-						// Counter Title
-						$this->render_counter_title();
-					?>
-				<?php } ?>
-			</div>
+					?></div><?php
+					
+					// Counter Title
+					$this->render_counter_title();
+				}
+			?></div>
 		</div>
 		<?php
 	}
 
 	/**
-	 * Render counter icon output on the frontend.
+	 * Render a counter icon output on the frontend.
 	 *
 	 * Written in PHP and used to generate the final HTML.
 	 *
@@ -1449,42 +1446,37 @@ class CounterWidget extends BaseWidget {
 		$migrated = isset( $settings['__fa4_migrated']['icon'] );
 		$is_new = ! isset( $settings['counter_icon'] ) && Icons_Manager::is_migration_allowed();
 
-		if ( 'icon' === $settings['trx_addons_icon_type'] ) { ?>
-			<span class="trx-addons-counter-icon-wrap">
-				<span class="trx-addons-counter-icon trx-addons-icon">
-					<?php
+		if ( 'icon' === $settings['trx_addons_icon_type'] ) {
+			?><div class="trx-addons-counter-icon-wrap">
+				<span class="trx-addons-counter-icon trx-addons-icon"><?php
 					if ( $is_new || $migrated ) {
 						Icons_Manager::render_icon( $settings['icon'], [ 'aria-hidden' => 'true' ] );
 					} elseif ( ! empty( $settings['counter_icon'] ) ) {
 						?><i <?php echo wp_kses_post( $this->get_render_attribute_string( 'i' ) ); ?>></i><?php
 					}
-					?>
-				</span>
-			</span>
-			<?php
+				?></span>
+			</div><?php
+
 		} elseif ( 'image' === $settings['trx_addons_icon_type'] ) {
 			$image = $settings['icon_image'];
-			if ( $image['url'] ) { ?>
-				<span class="trx-addons-counter-icon-wrap">
-					<span class="trx-addons-counter-icon trx-addons-counter-icon-img">
-						<?php echo wp_kses_post( Group_Control_Image_Size::get_attachment_image_html( $settings, 'image', 'icon_image' ) ); ?>
-					</span>
-				</span>
-			<?php }
+			if ( $image['url'] ) {
+				?><div class="trx-addons-counter-icon-wrap">
+					<span class="trx-addons-counter-icon trx-addons-counter-icon-img"><?php
+						echo wp_kses_post( Group_Control_Image_Size::get_attachment_image_html( $settings, 'image', 'icon_image' ) );
+					?></span>
+				</div><?php
+			}
 		}
 
 		if ( 'yes' === $settings['icon_divider'] ) {
-			if ( 'layout-1' === $settings['counter_layout'] || 'layout-2' === $settings['counter_layout'] ) { ?>
-				<div class="trx-addons-counter-icon-divider-wrap">
-					<span class="trx-addons-counter-icon-divider"></span>
-				</div>
-				<?php
+			if ( 'layout-1' === $settings['counter_layout'] || 'layout-2' === $settings['counter_layout'] ) {
+				?><div class="trx-addons-counter-icon-divider-wrap"><span class="trx-addons-counter-icon-divider"></span></div><?php
 			}
 		}
 	}
 
 	/**
-	 * Render counter number output on the frontend.
+	 * Render a counter number output on the frontend.
 	 *
 	 * Written in PHP and used to generate the final HTML.
 	 *
@@ -1492,32 +1484,26 @@ class CounterWidget extends BaseWidget {
 	 */
 	private function render_counter_number() {
 		$settings = $this->get_settings_for_display();
-		?>
-		<div class="trx-addons-counter-number-wrap">
-			<?php
+		?><div class="trx-addons-counter-number-wrap"><?php
 			if ( $settings['number_prefix'] ) {
-				?><span class="trx-addons-counter-number-prefix">
-					<?php echo esc_attr( $settings['number_prefix'] ); ?>
-				</span><?php
+				?><span class="trx-addons-counter-number-prefix"><?php
+					echo esc_attr( $settings['number_prefix'] );
+				?></span><?php
 			}
-			?><div <?php echo wp_kses_post( $this->get_render_attribute_string( 'counter-number' ) ); ?>>
-				<?php
-					$starting_number = ( $settings['starting_number'] ) ? $settings['starting_number'] : 0;
-					echo esc_attr( $starting_number );
-				?>
-			</div><?php
+			?><div <?php echo wp_kses_post( $this->get_render_attribute_string( 'counter-number' ) ); ?>><?php
+				$starting_number = ( $settings['starting_number'] ) ? $settings['starting_number'] : 0;
+				echo esc_attr( $starting_number );
+			?></div><?php
 			if ( $settings['number_suffix'] ) {
-				?><span class="trx-addons-counter-number-suffix">
-					<?php echo esc_attr( $settings['number_suffix'] ); ?>
-				</span><?php
+				?><span class="trx-addons-counter-number-suffix"><?php
+					echo esc_attr( $settings['number_suffix'] );
+				?></span><?php
 			}
-			?>
-		</div>
-		<?php
+		?></div><?php
 	}
 
 	/**
-	 * Render counter title output on the frontend.
+	 * Render a counter title output on the frontend.
 	 *
 	 * Written in PHP and used to generate the final HTML.
 	 *
@@ -1531,234 +1517,193 @@ class CounterWidget extends BaseWidget {
 			$this->add_render_attribute( 'counter_title', 'class', 'trx-addons-counter-title' );
 			$this->add_inline_editing_attributes( 'counter_subtitle', 'none' );
 			$this->add_render_attribute( 'counter_subtitle', 'class', 'trx-addons-counter-subtitle' );
-			?>
-			<div class="trx-addons-counter-title-wrap">
-				<?php
+			
+			?><div class="trx-addons-counter-title-wrap"><?php
 				if ( $settings['counter_title'] ) {
 					$title_tag = $settings['title_html_tag'];
-					?>
-					<<?php echo esc_html( $title_tag ); ?> <?php echo wp_kses_post( $this->get_render_attribute_string( 'counter_title' ) ); ?>>
-						<?php echo esc_attr( $settings['counter_title'] ); ?>
-					</<?php echo esc_html( $title_tag ); ?>>
-					<?php
+					?><<?php echo esc_html( $title_tag ); ?> <?php echo wp_kses_post( $this->get_render_attribute_string( 'counter_title' ) ); ?>><?php
+						echo esc_attr( $settings['counter_title'] );
+					?></<?php echo esc_html( $title_tag ); ?>><?php
 				}
 				if ( $settings['counter_subtitle'] ) {
 					$subtitle_tag = $settings['subtitle_html_tag'];
-					?>
-					<<?php echo esc_html( $subtitle_tag ); ?> <?php echo wp_kses_post( $this->get_render_attribute_string( 'counter_subtitle' ) ); ?>>
-						<?php echo esc_attr( $settings['counter_subtitle'] ); ?>
-					</<?php echo esc_html( $subtitle_tag ); ?>>
-					<?php
+					?><<?php echo esc_html( $subtitle_tag ); ?> <?php echo wp_kses_post( $this->get_render_attribute_string( 'counter_subtitle' ) ); ?>><?php
+						echo esc_attr( $settings['counter_subtitle'] );
+					?></<?php echo esc_html( $subtitle_tag ); ?>><?php
 				}
-				?>
-			</div>
-			<?php
+			?></div><?php
 		}
 	}
 
 	/**
-	 * Render counter widget output in the editor.
+	 * Render a widget output in the editor.
 	 *
 	 * Written as a Backbone JavaScript template and used to generate the live preview.
 	 *
-	 * @since 2.0.3
 	 * @access protected
 	 */
 	protected function content_template() {
-		?>
-		<#
-			function icon_template() {
-				var iconHTML = elementor.helpers.renderIcon( view, settings.icon, { 'aria-hidden': true }, 'i' , 'object' ),
-					migrated = elementor.helpers.isIconMigrated( settings, 'icon' );
-		   
-				if ( settings.trx_addons_icon_type == 'icon' ) {
-					if ( settings.counter_icon || settings.icon ) { #>
-						<span class="trx-addons-counter-icon-wrap">
-							<span class="trx-addons-counter-icon trx-addons-icon">
-								<# if ( iconHTML && iconHTML.rendered && ( ! settings.counter_icon || migrated ) ) { #>
+		?><#
+		function icon_template() {
+			var iconHTML = elementor.helpers.renderIcon( view, settings.icon, { 'aria-hidden': true }, 'i' , 'object' ),
+				migrated = elementor.helpers.isIconMigrated( settings, 'icon' );
+		
+			if ( settings.trx_addons_icon_type == 'icon' ) {
+				if ( settings.counter_icon || settings.icon ) {
+					#><div class="trx-addons-counter-icon-wrap">
+						<span class="trx-addons-counter-icon trx-addons-icon">
+							<# if ( iconHTML && iconHTML.rendered && ( ! settings.counter_icon || migrated ) ) { #>
 								{{{ iconHTML.value }}}
-								<# } else { #>
-									<i class="{{ settings.counter_icon }}" aria-hidden="true"></i>
-								<# } #>
-							</span>
+							<# } else { #>
+								<i class="{{ settings.counter_icon }}" aria-hidden="true"></i>
+							<# } #>
 						</span>
-						<#
-					}
-				} else if ( settings.trx_addons_icon_type == 'image' ) {
-					if ( settings.icon_image.url != '' ) { #>
-						<span class="trx-addons-counter-icon-wrap">
-							<span class="trx-addons-counter-icon trx-addons-counter-icon-img">
-								<#
-								var image = {
-									id: settings.icon_image.id,
-									url: settings.icon_image.url,
-									size: settings.image_size,
-									dimension: settings.image_custom_dimension,
-									model: view.getEditModel()
-								};
-
-								var imageUrl = elementor.imagesManager.getImageUrl( image );
-								#>
-								<img src="{{ _.escape( imageUrl ) }}" />
-							</span>
-						</span>
-						<#
-					}
-				}
-						   
-				if ( settings.icon_divider == 'yes' ) {
-					if ( settings.counter_layout == 'layout-1' || settings.counter_layout == 'layout-2' ) { #>
-						<div class="trx-addons-counter-icon-divider-wrap">
-							<span class="trx-addons-counter-icon-divider"></span>
-						</div>
-						<#
-					}
-				}
-			}
-						   
-			function number_template() { #>
-				<div class="trx-addons-counter-number-wrap">
-					<#
-						if ( settings.number_prefix != '' ) {
-							var prefix = settings.number_prefix;
-
-							view.addRenderAttribute( 'prefix', 'class', 'trx-addons-counter-number-prefix' );
-
-							var prefix_html = '<span' + ' ' + view.getRenderAttributeString( 'prefix' ) + '>' + prefix + '</span>';
-
-							print( prefix_html );
-						}
-					#><div class="trx-addons-counter-number" data-from="{{ settings.starting_number }}" data-to="{{ settings.ending_number }}" data-speed="{{ settings.counter_speed.size }}" data-separator="{{ settings.thousand_separator }}" data-separator-char="{{ settings.thousand_separator_char }}">
-						{{{ settings.starting_number }}}
 					</div><#
-						if ( settings.number_suffix != '' ) {
-							var suffix = settings.number_suffix;
+				}
+			} else if ( settings.trx_addons_icon_type == 'image' ) {
+				if ( settings.icon_image.url != '' ) {
+					#><div class="trx-addons-counter-icon-wrap">
+						<span class="trx-addons-counter-icon trx-addons-counter-icon-img">
+							<#
+							var image = {
+								id: settings.icon_image.id,
+								url: settings.icon_image.url,
+								size: settings.image_size,
+								dimension: settings.image_custom_dimension,
+								model: view.getEditModel()
+							};
 
-							view.addRenderAttribute( 'suffix', 'class', 'trx-addons-counter-number-suffix' );
-
-							var suffix_html = '<span' + ' ' + view.getRenderAttributeString( 'suffix' ) + '>' + suffix + '</span>';
-
-							print( suffix_html );
-						}
-					#>
-				</div>
-				<#
-			}
-
-			function title_template() {
-				if ( settings.counter_title != '' || settings.counter_subtitle != '' ) {
-					#>
-					<div class="trx-addons-counter-title-wrap">
-						<#
-						if ( settings.counter_title != '' ) {
-							var title = settings.counter_title;
-
-							view.addRenderAttribute( 'counter_title', 'class', 'trx-addons-counter-title' );
-
-							view.addInlineEditingAttributes( 'counter_title' );
-
-							var titleHTMLTag = elementor.helpers.validateHTMLTag( settings.title_html_tag ),
-								title_html = '<' + titleHTMLTag  + ' ' + view.getRenderAttributeString( 'counter_title' ) + '>' + title + '</' + titleHTMLTag + '>';
-
-							print( title_html );
-						}
-
-						if ( settings.counter_subtitle != '' ) {
-							var title = settings.counter_subtitle;
-
-							view.addRenderAttribute( 'counter_subtitle', 'class', 'trx-addons-counter-subtitle' );
-
-							view.addInlineEditingAttributes( 'counter_subtitle' );
-
-							var subtitleHTMLTag = elementor.helpers.validateHTMLTag( settings.subtitle_html_tag ),
-								subtitle_html = '<' + subtitleHTMLTag  + ' ' + view.getRenderAttributeString( 'counter_subtitle' ) + '>' + title + '</' + subtitleHTMLTag + '>';
-
-							print( subtitle_html );
-						}
-						#>
-					</div>
-					<#
+							var imageUrl = elementor.imagesManager.getImageUrl( image );
+							#>
+							<img src="{{ _.escape( imageUrl ) }}" />
+						</span>
+					</div><#
 				}
 			}
-		#>
+						
+			if ( settings.icon_divider == 'yes' ) {
+				if ( settings.counter_layout == 'layout-1' || settings.counter_layout == 'layout-2' ) {
+					#><div class="trx-addons-counter-icon-divider-wrap"><span class="trx-addons-counter-icon-divider"></span></div><#
+				}
+			}
+		}
+						
+		function number_template() {
+			#><div class="trx-addons-counter-number-wrap"><#
+				if ( settings.number_prefix != '' ) {
+					var prefix = settings.number_prefix;
+					view.addRenderAttribute( 'prefix', 'class', 'trx-addons-counter-number-prefix' );
+					var prefix_html = '<span' + ' ' + view.getRenderAttributeString( 'prefix' ) + '>' + prefix + '</span>';
+					print( prefix_html );
+				}
+			#><div class="trx-addons-counter-number" data-from="{{ settings.starting_number }}" data-to="{{ settings.ending_number }}" data-speed="{{ settings.counter_speed.size }}" data-separator="{{ settings.thousand_separator }}" data-separator-char="{{ settings.thousand_separator_char }}">
+				{{{ settings.starting_number }}}
+			</div><#
+				if ( settings.number_suffix != '' ) {
+					var suffix = settings.number_suffix;
+					view.addRenderAttribute( 'suffix', 'class', 'trx-addons-counter-number-suffix' );
+					var suffix_html = '<span' + ' ' + view.getRenderAttributeString( 'suffix' ) + '>' + suffix + '</span>';
+					print( suffix_html );
+				}
+			#></div><#
+		}
 
-		<div class="trx-addons-counter-container">
-			<div class="trx-addons-counter trx-addons-counter-{{ settings.counter_layout }}" data-target=".trx-addons-counter-number">
-				<# if ( settings.counter_layout == 'layout-1' || settings.counter_layout == 'layout-5' || settings.counter_layout == 'layout-6' ) { #>
-					<# icon_template(); #>
+		function title_template() {
+			if ( settings.counter_title != '' || settings.counter_subtitle != '' ) {
+				#><div class="trx-addons-counter-title-wrap"><#
+					if ( settings.counter_title != '' ) {
+						var title = settings.counter_title;
+						view.addRenderAttribute( 'counter_title', 'class', 'trx-addons-counter-title' );
+						view.addInlineEditingAttributes( 'counter_title' );
+						var titleHTMLTag = elementor.helpers.validateHTMLTag( settings.title_html_tag ),
+							title_html = '<' + titleHTMLTag  + ' ' + view.getRenderAttributeString( 'counter_title' ) + '>' + title + '</' + titleHTMLTag + '>';
+						print( title_html );
+					}
+					if ( settings.counter_subtitle != '' ) {
+						var title = settings.counter_subtitle;
+						view.addRenderAttribute( 'counter_subtitle', 'class', 'trx-addons-counter-subtitle' );
+						view.addInlineEditingAttributes( 'counter_subtitle' );
+						var subtitleHTMLTag = elementor.helpers.validateHTMLTag( settings.subtitle_html_tag ),
+							subtitle_html = '<' + subtitleHTMLTag  + ' ' + view.getRenderAttributeString( 'counter_subtitle' ) + '>' + title + '</' + subtitleHTMLTag + '>';
+						print( subtitle_html );
+					}
+				#></div><#
+			}
+		}
 
-					<div class="trx-addons-counter-number-title-wrap">
-						<# number_template(); #>
+		#><div class="trx-addons-counter-container">
+			<div class="trx-addons-counter trx-addons-counter-{{ settings.counter_layout }}" data-target=".trx-addons-counter-number"><#
 
-						<# if ( settings.num_divider == 'yes' ) { #>
-							<div class="trx-addons-counter-num-divider-wrap">
-								<span class="trx-addons-counter-num-divider"></span>
-							</div>
-						<# } #>
+				if ( settings.counter_layout == 'layout-1' || settings.counter_layout == 'layout-5' || settings.counter_layout == 'layout-6' ) {
+					icon_template();
+					
+					#><div class="trx-addons-counter-number-title-wrap"><#
+						number_template();
+						
+						if ( settings.num_divider == 'yes' ) {
+							#><div class="trx-addons-counter-num-divider-wrap"><span class="trx-addons-counter-num-divider"></span></div><#
+						}
 
-						<# title_template(); #>
-					</div>
-				<# } else if ( settings.counter_layout == 'layout-2' ) { #>
-					<# icon_template(); #>
-					<# title_template(); #>
-					<# number_template(); #>
+						title_template();
+					#></div><#
+				
+				} else if ( settings.counter_layout == 'layout-2' ) {
+					icon_template();
+					title_template();
+					number_template();
+					
+					if ( settings.num_divider == 'yes' ) {
+						#><div class="trx-addons-counter-num-divider-wrap"><span class="trx-addons-counter-num-divider"></span></div><#
+					}
+				
+				} else if ( settings.counter_layout == 'layout-3' ) {
+					number_template();
+					
+					if ( settings.num_divider == 'yes' ) {
+						#><div class="trx-addons-counter-num-divider-wrap"><span class="trx-addons-counter-num-divider"></span></div><#
+					}
+					#><div class="trx-addons-icon-title-wrap"><#
+						icon_template();
+						title_template();
+					#></div><#
+				
+				} else if ( settings.counter_layout == 'layout-4' ) {
+					#><div class="trx-addons-icon-title-wrap"><#
+						icon_template();
+						title_template();
+					#></div><#
+					
+					number_template();
 
-					<# if ( settings.num_divider == 'yes' ) { #>
-						<div class="trx-addons-counter-num-divider-wrap">
-							<span class="trx-addons-counter-num-divider"></span>
-						</div>
-					<# } #>
-				<# } else if ( settings.counter_layout == 'layout-3' ) { #>
-					<# number_template(); #>
-
-					<# if ( settings.num_divider == 'yes' ) { #>
-						<div class="trx-addons-counter-num-divider-wrap">
-							<span class="trx-addons-counter-num-divider"></span>
-						</div>
-					<# } #>
-
-					<div class="trx-addons-icon-title-wrap">
-						<# icon_template(); #>
-						<# title_template(); #>
-					</div>
-				<# } else if ( settings.counter_layout == 'layout-4' ) { #>
-					<div class="trx-addons-icon-title-wrap">
-						<# icon_template(); #>
-						<# title_template(); #>
-					</div>
-
-					<# number_template(); #>
-
-					<# if ( settings.num_divider == 'yes' ) { #>
-						<div class="trx-addons-counter-num-divider-wrap">
-							<span class="trx-addons-counter-num-divider"></span>
-						</div>
-					<# } #>
-				<# } else if ( settings.counter_layout == 'layout-7' || settings.counter_layout == 'layout-8' ) { #>
-					<# number_template(); #>
-
-					<div class="trx-addons-icon-title-wrap">
-						<# icon_template(); #>
-						<# title_template(); #>
-					</div>
-				<# } else if ( settings.counter_layout == 'layout-9' ) { #>
-					<div class="trx-addons-icon-number-wrap">
-						<# icon_template(); #>
-						<# number_template(); #>
-					</div>
-
-					<# title_template(); #>
-				<# } else if ( settings.counter_layout == 'layout-10' ) { #>
-					<div class="trx-addons-icon-number-wrap">
-						<#
-							number_template();
-							icon_template();
-						#>
-					</div>
-
-					<# title_template(); #>
-				<# } #>
-			</div>
+					if ( settings.num_divider == 'yes' ) {
+						#><div class="trx-addons-counter-num-divider-wrap"><span class="trx-addons-counter-num-divider"></span></div><#
+					}
+				
+				} else if ( settings.counter_layout == 'layout-7' || settings.counter_layout == 'layout-8' ) {
+					number_template();
+					
+					#><div class="trx-addons-icon-title-wrap"><#
+						icon_template();
+						title_template();
+					#></div><#
+				
+				} else if ( settings.counter_layout == 'layout-9' ) {
+					#><div class="trx-addons-icon-number-wrap"><#
+						icon_template();
+						number_template();
+					#></div><#
+					
+					title_template();
+				
+				} else if ( settings.counter_layout == 'layout-10' ) {
+					#><div class="trx-addons-icon-number-wrap"><#
+						number_template();
+						icon_template();
+					#></div><#
+					
+					title_template();
+				}
+			#></div>
 		</div>
 		<?php
 	}

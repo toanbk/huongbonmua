@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'trx_addons_icons';
-  src: url('../font/trx_addons_icons.eot?43294237');
-  src: url('../font/trx_addons_icons.eot?43294237#iefix') format('embedded-opentype'),
-       url('../font/trx_addons_icons.woff2?43294237') format('woff2'),
-       url('../font/trx_addons_icons.woff?43294237') format('woff'),
-       url('../font/trx_addons_icons.ttf?43294237') format('truetype'),
-       url('../font/trx_addons_icons.svg?43294237#trx_addons_icons') format('svg');
+  src: url('../font/trx_addons_icons.eot?75088123');
+  src: url('../font/trx_addons_icons.eot?75088123#iefix') format('embedded-opentype'),
+       url('../font/trx_addons_icons.woff2?75088123') format('woff2'),
+       url('../font/trx_addons_icons.woff?75088123') format('woff'),
+       url('../font/trx_addons_icons.ttf?75088123') format('truetype'),
+       url('../font/trx_addons_icons.svg?75088123#trx_addons_icons') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'trx_addons_icons';
-    src: url('../font/trx_addons_icons.svg?43294237#trx_addons_icons') format('svg');
+    src: url('../font/trx_addons_icons.svg?75088123#trx_addons_icons') format('svg');
   }
 }
 */
@@ -353,6 +353,7 @@
 .trx_addons_icon-tik-tok:before { content: '\e928'; } /* '' */
 .trx_addons_icon-twitter-x:before { content: '\e929'; } /* '' */
 .trx_addons_icon-engineering:before { content: '\e92a'; } /* '' */
+.trx_addons_icon-threads:before { content: '\e92b'; } /* '' */
 .trx_addons_icon-download-1:before { content: '\e959'; } /* '' */
 .trx_addons_icon-upload:before { content: '\e95a'; } /* '' */
 .trx_addons_icon-move:before { content: '\f047'; } /* '' */

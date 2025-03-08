@@ -106,7 +106,7 @@ if ( ! function_exists( 'trx_addons_sc_chat_topics_check_in_html_output' ) ) {
 */
 if ( ! function_exists( 'trx_addons_sc_chat_topics' ) ) {
 	function trx_addons_sc_chat_topics( $atts, $content = '' ) {	
-		$atts = trx_addons_sc_prepare_atts( 'trx_sc_chat_topics', $atts, trx_addons_sc_common_atts( 'id,title', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_chat_topics', $atts, trx_addons_sc_common_atts( 'trx_sc_chat_topics', 'id,title', array(
 			// Individual params
 			"type" => "default",
 			"number" => "",

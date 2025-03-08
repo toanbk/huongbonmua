@@ -480,6 +480,51 @@ if ( ! function_exists( 'trx_addons_get_list_layouts' ) ) {
 	}
 }
 
+if ( ! function_exists( 'trx_addons_get_list_meta_parts' ) ) {
+	/**
+	 * Return list of the post meta parts
+	 * 
+	 * @trigger trx_addons_filter_get_list_meta_parts
+	 * 
+	 * @param boolean $from_theme  If true - get list from the theme, otherwise - from the plugin
+	 *
+	 * @return array  Associative array with the list of the post meta parts
+	 */
+	function trx_addons_get_list_meta_parts( $from_theme = true, $woocommerce = false ) {
+		$list = $from_theme
+					? apply_filters( 'trx_addons_filter_get_list_meta_parts', array() )
+					: array();
+		if ( ! is_array( $list ) || count( $list ) == 0 ) {
+			$list = array(
+				'author'     => esc_html__( 'Post author', 'trx_addons' ),
+				'date'       => esc_html__( 'Published date', 'trx_addons' ),
+				'modified'   => esc_html__( 'Modified date', 'trx_addons' ),
+				'views'      => esc_html__( 'Views', 'trx_addons' ),
+				'likes'      => esc_html__( 'Likes', 'trx_addons' ),
+				'comments'   => esc_html__( 'Comments', 'trx_addons' ),
+				'categories' => esc_html__( 'Categories', 'trx_addons' ),
+				// 'share'      => esc_html__( 'Share links', 'trx_addons' ),
+				// 'edit'       => esc_html__( 'Edit link', 'trx_addons' ),
+				'reading_time'    => __( 'Reading Time', 'trx_addons' ),
+				'custom_meta'     => __( 'Custom Meta', 'trx_addons' ),
+				'custom_taxonomy' => __( 'Custom Taxonomy', 'trx_addons' ),
+				'custom_html'     => __( 'Custom HTML', 'trx_addons' ),
+				);
+			//add woocomerce meta to options if woocommerce is instaled
+			if ( $woocommerce && trx_addons_exists_woocommerce() ) {
+				$list['product_price']     = esc_html__( 'Product Price', 'trx_addons' );
+				$list['product_rating']    = esc_html__( 'Product Rating', 'trx_addons' );
+				$list['product_stars']     = esc_html__( 'Product Stars', 'trx_addons' );
+				// $list['product_stock']  = esc_html__( 'Product Stock', 'trx_addons' );
+				$list['product_category']  = esc_html__( 'Product Category', 'trx_addons' );
+				$list['product_tag']       = esc_html__( 'Product Tag', 'trx_addons' );
+				// $list['product_attribute'] = esc_html__( 'Product Attribute', 'trx_addons' );
+			}
+		}
+		return $list;
+	}
+}
+
 if ( ! function_exists( 'trx_addons_get_list_layouts_show_on' ) ) {
 	/**
 	 * Return list of cases when layout show on
@@ -1189,6 +1234,42 @@ if ( ! function_exists( 'trx_addons_get_list_background_sizes' ) ) {
 			'contain' => esc_html__( 'Contain', 'trx_addons' ),
 			'cover'  => esc_html__( 'Cover', 'trx_addons' ),
 			'unset' => esc_html__( 'Normal', 'trx_addons' ),
+		) );
+		return $prepend_inherit 
+					? trx_addons_array_merge( array( 'inherit' => esc_html__( 'Inherit', 'trx_addons' ) ), $list )
+					: $list;
+	}
+}
+
+if ( ! function_exists( 'trx_addons_get_list_blend_modes' ) ) {
+	/**
+	 * Return list of the blend modes
+	 * 
+	 * @trigger trx_addons_filter_get_list_blend_modes
+	 *
+	 * @param boolean $prepend_inherit If true - add value 'inherit' in the beginning
+	 *
+	 * @return array  List of blend modes
+	 */
+	function trx_addons_get_list_blend_modes( $prepend_inherit = false ) {
+		$list = apply_filters('trx_addons_filter_get_list_blend_modes', array(
+			'' => esc_html__( 'Default', 'trx_addons' ),
+			'normal' => esc_html__( 'Normal', 'trx_addons' ),
+			'multiply'  => esc_html__( 'Multiply', 'trx_addons' ),
+			'screen'  => esc_html__( 'Screen', 'trx_addons' ),
+			'overlay'  => esc_html__( 'Overlay', 'trx_addons' ),
+			'darken'  => esc_html__( 'Darken', 'trx_addons' ),
+			'lighten'  => esc_html__( 'Lighten', 'trx_addons' ),
+			'color-dodge'  => esc_html__( 'Color Dodge', 'trx_addons' ),
+			'color-burn'  => esc_html__( 'Color Burn', 'trx_addons' ),
+			'hard-light'  => esc_html__( 'Hard Light', 'trx_addons' ),
+			'soft-light'  => esc_html__( 'Soft Light', 'trx_addons' ),
+			'difference'  => esc_html__( 'Difference', 'trx_addons' ),
+			'exclusion'  => esc_html__( 'Exclusion', 'trx_addons' ),
+			'hue'  => esc_html__( 'Hue', 'trx_addons' ),
+			'saturation'  => esc_html__( 'Saturation', 'trx_addons' ),
+			'color'  => esc_html__( 'Color', 'trx_addons' ),
+			'luminosity'  => esc_html__( 'Luminosity', 'trx_addons' ),
 		) );
 		return $prepend_inherit 
 					? trx_addons_array_merge( array( 'inherit' => esc_html__( 'Inherit', 'trx_addons' ) ), $list )

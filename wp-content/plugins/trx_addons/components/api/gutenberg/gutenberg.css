@@ -1,20 +1,29 @@
 /* Gutenberg */
 /* Fixes for the block editor
 ---------------------------------------- */
-body.edit-post-visual-editor {
+body.edit-post-visual-editor,
+.editor-styles-wrapper {
   position: relative;
   flex: 1 0 auto;
   height: auto !important;
   overflow-x: hidden !important;
   overflow-y: visible !important;
 }
-body.edit-post-visual-editor .block-editor-block-list__layout.is-root-container > .wp-block.alignfull, body.edit-post-visual-editor .block-editor-block-list__layout.is-root-container > .wp-block[data-align="full"] {
+body.edit-post-visual-editor .block-editor-block-list__layout.is-root-container > .wp-block.alignfull, body.edit-post-visual-editor .block-editor-block-list__layout.is-root-container > .wp-block[data-align="full"],
+.editor-styles-wrapper .block-editor-block-list__layout.is-root-container > .wp-block.alignfull,
+.editor-styles-wrapper .block-editor-block-list__layout.is-root-container > .wp-block[data-align="full"] {
   margin-left: 0;
   margin-right: 0;
 }
+body.edit-post-visual-editor .block-editor-block-list__block select,
+.editor-styles-wrapper .block-editor-block-list__block select {
+  visibility: visible !important;
+}
 
 /* Dashicons */
-body.edit-post-visual-editor .components-button .dashicons, body.edit-post-visual-editor .components-button .dashicons-before::before {
+body.edit-post-visual-editor .components-button .dashicons, body.edit-post-visual-editor .components-button .dashicons-before::before,
+.editor-styles-wrapper .components-button .dashicons,
+.editor-styles-wrapper .components-button .dashicons-before::before {
   font-family: dashicons;
   line-height: 1;
   font-weight: 400;

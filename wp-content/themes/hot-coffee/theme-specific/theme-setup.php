@@ -46,7 +46,7 @@ $GLOBALS['HOT_COFFEE_STORAGE'] = array(
 	// Theme Engine info
 	'engine'              => array(
 		'name'            => 'hot-coffee',
-		'version'         => '2.29.0',
+		'version'         => '2.30.0',
 		'upgrade_allowed' => false
 	),
 

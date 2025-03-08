@@ -730,7 +730,8 @@ if (!function_exists('trx_addons_sc_setup')) {
 							'title' => __('Switch two (and more) blocks', 'trx_addons'),
 							'layouts_sc' => array(
 								'default' => esc_html__('Default', 'trx_addons'),
-								'tabs' => esc_html__('Tabs', 'trx_addons'),
+								'modern'  => esc_html__('Modern', 'trx_addons'),
+								'tabs'    => esc_html__('Tabs', 'trx_addons'),
 							)
 						),
 			'table' => array(
@@ -858,11 +859,19 @@ if ( !function_exists( 'trx_addons_sc_merge_scripts' ) ) {
 
 
 // Add common atts like 'id', 'cls'', 'css', title params, etc. to the shortcode's atts
-if (!function_exists('trx_addons_sc_common_atts')) {
-	function trx_addons_sc_common_atts($common, $atts) {
-		if (!is_array($common)) {
-			$common = explode(',', $common);
+if ( ! function_exists( 'trx_addons_sc_common_atts' ) ) {
+	function trx_addons_sc_common_atts( $sc, $common, $atts = false ) {
+		// Check if old format is used (with two arguments only)
+		if ( ! is_array( $atts ) ) {
+			$atts = array_merge( array(), $common );
+			$common = $sc;
+			$sc = '';
+			dcl( __( 'trx_addons_sc_common_atts: Old format is used for the shortcode "' . $sc . '"!', 'trx_addons' ) );
 		}
+		if ( ! is_array( $common ) ) {
+			$common = explode( ',', $common );
+		}
+		$common = apply_filters( 'trx_addons_filter_sc_common_atts_list', $common, $sc );
 		if ( in_array('id', $common) ) {
 			$atts = array_merge(array(
 				"id" => "",
@@ -1180,10 +1189,12 @@ if (!function_exists('trx_addons_load_icons')) {
 // Display title, subtitle and description for some shortcodes
 if (!function_exists('trx_addons_sc_show_titles')) {
 	function trx_addons_sc_show_titles($sc, $args, $size='') {
-		trx_addons_get_template_part('templates/tpl.sc_titles.php',
-										'trx_addons_args_sc_show_titles',
-										compact('sc', 'args', 'size')
-									);
+		if ( apply_filters( 'trx_addons_filter_sc_show_titles', true, $sc ) ) {
+			trx_addons_get_template_part('templates/tpl.sc_titles.php',
+											'trx_addons_args_sc_show_titles',
+											compact('sc', 'args', 'size')
+										);
+		}
 	}
 }
 
@@ -1272,10 +1283,12 @@ if (!function_exists('trx_addons_sc_show_pagination')) {
 // Display link button or image for some shortcodes
 if (!function_exists('trx_addons_sc_show_links')) {
 	function trx_addons_sc_show_links($sc, $args) {
-		trx_addons_get_template_part('templates/tpl.sc_links.php',
+		if ( apply_filters( 'trx_addons_filter_sc_show_links', true, $sc ) ) {
+			trx_addons_get_template_part('templates/tpl.sc_links.php',
 										'trx_addons_args_sc_show_links',
 										compact('sc', 'args')
 									);
+		}
 	}
 }
 

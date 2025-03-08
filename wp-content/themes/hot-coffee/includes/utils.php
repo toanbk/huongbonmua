@@ -289,7 +289,28 @@ if ( ! function_exists( 'hot_coffee_array_get_by_key' ) ) {
 	}
 }
 
-
+if ( ! function_exists( 'hot_coffee_array_str_replace' ) ) {
+	/**
+	 * Replace a substing in the specified key in all levels of array
+	 * 
+	 * @param string $from  A string to search for.
+	 * @param string $to    A string to replace with.
+	 * @param string $key   A key to search for in subarrays.
+	 * @param array  $arr   The plain array to search.
+	 * 
+	 * @return array        A processed array.
+	 */
+	function hot_coffee_array_str_replace( $from, $to, $key, $arr ) {
+		foreach ( $arr as $k => $v ) {
+			if ( is_array( $v ) ) {
+				$arr[ $k ] = hot_coffee_array_str_replace( $from, $to, $key, $v );
+			} else if ( $k == $key ) {
+				$arr[ $k ] = str_replace( $from, $to, $v );
+			}
+		}
+		return $arr;
+	}
+}
 
 
 

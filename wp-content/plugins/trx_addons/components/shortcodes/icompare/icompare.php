@@ -108,7 +108,7 @@ if ( !function_exists( 'trx_addons_sc_icompare_check_in_html_output' ) ) {
 */
 if ( ! function_exists( 'trx_addons_sc_icompare' ) ) {
 	function trx_addons_sc_icompare( $atts, $content = '' ) {	
-		$atts = trx_addons_sc_prepare_atts( 'trx_sc_icompare', $atts, trx_addons_sc_common_atts( 'id,icon,title', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_icompare', $atts, trx_addons_sc_common_atts( 'trx_sc_icompare', 'id,icon,title', array(
 			// Individual params
 			"type" => "default",
 			"image1" => "",
@@ -123,8 +123,7 @@ if ( ! function_exists( 'trx_addons_sc_icompare' ) ) {
 			"before_pos" => "tl",
 			"after_text" => "",
 			"after_pos" => "br",
-			) )
-		);
+		) ) );
 		// Load shortcode-specific scripts and styles
 		trx_addons_sc_icompare_load_scripts_front( true );
 		// Load template

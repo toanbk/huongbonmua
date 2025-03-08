@@ -27,7 +27,7 @@ if ( ! function_exists( 'trx_addons_sc_widget_woocommerce_title' ) ) {
 	 * @return string  Shortcode output
 	 */
 	function trx_addons_sc_widget_woocommerce_title( $atts, $content = '' ) {	
-		$atts = trx_addons_sc_prepare_atts( 'trx_widget_woocommerce_title', $atts, trx_addons_sc_common_atts( 'id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_widget_woocommerce_title', $atts, trx_addons_sc_common_atts( 'trx_widget_woocommerce_title', 'id', array(
 			// Individual params
 			"archive" => array( 'breadcrumbs', 'title', 'description' ),
 			"single"  => array( 'breadcrumbs', 'title', 'description' ),

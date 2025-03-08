@@ -235,7 +235,7 @@ if (!function_exists('trx_addons_sc_content_add_in_vc_params')) {
 							'type' => 'colorpicker'
 						)
 					),
-					trx_addons_vc_add_title_param(),
+					apply_filters( 'trx_addons_filter_add_title_param', true, 'trx_sc_content' ) ? trx_addons_vc_add_title_param() : array(),
 					trx_addons_vc_add_id_param(),
 					array(
 						array(

@@ -19,12 +19,11 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_layouts_container' ) ) {
 	function trx_addons_sc_layouts_container($atts, $content=''){	
-		$atts = trx_addons_sc_prepare_atts('trx_sc_layouts_container', $atts, trx_addons_sc_common_atts('id,hide', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_sc_layouts_container', $atts, trx_addons_sc_common_atts( 'trx_sc_layouts_container', 'id,hide', array(
 			// Individual params
 			"type" => "default",
 			"align" => '',
-			))
-		);
+		) ) );
 
 		$atts['content'] = do_shortcode($content);
 

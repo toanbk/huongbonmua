@@ -780,7 +780,9 @@ if ( ! function_exists( 'hot_coffee_get_blog_title' ) ) {
 		if ( is_front_page() ) {
 			$title = esc_html__( 'Home', 'hot-coffee' );
 		} elseif ( is_home() ) {
-			$title = esc_html__( 'All Posts', 'hot-coffee' );
+			$title = get_option( 'page_for_posts' ) == get_queried_object_id()
+						? get_the_title( get_queried_object_id() )
+						: esc_html__( 'All Posts', 'hot-coffee' );
 		} elseif ( is_author() ) {
 			$curauth = ( get_query_var( 'author_name' ) ) ? get_user_by( 'slug', get_query_var( 'author_name' ) ) : get_userdata( get_query_var( 'author' ) );
 			// Translators: Add the author's name to the title
@@ -1832,7 +1834,7 @@ if ( ! function_exists( 'hot_coffee_add_privacy_page_link' ) ) {
 	 */
 	function hot_coffee_add_privacy_page_link( $text ) {
 		if ( ! empty( $text ) ) {
-		$page         = get_option( 'wp_page_for_privacy_policy' );
+			$page = get_option( 'wp_page_for_privacy_policy' );
 			if ( ! empty( $page ) ) {
 				$text .=  ( ! in_array( substr( $text, -1 ), array( '.', '!' ) ) ? '.' : '' )
 							. ' '
@@ -1840,8 +1842,8 @@ if ( ! function_exists( 'hot_coffee_add_privacy_page_link' ) ) {
 							. sprintf(
 								__( 'For further details on handling user data, see our %s.', 'hot-coffee' ),
 								'<a href="' . esc_url( get_permalink( $page ) ) . '" target="_blank">' . __( 'Privacy Policy', 'hot-coffee' ) . '</a>'
-			);
-	}
+							);
+			}
 		}
 		return $text;
 	}

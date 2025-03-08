@@ -954,7 +954,6 @@ if ( ! function_exists( 'trx_addons_elm_filter_responsive_breakpoints' ) ) {
 // Load extensions
 //----------------------------------------------------------------------------
 require_once TRX_ADDONS_PLUGIN_DIR . TRX_ADDONS_PLUGIN_API . 'elementor/extensions/fixes.php';
-require_once TRX_ADDONS_PLUGIN_DIR . TRX_ADDONS_PLUGIN_API . 'elementor/extensions/go-pro.php';
 require_once TRX_ADDONS_PLUGIN_DIR . TRX_ADDONS_PLUGIN_API . 'elementor/extensions/icons.php';
 require_once TRX_ADDONS_PLUGIN_DIR . TRX_ADDONS_PLUGIN_API . 'elementor/extensions/stack-sections.php';
 require_once TRX_ADDONS_PLUGIN_DIR . TRX_ADDONS_PLUGIN_API . 'elementor/extensions/content-width.php';

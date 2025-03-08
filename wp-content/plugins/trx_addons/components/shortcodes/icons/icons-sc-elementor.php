@@ -353,7 +353,10 @@ if (!function_exists('trx_addons_sc_icons_add_in_elementor')) {
 				$this->end_controls_section();
 
 				$this->add_slider_param();
-				$this->add_title_param();
+
+				if ( apply_filters( 'trx_addons_filter_add_title_param', true, $this->get_name() ) ) {
+					$this->add_title_param();
+				}
 			}
 
 			/**

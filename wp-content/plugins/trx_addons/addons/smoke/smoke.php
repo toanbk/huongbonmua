@@ -63,7 +63,7 @@ if ( ! function_exists( 'trx_addons_smoke_list_places' ) ) {
 */
 if ( ! function_exists( 'trx_addons_sc_smoke' ) ) {
 	function trx_addons_sc_smoke( $atts, $content = '' ) {
-		$defa = trx_addons_sc_common_atts( '', array(
+		$defa = trx_addons_sc_common_atts( 'trx_sc_smoke', '', array(
 			// Individual params
 			"type" => 'smoke',
 			"place" => 'body',

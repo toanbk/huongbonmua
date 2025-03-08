@@ -474,11 +474,10 @@ if ( ! function_exists( 'hot_coffee_skins_theme_panel_section' ) ) {
 								} else {
 									$skin_classes[] = 'skin_free';
 								}
-								if ( ! empty( $data['uploaded'] ) && strtotime( $data['uploaded'] ) > $time_new ) {
-									$skin_classes[] = 'skin_new';
-								}
-								if ( ! empty( $data['updated'] ) && strtotime( $data['updated'] ) > $time_new ) {
+								if ( ! empty( $data['updated'] ) && ( empty( $data['uploaded'] ) || $data['updated'] > $data['uploaded'] ) && strtotime( $data['updated'] ) > $time_new ) {
 									$skin_classes[] = 'skin_updated';
+								} else if ( empty( $data['installed'] ) && ! empty( $data['uploaded'] ) && strtotime( $data['uploaded'] ) > $time_new ) {
+									$skin_classes[] = 'skin_new';
 								}
 								// 'trx_addons_image_block' is a inline-block element and spaces around it are not allowed
 								?><div class="trx_addons_image_block <?php echo esc_attr( join( ' ', $skin_classes ) ); ?>"<?php
@@ -524,7 +523,7 @@ if ( ! function_exists( 'hot_coffee_skins_theme_panel_section' ) ) {
 												<?php
 											}
 											// Labels
-											if ( ! empty( $data['updated'] ) && strtotime( $data['updated'] ) > $time_new ) {
+											if ( ! empty( $data['updated'] ) && ( empty( $data['uploaded'] ) || $data['updated'] > $data['uploaded'] ) && strtotime( $data['updated'] ) > $time_new ) {
 												?><span class="skin_label"><?php esc_html_e( 'Updated', 'hot-coffee' ); ?></span><?php
 											} else if ( ! empty( $data['installed'] ) && strtotime( $data['installed'] ) > $time_new ) {
 												?><span class="skin_label"><?php esc_html_e( 'Downloaded', 'hot-coffee' ); ?></span><?php

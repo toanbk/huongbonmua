@@ -174,7 +174,7 @@ class InfoBoxWidget extends BaseWidget {
 						'step' => 1,
 					),
 				),
-				'size_units' => array( 'px', 'em', 'rem' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'condition'  => array(
 					'icon_type' => 'icon',
 				),
@@ -227,9 +227,9 @@ class InfoBoxWidget extends BaseWidget {
 						'step' => 1,
 					),
 				),
-				'size_units' => array( 'px', 'em', 'rem', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
-					'{{WRAPPER}}.trx-addons-info-box-top .trx-addons-info-box-icon img, {{WRAPPER}}.trx-addons-info-box-left .trx-addons-info-box-icon-wrap, {{WRAPPER}}.trx-addons-info-box-right .trx-addons-info-box-icon-wrap' => 'width: {{SIZE}}{{UNIT}}',
+					'{{WRAPPER}}.trx-addons-info-box-top .trx-addons-info-box-icon, {{WRAPPER}}.trx-addons-info-box-left .trx-addons-info-box-icon-wrap, {{WRAPPER}}.trx-addons-info-box-right .trx-addons-info-box-icon-wrap' => 'width: {{SIZE}}{{UNIT}}',
 				),
 				'condition'  => array(
 					'icon_type' => 'image',
@@ -268,7 +268,7 @@ class InfoBoxWidget extends BaseWidget {
 		$this->add_responsive_control(
 			'icon_vertical_position',
 			array(
-				'label'                => __( 'Vertical Align', 'trx_addons' ),
+				'label'                => __( 'Vertical Alignment', 'trx_addons' ),
 				'description'          => __( 'Works in case of left and right icon position', 'trx_addons' ),
 				'type'                 => Controls_Manager::CHOOSE,
 				'default'              => 'top',
@@ -301,6 +301,7 @@ class InfoBoxWidget extends BaseWidget {
 				),
 				'condition'            => array(
 					'icon_type' => array( 'icon', 'image', 'text' ),
+					'icon_position' => array( 'left', 'right' ),
 				),
 			)
 		);
@@ -419,6 +420,83 @@ class InfoBoxWidget extends BaseWidget {
 		$this->end_controls_section();
 	}
 
+
+	/**
+	 * Return a button condition terms to display fields
+	 * if 'link_type' == 'box' or ( 'link_type' == 'button' and 'button_visible' == 'yes' )
+	 *
+	 * @return array  The link condition terms
+	 */
+	protected function get_button_condition_terms( $with_icon = false ) {
+		return $with_icon
+				? array(
+						'relation' => 'or',
+						'terms' => array(
+							array(
+								'relation' => 'and',
+								'terms' => array(
+									array(
+										'name'     => 'link_type',
+										'operator' => '==',
+										'value'    => 'button',
+									),
+									array(
+										'name'     => 'select_button_icon[value]',
+										'operator' => '!=',
+										'value'    => '',
+									),
+								),
+							),
+							array(
+								'relation' => 'and',
+								'terms' => array(
+									array(
+										'name'     => 'link_type',
+										'operator' => '==',
+										'value'    => 'box',
+									),
+									array(
+										'name'     => 'button_visible',
+										'operator' => '==',
+										'value'    => 'yes',
+									),
+									array(
+										'name'     => 'select_button_icon[value]',
+										'operator' => '!=',
+										'value'    => '',
+									),
+								),
+							),
+						),
+					)
+				: array(
+						'relation' => 'or',
+						'terms' => array(
+							array(
+								'name'     => 'link_type',
+								'operator' => '==',
+								'value'    => 'button',
+							),
+							array(
+								'relation' => 'and',
+								'terms' => array(
+									array(
+										'name'     => 'link_type',
+										'operator' => '==',
+										'value'    => 'box',
+									),
+									array(
+										'name'     => 'button_visible',
+										'operator' => '==',
+										'value'    => 'yes',
+									),
+								),
+							),
+						),
+					);
+	}
+
+	
 	/**
 	 * Register Link Controls in Content tab
 	 *
@@ -442,13 +520,13 @@ class InfoBoxWidget extends BaseWidget {
 				'label'   => __( 'Link Type', 'trx_addons' ),
 				'type'    => Controls_Manager::SELECT,
 				'default' => 'none',
-				'options' => array(
+				'options' => apply_filters( 'trx_addons_filter_sc_infobox_link_types', array(
 					'none'   => __( 'None', 'trx_addons' ),
 					'box'    => __( 'Box', 'trx_addons' ),
-					'icon'   => __( 'Image/Icon', 'trx_addons' ),
-					'title'  => __( 'Title', 'trx_addons' ),
+					// 'icon'   => __( 'Image/Icon', 'trx_addons' ),
+					// 'title'  => __( 'Title', 'trx_addons' ),
 					'button' => __( 'Button', 'trx_addons' ),
-				),
+				) ),
 			)
 		);
 
@@ -497,65 +575,17 @@ class InfoBoxWidget extends BaseWidget {
 					'active' => true,
 				),
 				'default'    => __( 'Get Started', 'trx_addons' ),
-				'conditions' => array(
-					'relation' => 'or',
-					'terms' => array(
-						array(
-							'name'     => 'link_type',
-							'operator' => '==',
-							'value'    => 'button',
-						),
-						array(
-							'relation' => 'and',
-							'terms' => array(
-								array(
-									'name'     => 'link_type',
-									'operator' => '==',
-									'value'    => 'box',
-								),
-								array(
-									'name'     => 'button_visible',
-									'operator' => '==',
-									'value'    => 'yes',
-								),
-							),
-						),
-					),
-				),
+				'conditions' => $this->get_button_condition_terms(),
 			)
 		);
 
 		$this->add_control(
 			'select_button_icon',
 			array(
-				'label'            => __( 'Button', 'trx_addons' ) . ' ' . __( 'Icon', 'trx_addons' ),
+				'label'            => __( 'Button Icon', 'trx_addons' ),
 				'type'             => Controls_Manager::ICONS,
 				'fa4compatibility' => 'button_icon',
-				'conditions'       => array(
-					'relation' => 'or',
-					'terms' => array(
-						array(
-							'name'     => 'link_type',
-							'operator' => '==',
-							'value'    => 'button',
-						),
-						array(
-							'relation' => 'and',
-							'terms' => array(
-								array(
-									'name'     => 'link_type',
-									'operator' => '==',
-									'value'    => 'box',
-								),
-								array(
-									'name'     => 'button_visible',
-									'operator' => '==',
-									'value'    => 'yes',
-								),
-							),
-						),
-					),
-				),
+				'conditions'       => $this->get_button_condition_terms(),
 			)
 		);
 
@@ -569,46 +599,7 @@ class InfoBoxWidget extends BaseWidget {
 					'after'  => __( 'After', 'trx_addons' ),
 					'before' => __( 'Before', 'trx_addons' ),
 				),
-				'conditions'       => array(
-					'relation' => 'or',
-					'terms' => array(
-						array(
-							'relation' => 'and',
-							'terms' => array(
-								array(
-									'name'     => 'link_type',
-									'operator' => '==',
-									'value'    => 'button',
-								),
-								array(
-									'name'     => 'select_button_icon[value]',
-									'operator' => '!=',
-									'value'    => '',
-								),
-							),
-						),
-						array(
-							'relation' => 'and',
-							'terms' => array(
-								array(
-									'name'     => 'link_type',
-									'operator' => '==',
-									'value'    => 'box',
-								),
-								array(
-									'name'     => 'button_visible',
-									'operator' => '==',
-									'value'    => 'yes',
-								),
-								array(
-									'name'     => 'select_button_icon[value]',
-									'operator' => '!=',
-									'value'    => '',
-								),
-							),
-						),
-					),
-				),
+				'conditions' => $this->get_button_condition_terms( true ),
 			)
 		);
 
@@ -650,7 +641,7 @@ class InfoBoxWidget extends BaseWidget {
 						'step' => 1,
 					),
 				),
-				'size_units' => array( 'px', 'vh' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-info-box-container' => 'min-height: {{SIZE}}{{UNIT}}',
 				),
@@ -662,7 +653,7 @@ class InfoBoxWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-info-box-container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -704,7 +695,7 @@ class InfoBoxWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-info-box-container' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -754,7 +745,7 @@ class InfoBoxWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-info-box-container:hover' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -871,12 +862,12 @@ class InfoBoxWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'condition'  => array(
 					'icon_type!' => 'none',
 				),
 				'selectors'  => array(
-					'{{WRAPPER}} .trx-addons-info-box-icon, {{WRAPPER}} .trx-addons-info-box-icon img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-info-box-icon' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -886,7 +877,7 @@ class InfoBoxWidget extends BaseWidget {
 			array(
 				'label'       => __( 'Margin', 'trx_addons' ),
 				'type'        => Controls_Manager::DIMENSIONS,
-				'size_units'  => array( 'px', '%' ),
+				'size_units'  => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'   => array(
 					'{{WRAPPER}} .trx-addons-info-box-icon-wrap' => 'margin-top: {{TOP}}{{UNIT}}; margin-left: {{LEFT}}{{UNIT}}; margin-right: {{RIGHT}}{{UNIT}}; margin-bottom: {{BOTTOM}}{{UNIT}};',
 				),
@@ -898,7 +889,7 @@ class InfoBoxWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-info-box-icon' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
@@ -921,8 +912,8 @@ class InfoBoxWidget extends BaseWidget {
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '',
 				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-info-box-icon:hover' => 'color: {{VALUE}}',
-					'{{WRAPPER}} .trx-addons-info-box-icon:hover svg' => 'fill: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-info-box-container:hover .trx-addons-info-box-icon' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-info-box-container:hover .trx-addons-info-box-icon svg' => 'fill: {{VALUE}}',
 				),
 				'condition' => array(
 					'icon_type!' => 'image',
@@ -940,7 +931,7 @@ class InfoBoxWidget extends BaseWidget {
 					'icon_type!' => 'none',
 				),
 				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-info-box-icon:hover' => 'background-color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-info-box-container:hover .trx-addons-info-box-icon' => 'background-color: {{VALUE}}',
 				),
 			)
 		);
@@ -955,7 +946,7 @@ class InfoBoxWidget extends BaseWidget {
 					'icon_type!' => 'none',
 				),
 				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-info-box-icon:hover' => 'border-color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-info-box-container:hover .trx-addons-info-box-icon' => 'border-color: {{VALUE}}',
 				),
 			)
 		);
@@ -963,7 +954,7 @@ class InfoBoxWidget extends BaseWidget {
 		$this->add_control(
 			'hover_animation_icon',
 			array(
-				'label' => __( 'Icon Animation', 'trx_addons' ),
+				'label' => __( 'Animation', 'trx_addons' ),
 				'type'  => Controls_Manager::HOVER_ANIMATION,
 			)
 		);
@@ -1028,10 +1019,19 @@ class InfoBoxWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-info-box-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
+			)
+		);
+
+		$this->start_controls_tabs( 'tabs_content_style' );
+
+		$this->start_controls_tab(
+			'tab_content_normal',
+			array(
+				'label' => __( 'Normal', 'trx_addons' ),
 			)
 		);
 
@@ -1040,7 +1040,6 @@ class InfoBoxWidget extends BaseWidget {
 			array(
 				'label'     => __( 'Title', 'trx_addons' ),
 				'type'      => Controls_Manager::HEADING,
-				'separator' => 'before',
 				'condition' => array(
 					'heading!' => '',
 				),
@@ -1058,21 +1057,6 @@ class InfoBoxWidget extends BaseWidget {
 				'default'   => '',
 				'selectors' => array(
 					'{{WRAPPER}} .trx-addons-info-box-title' => 'color: {{VALUE}}',
-				),
-				'condition' => array(
-					'heading!' => '',
-				),
-			)
-		);
-
-		$this->add_control(
-			'title_color_hover',
-			array(
-				'label'     => __( 'Hover Color', 'trx_addons' ),
-				'type'      => Controls_Manager::COLOR,
-				'default'   => '',
-				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-info-box-container:hover .trx-addons-info-box-title' => 'color: {{VALUE}}',
 				),
 				'condition' => array(
 					'heading!' => '',
@@ -1138,7 +1122,7 @@ class InfoBoxWidget extends BaseWidget {
 						'step' => 1,
 					),
 				),
-				'size_units' => array( 'px', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-info-box-title' => 'margin-bottom: {{SIZE}}{{UNIT}}',
 				),
@@ -1151,7 +1135,7 @@ class InfoBoxWidget extends BaseWidget {
 		$this->add_control(
 			'subtitle_heading',
 			array(
-				'label'     => __( 'Sub Title', 'trx_addons' ),
+				'label'     => __( 'SubTitle', 'trx_addons' ),
 				'type'      => Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => array(
@@ -1174,21 +1158,6 @@ class InfoBoxWidget extends BaseWidget {
 				),
 				'selectors' => array(
 					'{{WRAPPER}} .trx-addons-info-box-subtitle' => 'color: {{VALUE}}',
-				),
-			)
-		);
-
-		$this->add_control(
-			'subtitle_color_hover',
-			array(
-				'label'     => __( 'Hover Color', 'trx_addons' ),
-				'type'      => Controls_Manager::COLOR,
-				'default'   => '',
-				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-info-box-container:hover .trx-addons-info-box-subtitle' => 'color: {{VALUE}}',
-				),
-				'condition' => array(
-					'sub_heading!' => '',
 				),
 			)
 		);
@@ -1251,7 +1220,7 @@ class InfoBoxWidget extends BaseWidget {
 						'step' => 1,
 					),
 				),
-				'size_units' => array( 'px', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'condition'  => array(
 					'sub_heading!' => '',
 				),
@@ -1315,7 +1284,7 @@ class InfoBoxWidget extends BaseWidget {
 						'step' => 1,
 					),
 				),
-				'size_units' => array( 'px', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-info-box-divider' => 'width: {{SIZE}}{{UNIT}}',
 				),
@@ -1341,7 +1310,7 @@ class InfoBoxWidget extends BaseWidget {
 						'step' => 1,
 					),
 				),
-				'size_units' => array( 'px' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-info-box-divider' => 'border-bottom-width: {{SIZE}}{{UNIT}}',
 				),
@@ -1421,7 +1390,7 @@ class InfoBoxWidget extends BaseWidget {
 						'step' => 1,
 					),
 				),
-				'size_units' => array( 'px', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-info-box-divider-wrap' => 'margin-bottom: {{SIZE}}{{UNIT}}',
 				),
@@ -1455,21 +1424,6 @@ class InfoBoxWidget extends BaseWidget {
 				'default'   => '',
 				'selectors' => array(
 					'{{WRAPPER}} .trx-addons-info-box-description' => 'color: {{VALUE}}',
-				),
-				'condition' => array(
-					'description!' => '',
-				),
-			)
-		);
-
-		$this->add_control(
-			'description_color_hover',
-			array(
-				'label'     => __( 'Hover Color', 'trx_addons' ),
-				'type'      => Controls_Manager::COLOR,
-				'default'   => '',
-				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-info-box-container:hover .trx-addons-info-box-description' => 'color: {{VALUE}}',
 				),
 				'condition' => array(
 					'description!' => '',
@@ -1524,7 +1478,7 @@ class InfoBoxWidget extends BaseWidget {
 						'step' => 1,
 					),
 				),
-				'size_units' => array( 'px', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-info-box-description' => 'margin-bottom: {{SIZE}}{{UNIT}}',
 				),
@@ -1533,6 +1487,157 @@ class InfoBoxWidget extends BaseWidget {
 				),
 			)
 		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'tab_content_hover',
+			array(
+				'label' => __( 'Hover', 'trx_addons' ),
+			)
+		);
+
+		$this->add_control(
+			'title_style_heading_hover',
+			array(
+				'label'     => __( 'Title', 'trx_addons' ),
+				'type'      => Controls_Manager::HEADING,
+				'condition' => array(
+					'heading!' => '',
+				),
+			)
+		);
+
+		$this->add_control(
+			'title_color_hover',
+			array(
+				'label'     => __( 'Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '',
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-info-box-container:hover .trx-addons-info-box-title' => 'color: {{VALUE}}',
+				),
+				'condition' => array(
+					'heading!' => '',
+				),
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Text_Stroke::get_type(),
+			[
+				'name'      => 'title_text_stroke_hover',
+				'selector'  => '{{WRAPPER}} .trx-addons-info-box-container:hover .trx-addons-info-box-title',
+				'condition' => array(
+					'heading!' => '',
+				),
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Text_Shadow::get_type(),
+			array(
+				'name'      => 'title_text_shadow_hover',
+				'label'     => __( 'Text Shadow', 'trx_addons' ),
+				'selector'  => '{{WRAPPER}} .trx-addons-info-box-container:hover .trx-addons-info-box-title',
+				'condition' => array(
+					'heading!' => '',
+				),
+			)
+		);
+
+		$this->add_control(
+			'subtitle_heading_hover',
+			array(
+				'label'     => __( 'SubTitle', 'trx_addons' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+				'condition' => array(
+					'sub_heading!' => '',
+				),
+			)
+		);
+
+		$this->add_control(
+			'subtitle_color_hover',
+			array(
+				'label'     => __( 'Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '',
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-info-box-container:hover .trx-addons-info-box-subtitle' => 'color: {{VALUE}}',
+				),
+				'condition' => array(
+					'sub_heading!' => '',
+				),
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Text_Stroke::get_type(),
+			[
+				'name'      => 'subtitle_text_stroke_hover',
+				'selector'  => '{{WRAPPER}} .trx-addons-info-box-container:hover .trx-addons-info-box-subtitle',
+				'condition' => array(
+					'sub_heading!' => '',
+				),
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Text_Shadow::get_type(),
+			array(
+				'name'      => 'subtitle_text_shadow_hover',
+				'label'     => __( 'Text Shadow', 'trx_addons' ),
+				'selector'  => '{{WRAPPER}} .trx-addons-info-box-container:hover .trx-addons-info-box-subtitle',
+				'condition' => array(
+					'sub_heading!' => '',
+				),
+			)
+		);
+
+		$this->add_control(
+			'description_style_heading_hover',
+			array(
+				'label'     => __( 'Description', 'trx_addons' ),
+				'type'      => Controls_Manager::HEADING,
+				'separator' => 'before',
+				'condition' => array(
+					'description!' => '',
+				),
+			)
+		);
+
+		$this->add_control(
+			'description_color_hover',
+			array(
+				'label'     => __( 'Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '',
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-info-box-container:hover .trx-addons-info-box-description' => 'color: {{VALUE}}',
+				),
+				'condition' => array(
+					'description!' => '',
+				),
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Text_Shadow::get_type(),
+			array(
+				'name'      => 'description_text_shadow_hover',
+				'label'     => __( 'Text Shadow', 'trx_addons' ),
+				'selector'  => '{{WRAPPER}} .trx-addons-info-box-container:hover .trx-addons-info-box-description',
+				'condition' => array(
+					'description!' => '',
+				),
+			)
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
 
 		$this->end_controls_section();
 	}
@@ -1552,9 +1657,20 @@ class InfoBoxWidget extends BaseWidget {
 			array(
 				'label'     => __( 'Button', 'trx_addons' ),
 				'tab'       => Controls_Manager::TAB_STYLE,
-				'condition' => array(
-					'link_type' => 'button',
-				),
+				'conditions' => $this->get_button_condition_terms(),
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'      => 'button_typography',
+				'label'     => __( 'Typography', 'trx_addons' ),
+				'global'    => [
+					'default' => Global_Typography::TYPOGRAPHY_ACCENT,
+				],
+				'selector'  => '{{WRAPPER}} .trx-addons-info-box-button',
+				'conditions' => $this->get_button_condition_terms(),
 			)
 		);
 
@@ -1564,25 +1680,7 @@ class InfoBoxWidget extends BaseWidget {
 			'tab_button_normal',
 			array(
 				'label'     => __( 'Normal', 'trx_addons' ),
-				'condition' => array(
-					'link_type' => 'button',
-				),
-			)
-		);
-
-		$this->add_control(
-			'button_text_color_normal',
-			array(
-				'label'     => __( 'Text Color', 'trx_addons' ),
-				'type'      => Controls_Manager::COLOR,
-				'default'   => '',
-				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-info-box-button' => 'color: {{VALUE}}',
-					'{{WRAPPER}} .trx-addons-info-box-button .trx-addons-icon svg' => 'fill: {{VALUE}}',
-				),
-				'condition' => array(
-					'link_type' => 'button',
-				),
+				'conditions' => $this->get_button_condition_terms(),
 			)
 		);
 
@@ -1598,9 +1696,21 @@ class InfoBoxWidget extends BaseWidget {
 				'selectors' => array(
 					'{{WRAPPER}} .trx-addons-info-box-button' => 'background-color: {{VALUE}}',
 				),
-				'condition' => array(
-					'link_type' => 'button',
+				'conditions' => $this->get_button_condition_terms(),
+			)
+		);
+
+		$this->add_control(
+			'button_text_color_normal',
+			array(
+				'label'     => __( 'Text Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '',
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-info-box-button' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-info-box-button .trx-addons-button-icon svg' => 'fill: {{VALUE}}',
 				),
+				'conditions' => $this->get_button_condition_terms(),
 			)
 		);
 
@@ -1612,9 +1722,7 @@ class InfoBoxWidget extends BaseWidget {
 				'placeholder' => '1px',
 				'default'     => '1px',
 				'selector'    => '{{WRAPPER}} .trx-addons-info-box-button',
-				'condition'   => array(
-					'link_type' => 'button',
-				),
+				'conditions'  => $this->get_button_condition_terms(),
 			)
 		);
 
@@ -1623,28 +1731,11 @@ class InfoBoxWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Border Radius', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', '%', 'em' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-info-box-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
-				'condition'  => array(
-					'link_type' => 'button',
-				),
-			)
-		);
-
-		$this->add_group_control(
-			Group_Control_Typography::get_type(),
-			array(
-				'name'      => 'button_typography',
-				'label'     => __( 'Typography', 'trx_addons' ),
-				'global'    => [
-					'default' => Global_Typography::TYPOGRAPHY_ACCENT,
-				],
-				'selector'  => '{{WRAPPER}} .trx-addons-info-box-button',
-				'condition' => array(
-					'link_type' => 'button',
-				),
+				'conditions' => $this->get_button_condition_terms(),
 			)
 		);
 
@@ -1653,13 +1744,11 @@ class InfoBoxWidget extends BaseWidget {
 			array(
 				'label'      => __( 'Padding', 'trx_addons' ),
 				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => array( 'px', 'em', '%' ),
+				'size_units' => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'selectors'  => array(
 					'{{WRAPPER}} .trx-addons-info-box-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
-				'condition'  => array(
-					'link_type' => 'button',
-				),
+				'conditions' => $this->get_button_condition_terms(),
 			)
 		);
 
@@ -1668,9 +1757,7 @@ class InfoBoxWidget extends BaseWidget {
 			array(
 				'name'      => 'button_box_shadow',
 				'selector'  => '{{WRAPPER}} .trx-addons-info-box-button',
-				'condition' => array(
-					'link_type' => 'button',
-				),
+				'conditions' => $this->get_button_condition_terms(),
 			)
 		);
 
@@ -1680,10 +1767,7 @@ class InfoBoxWidget extends BaseWidget {
 				'label'     => __( 'Button Icon', 'trx_addons' ),
 				'type'      => Controls_Manager::HEADING,
 				'separator' => 'before',
-				'condition' => array(
-					'link_type'                  => 'button',
-					'select_button_icon[value]!' => '',
-				),
+				'conditions' => $this->get_button_condition_terms( true ),
 			)
 		);
 
@@ -1692,19 +1776,16 @@ class InfoBoxWidget extends BaseWidget {
 			array(
 				'label'       => __( 'Margin', 'trx_addons' ),
 				'type'        => Controls_Manager::DIMENSIONS,
-				'size_units'  => array( 'px', '%' ),
+				'size_units'  => [ 'px', '%', 'em', 'rem', 'vw', 'vh', 'custom' ],
 				'placeholder' => array(
 					'top'    => '',
 					'right'  => '',
 					'bottom' => '',
 					'left'   => '',
 				),
-				'condition'   => array(
-					'link_type'                  => 'button',
-					'select_button_icon[value]!' => '',
-				),
+				'conditions'  => $this->get_button_condition_terms( true ),
 				'selectors'   => array(
-					'{{WRAPPER}} .trx-addons-info-box .trx-addons-button-icon' => 'margin-top: {{TOP}}{{UNIT}}; margin-left: {{LEFT}}{{UNIT}}; margin-right: {{RIGHT}}{{UNIT}}; margin-bottom: {{BOTTOM}}{{UNIT}};',
+					'{{WRAPPER}} .trx-addons-info-box .trx-addons-button-icon' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -1715,25 +1796,7 @@ class InfoBoxWidget extends BaseWidget {
 			'tab_button_hover',
 			array(
 				'label'     => __( 'Hover', 'trx_addons' ),
-				'condition' => array(
-					'link_type' => 'button',
-				),
-			)
-		);
-
-		$this->add_control(
-			'button_text_color_hover',
-			array(
-				'label'     => __( 'Text Color', 'trx_addons' ),
-				'type'      => Controls_Manager::COLOR,
-				'default'   => '',
-				'selectors' => array(
-					'{{WRAPPER}} .trx-addons-info-box-button:hover' => 'color: {{VALUE}}',
-					'{{WRAPPER}} .trx-addons-info-box-button:hover .trx-addons-icon svg' => 'fill: {{VALUE}}',
-				),
-				'condition' => array(
-					'link_type' => 'button',
-				),
+				'conditions' => $this->get_button_condition_terms(),
 			)
 		);
 
@@ -1744,11 +1807,26 @@ class InfoBoxWidget extends BaseWidget {
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '',
 				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-info-box-container-link:hover + .trx-addons-info-box .trx-addons-info-box-button' => 'background-color: {{VALUE}}',
 					'{{WRAPPER}} .trx-addons-info-box-button:hover' => 'background-color: {{VALUE}}',
 				),
-				'condition' => array(
-					'link_type' => 'button',
+				'conditions' => $this->get_button_condition_terms(),
+			)
+		);
+
+		$this->add_control(
+			'button_text_color_hover',
+			array(
+				'label'     => __( 'Text Color', 'trx_addons' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '',
+				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-info-box-container-link:hover + .trx-addons-info-box .trx-addons-info-box-button' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-info-box-container-link:hover + .trx-addons-info-box .trx-addons-info-box-button .trx-addons-button-icon svg' => 'fill: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-info-box-button:hover' => 'color: {{VALUE}}',
+					'{{WRAPPER}} .trx-addons-info-box-button:hover .trx-addons-button-icon svg' => 'fill: {{VALUE}}',
 				),
+				'conditions' => $this->get_button_condition_terms(),
 			)
 		);
 
@@ -1759,11 +1837,10 @@ class InfoBoxWidget extends BaseWidget {
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '',
 				'selectors' => array(
+					'{{WRAPPER}} .trx-addons-info-box-container-link:hover + .trx-addons-info-box .trx-addons-info-box-button' => 'border-color: {{VALUE}}',
 					'{{WRAPPER}} .trx-addons-info-box-button:hover' => 'border-color: {{VALUE}}',
 				),
-				'condition' => array(
-					'link_type' => 'button',
-				),
+				'conditions' => $this->get_button_condition_terms(),
 			)
 		);
 
@@ -1772,9 +1849,7 @@ class InfoBoxWidget extends BaseWidget {
 			array(
 				'label'     => __( 'Animation', 'trx_addons' ),
 				'type'      => Controls_Manager::HOVER_ANIMATION,
-				'condition' => array(
-					'link_type' => 'button',
-				),
+				'conditions' => $this->get_button_condition_terms(),
 			)
 		);
 
@@ -1782,17 +1857,143 @@ class InfoBoxWidget extends BaseWidget {
 			Group_Control_Box_Shadow::get_type(),
 			array(
 				'name'      => 'button_box_shadow_hover',
-				'selector'  => '{{WRAPPER}} .trx-addons-info-box-button:hover',
-				'condition' => array(
-					'link_type' => 'button',
-				),
+				'selector'  => '{{WRAPPER}} .trx-addons-info-box-container-link:hover + .trx-addons-info-box .trx-addons-info-box-button,{{WRAPPER}} .trx-addons-info-box-button:hover',
+				'conditions' => $this->get_button_condition_terms(),
 			)
 		);
 
 		$this->end_controls_tab();
+
 		$this->end_controls_tabs();
 
 		$this->end_controls_section();
+	}
+
+	
+	/*-----------------------------------------------------------------------------------*/
+	/*	RENDER
+	/*-----------------------------------------------------------------------------------*/
+
+	/**
+	 * Render a widget output on the frontend.
+	 *
+	 * Written in PHP and used to generate the final HTML.
+	 *
+	 * @access protected
+	 */
+	protected function render() {
+		$settings = $this->get_settings_for_display();
+
+		$this->add_render_attribute(
+			array(
+				'info-box'           => array(
+					'class' => 'trx-addons-info-box',
+				),
+				'info-box-container' => array(
+					'class' => 'trx-addons-info-box-container',
+				),
+				'info-box-container-link' => array(
+					'class' => 'trx-addons-info-box-container-link',
+				),
+				'title-container'    => array(
+					'class' => 'trx-addons-info-box-title-container',
+				),
+				'heading'            => array(
+					'class' => 'trx-addons-info-box-title',
+				),
+				'sub_heading'        => array(
+					'class' => 'trx-addons-info-box-subtitle',
+				),
+				'description'        => array(
+					'class' => 'trx-addons-info-box-description',
+				),
+			)
+		);
+
+		$this->add_inline_editing_attributes( 'heading', 'none' );
+		$this->add_inline_editing_attributes( 'sub_heading', 'none' );
+		$this->add_inline_editing_attributes( 'description', 'basic' );
+
+		if ( 'none' !== $settings['link_type'] ) {
+			if ( ! empty( $settings['link']['url'] ) ) {
+				if ( 'box' === $settings['link_type'] ) {
+					$this->add_link_attributes( 'info-box-container-link', $settings['link'] );
+				} else if ( 'icon' === $settings['link_type'] ) {
+					$this->add_link_attributes( 'icon-link', $settings['link'] );
+				} else if ( 'title' === $settings['link_type'] ) {
+					$this->add_link_attributes( 'title-link', $settings['link'] );
+				} else if ( 'button' === $settings['link_type'] ) {
+					$this->add_link_attributes( 'info-box-button', $settings['link'] );
+				}
+			}
+		}
+		?>
+		<div <?php $this->print_render_attribute_string( 'info-box-container' ); ?>><?php
+			if ( 'none' !== $settings['link_type'] && ! empty( $settings['link']['url'] ) && 'box' === $settings['link_type'] ) {
+				?><a <?php $this->print_render_attribute_string( 'info-box-container-link' ); ?>></a><?php
+			}
+			?><div <?php $this->print_render_attribute_string( 'info-box' ); ?>>
+				<?php if ( 'none' !== $settings['icon_type'] ) { ?>
+					<div class="trx-addons-info-box-icon-wrap"><?php
+						if ( 'icon' === $settings['link_type'] ) {
+							?><a <?php $this->print_render_attribute_string( 'icon-link' ); ?>><?php
+						}
+						$this->render_infobox_icon();
+						if ( 'icon' === $settings['link_type'] ) {
+							?></a><?php
+						}
+					?></div>
+				<?php } ?>
+				<div class="trx-addons-info-box-content">
+					<div class="trx-addons-info-box-title-wrap">
+						<?php
+						if ( ! empty( $settings['heading'] ) ) {
+							$title_tag = $settings['title_html_tag'];
+							?>
+							<div <?php $this->print_render_attribute_string( 'title-container' ); ?>>
+								<<?php echo $title_tag; ?> <?php $this->print_render_attribute_string( 'heading' ); ?>><?php
+									if ( 'title' === $settings['link_type'] ) {
+										?><a <?php $this->print_render_attribute_string( 'title-link' ); ?>><?php
+									}
+									echo wp_kses_post( $settings['heading'] );
+									if ( 'title' === $settings['link_type'] ) {
+										?></a><?php
+									}
+								?></<?php echo $title_tag; ?>>
+							</div>
+							<?php
+						}
+
+						if ( '' !== $settings['sub_heading'] ) {
+							$subtitle_tag = $settings['sub_title_html_tag'];
+							?>
+							<<?php echo $subtitle_tag; ?> <?php $this->print_render_attribute_string( 'sub_heading' ); ?>>
+								<?php echo wp_kses_post( $settings['sub_heading'] ); ?>
+							</<?php echo $subtitle_tag; ?>>
+							<?php
+						}
+						?>
+					</div>
+
+					<?php if ( 'yes' === $settings['divider_title_switch'] ) { ?>
+						<div class="trx-addons-info-box-divider-wrap">
+							<div class="trx-addons-info-box-divider"></div>
+						</div>
+					<?php } ?>
+
+					<?php if ( ! empty( $settings['description'] ) ) { ?>
+						<div <?php $this->print_render_attribute_string( 'description' ); ?>>
+							<?php echo $this->parse_text_editor( $settings['description'] ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						</div>
+					<?php } ?>
+					<?php
+						// Button.
+						$this->render_infobox_button();
+					?>
+				</div>
+			</div>
+		</div>
+		<?php
 	}
 
 	/**
@@ -1877,15 +2078,12 @@ class InfoBoxWidget extends BaseWidget {
 			'class',
 			array(
 				'trx-addons-info-box-button',
+				'trx-addons-info-box-button-icon-' . $settings['button_icon_position'],
 				'elementor-button',
 			)
 		);
 
-		if ( 'button' === $settings['link_type'] ) {
-			$button_html_tag = ( 'button' === $settings['link_type'] ) ? 'a' : 'div';
-		} else if ( 'box' === $settings['link_type'] && 'yes' === $settings['button_visible'] ) {
-			$button_html_tag = ( 'button' === $settings['link_type'] ) ? 'div' : 'div';
-		}
+		$button_html_tag = ( 'button' === $settings['link_type'] ) ? 'a' : 'div';
 
 		if ( $settings['button_animation'] ) {
 			$this->add_render_attribute( 'info-box-button', 'class', 'elementor-animation-' . $settings['button_animation'] );
@@ -1953,125 +2151,7 @@ class InfoBoxWidget extends BaseWidget {
 	}
 
 	/**
-	 * Render info box widget output on the frontend.
-	 *
-	 * Written in PHP and used to generate the final HTML.
-	 *
-	 * @access protected
-	 */
-	protected function render() {
-		$settings = $this->get_settings_for_display();
-
-		$this->add_render_attribute(
-			array(
-				'info-box'           => array(
-					'class' => 'trx-addons-info-box',
-				),
-				'info-box-container' => array(
-					'class' => 'trx-addons-info-box-container',
-				),
-				'title-container'    => array(
-					'class' => 'trx-addons-info-box-title-container',
-				),
-				'heading'            => array(
-					'class' => 'trx-addons-info-box-title',
-				),
-				'sub_heading'        => array(
-					'class' => 'trx-addons-info-box-subtitle',
-				),
-				'description'        => array(
-					'class' => 'trx-addons-info-box-description',
-				),
-			)
-		);
-
-		$if_html_tag = 'div';
-		$title_container_tag = 'div';
-
-		$this->add_inline_editing_attributes( 'heading', 'none' );
-		$this->add_inline_editing_attributes( 'sub_heading', 'none' );
-		$this->add_inline_editing_attributes( 'description', 'basic' );
-
-		if ( 'none' !== $settings['link_type'] ) {
-			if ( ! empty( $settings['link']['url'] ) ) {
-				if ( 'box' === $settings['link_type'] ) {
-					$if_html_tag = 'a';
-					$this->add_link_attributes( 'info-box-container', $settings['link'] );
-				} else if ( 'icon' === $settings['link_type'] ) {
-					$this->add_link_attributes( 'link', $settings['link'] );
-				} else if ( 'title' === $settings['link_type'] ) {
-					$title_container_tag = 'a';
-					$this->add_link_attributes( 'title-container', $settings['link'] );
-				} else if ( 'button' === $settings['link_type'] ) {
-					$this->add_link_attributes( 'info-box-button', $settings['link'] );
-				}
-			}
-		}
-		?>
-		<<?php echo $if_html_tag; ?> <?php $this->print_render_attribute_string( 'info-box-container' ); ?>>
-			<div <?php $this->print_render_attribute_string( 'info-box' ); ?>>
-				<?php if ( 'none' !== $settings['icon_type'] ) { ?>
-					<div class="trx-addons-info-box-icon-wrap">
-						<?php if ( 'icon' === $settings['link_type'] ) { ?>
-							<a <?php $this->print_render_attribute_string( 'link' ); ?>>
-						<?php } ?>
-						<?php
-							// Icon.
-							$this->render_infobox_icon();
-						?>
-						<?php if ( 'icon' === $settings['link_type'] ) { ?>
-							</a>
-						<?php } ?>
-					</div>
-				<?php } ?>
-				<div class="trx-addons-info-box-content">
-					<div class="trx-addons-info-box-title-wrap">
-						<?php
-						if ( ! empty( $settings['heading'] ) ) {
-							$title_tag = $settings['title_html_tag'];
-							?>
-							<<?php echo $title_container_tag; ?> <?php $this->print_render_attribute_string( 'title-container' ); ?>>
-								<<?php echo $title_tag; ?> <?php $this->print_render_attribute_string( 'heading' ); ?>>
-									<?php echo wp_kses_post( $settings['heading'] ); ?>
-								</<?php echo $title_tag; ?>>
-							</<?php echo $title_container_tag; ?>>
-							<?php
-						}
-
-						if ( '' !== $settings['sub_heading'] ) {
-							$subtitle_tag = $settings['sub_title_html_tag'];
-							?>
-							<<?php echo $subtitle_tag; ?> <?php $this->print_render_attribute_string( 'sub_heading' ); ?>>
-								<?php echo wp_kses_post( $settings['sub_heading'] ); ?>
-							</<?php echo $subtitle_tag; ?>>
-							<?php
-						}
-						?>
-					</div>
-
-					<?php if ( 'yes' === $settings['divider_title_switch'] ) { ?>
-						<div class="trx-addons-info-box-divider-wrap">
-							<div class="trx-addons-info-box-divider"></div>
-						</div>
-					<?php } ?>
-
-					<?php if ( ! empty( $settings['description'] ) ) { ?>
-						<div <?php $this->print_render_attribute_string( 'description' ); ?>>
-							<?php echo $this->parse_text_editor( $settings['description'] ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-						</div>
-					<?php } ?>
-					<?php
-						// Button.
-						$this->render_infobox_button();
-					?>
-				</div>
-			</div>
-		</<?php echo $if_html_tag; ?>>
-		<?php
-	}
-
-	/**
-	 * Render info box widget output in the editor.
+	 * Render a widget output in the editor.
 	 *
 	 * Written as a Backbone JavaScript template and used to generate the live preview.
 	 *
@@ -2080,28 +2160,36 @@ class InfoBoxWidget extends BaseWidget {
 	protected function content_template() {
 		?>
 		<#
-			var trx_addons_if_html_tag = 'div',
-				trx_addons_title_html_tag = 'div',
-				trx_addons_button_html_tag = 'div',
+			var trx_addons_button_html_tag = 'div',
 				iconHTML = elementor.helpers.renderIcon( view, settings.selected_icon, { 'aria-hidden': true }, 'i' , 'object' ),
 				migrated = elementor.helpers.isIconMigrated( settings, 'selected_icon' ),
 				buttonIconHTML = elementor.helpers.renderIcon( view, settings.select_button_icon, { 'aria-hidden': true }, 'i' , 'object' ),
 				buttonMigrated = elementor.helpers.isIconMigrated( settings, 'select_button_icon' );
 
-			if ( settings.link.url != '' ) {
-				if ( settings.link_type == 'box' ) {
-					var trx_addons_if_html_tag = 'a';
-				}
-				else if ( settings.link_type == 'title' ) {
-					var trx_addons_title_html_tag = 'a';
-				}
-				else if ( settings.link_type == 'button' ) {
-					var trx_addons_button_html_tag = 'a';
-				}
+			if ( settings.link.url != '' && settings.link_type == 'button' ) {
+				trx_addons_button_html_tag = 'a';
 			}
+
+			view.addRenderAttribute( 'icon_text', 'class', 'trx-addons-icon-text' );
+			view.addInlineEditingAttributes( 'icon_text', 'none' );
+
+			view.addRenderAttribute( 'heading', 'class', 'trx-addons-info-box-title' );
+			view.addInlineEditingAttributes( 'heading', 'none' );
+
+			view.addRenderAttribute( 'sub_heading', 'class', 'trx-addons-info-box-subtitle' );
+			view.addInlineEditingAttributes( 'sub_heading', 'none' );
+
+			view.addRenderAttribute( 'description', 'class', 'trx-addons-info-box-description' );
+			view.addInlineEditingAttributes( 'description' );
+
+			view.addRenderAttribute( 'button_text', 'class', 'trx-addons-button-text' );
+			view.addInlineEditingAttributes( 'button_text', 'none' );
 		#>
-		<{{{trx_addons_if_html_tag}}} class="trx-addons-info-box-container" href="{{settings.link.url}}">
-			<div class="trx-addons-info-box trx-addons-info-box-{{ settings.icon_position }}">
+		<div class="trx-addons-info-box-container"><#
+			if ( settings.link.url != '' && settings.link_type == 'box' ) {
+				#><a class="trx-addons-info-box-container-link" href="{{ settings.link.url }}"></a><#
+			}
+			#><div class="trx-addons-info-box trx-addons-info-box-{{ settings.icon_position }}">
 				<# if ( settings.icon_type != 'none' ) { #>
 					<div class="trx-addons-info-box-icon-wrap">
 						<# if ( settings.link_type == 'icon' ) { #>
@@ -2129,7 +2217,7 @@ class InfoBoxWidget extends BaseWidget {
 								#>
 								<img src="{{ _.escape( image_url ) }}" />
 							<# } else if ( settings.icon_type == 'text' ) { #>
-								<span class="trx-addons-icon-text elementor-inline-editing" data-elementor-setting-key="icon_text" data-elementor-inline-editing-toolbar="none">
+								<span {{{ view.getRenderAttributeString( 'icon_text' ) }}}>
 									{{{ settings.icon_text }}}
 								</span>
 							<# } #>
@@ -2146,14 +2234,20 @@ class InfoBoxWidget extends BaseWidget {
 							subtitleHTMLTag = elementor.helpers.validateHTMLTag( settings.sub_title_html_tag );
 						#>
 						<# if ( settings.heading ) { #>
-							<{{trx_addons_title_html_tag}} class="trx-addons-info-box-title-container" href="{{settings.link.url}}">
-								<{{{ titleHTMLTag }}} class="trx-addons-info-box-title elementor-inline-editing" data-elementor-setting-key="heading" data-elementor-inline-editing-toolbar="none">
+							<div class="trx-addons-info-box-title-container" href="{{settings.link.url}}">
+								<{{{ titleHTMLTag }}} {{{ view.getRenderAttributeString( 'heading' ) }}}>
+									<# if ( settings.link_type == 'icon' ) { #>
+										<a href="{{ _.escape( settings.link.url ) }}">
+									<# } #>
 									{{{ settings.heading }}}
+									<# if ( settings.link_type == 'icon' ) { #>
+										</a>
+									<# } #>
 								</{{{ titleHTMLTag }}}>
-							</{{trx_addons_title_html_tag}}>
+							</div>
 						<# } #>
 						<# if ( settings.sub_heading ) { #>
-							<{{{ subtitleHTMLTag }}} class="trx-addons-info-box-subtitle elementor-inline-editing" data-elementor-setting-key="sub_heading" data-elementor-inline-editing-toolbar="none">
+							<{{{ subtitleHTMLTag }}} {{{ view.getRenderAttributeString( 'sub_heading' ) }}}>
 								{{{ settings.sub_heading }}}
 							</{{{ subtitleHTMLTag }}}>
 						<# } #>
@@ -2166,14 +2260,14 @@ class InfoBoxWidget extends BaseWidget {
 					<# } #>
 
 					<# if ( settings.description ) { #>
-						<div class="trx-addons-info-box-description elementor-inline-editing" data-elementor-setting-key="description" data-elementor-inline-editing-toolbar="basic">
+						<div {{{ view.getRenderAttributeString( 'description' ) }}}>
 							{{{ settings.description }}}
 						</div>
 					<# } #>
 					<# if ( settings.link_type == 'button' || ( settings.link_type == 'box' && settings.button_visible == 'yes' ) ) { #>
 						<# if ( settings.button_text != '' || settings.button_icon != '' ) { #>
 							<div class="trx-addons-info-box-footer">
-								<{{trx_addons_button_html_tag}} href="{{ settings.link.url }}" class="trx-addons-info-box-button elementor-button elementor-animation-{{ settings.button_animation }}">
+								<{{trx_addons_button_html_tag}} href="{{ settings.link.url }}" class="trx-addons-info-box-button trx-addons-info-box-button-icon-{{ settings.button_icon_position }} elementor-button elementor-animation-{{ settings.button_animation }}">
 									<# if ( settings.button_icon_position == 'before' ) { #>
 										<# if ( settings.button_icon || settings.select_button_icon.value ) { #>
 											<span class="trx-addons-button-icon trx-addons-icon">
@@ -2186,7 +2280,7 @@ class InfoBoxWidget extends BaseWidget {
 										<# } #>
 									<# } #>
 									<# if ( settings.button_text ) { #>
-										<span class="trx-addons-button-text elementor-inline-editing" data-elementor-setting-key="button_text" data-elementor-inline-editing-toolbar="none">
+										<span {{{ view.getRenderAttributeString( 'button_text' ) }}}>
 											{{{ settings.button_text }}}
 										</span>
 									<# } #>
@@ -2207,7 +2301,7 @@ class InfoBoxWidget extends BaseWidget {
 					<# } #>
 				</div>
 			</div>
-		</{{{trx_addons_if_html_tag}}}>
+		</div>
 		<?php
 	}
 }

@@ -28,13 +28,27 @@ if ( image ) {
 
 			<img src="{{ image }}" class="sc_hotspot_image"><#
 
-			var numbers = 0;
+			var numbers = 0,
+				cnt = 0;
 
 			_.each( settings.spots, function( item ) {
+				cnt++;
+				var item_id = id + '_item_' + cnt;
 				item.open = item.open > 0 ? 'click' : 'hover';
 				item.opened = item.opened > 0 ? 'sc_hotspot_item_opened' : '';
 				item.spot_visible = item.spot_visible > 0 ? 'always' : 'hover';
-				#><div class="<#
+				if ( item.spot_size.size ) {
+					#><style rel="stylesheet/css">
+						#{{ item_id }} {
+							--sc-hotspot-content-item-size: {{ item.spot_size.size }}{{ item.spot_size.unit }};
+							--sc-hotspot-content-item-size-half: calc( var(--sc-hotspot-content-item-size) / 2 );
+							--sc-hotspot-content-item-size-half-: calc( var(--sc-hotspot-content-item-size) / -2 );
+							--sc-hotspot-content-item-popup-offset-x: calc( var(--sc-hotspot-content-item-size) + var(--sc-hotspot-content-item-popup-offset) );
+							--sc-hotspot-content-item-popup-offset-y: calc( -1 * var(--sc-hotspot-content-item-size) - var(--sc-hotspot-content-item-popup-offset) );
+						}
+					</style><#
+				}
+				#><div id="{{ item_id }}" class="<#
 						print( trx_addons_apply_filters(
 								'trx_addons_filter_sc_item_classes',
 								'sc_hotspot_item sc_hotspot_item_visible_' + item.spot_visible + ' sc_hotspot_item_open_' + item.open + ' ' + item.opened,

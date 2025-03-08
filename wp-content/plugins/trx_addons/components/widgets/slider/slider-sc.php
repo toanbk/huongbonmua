@@ -22,7 +22,7 @@ if ( ! defined( 'TRX_ADDONS_VERSION' ) ) {
 */
 if ( !function_exists( 'trx_addons_sc_widget_slider' ) ) {
 	function trx_addons_sc_widget_slider($atts, $content=''){	
-		$atts = trx_addons_sc_prepare_atts('trx_widget_slider', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_widget_slider', $atts, trx_addons_sc_common_atts( 'trx_widget_slider', 'id', array(
 			// Individual params
 			'title' => '',
 			'engine' => 'swiper',
@@ -70,8 +70,7 @@ if ( !function_exists( 'trx_addons_sc_widget_slider' ) ) {
 			'controller_per_view' => 3, 	// Slides per view in the controller
 			'controller_space' => 0, 		// Space between slides in the controller
 			'controller_height' => '', 		// Height of the the controller
-			))
-		);
+		) ) );
 
 		global $wp_widget_factory, $TRX_ADDONS_STORAGE;
 
@@ -137,7 +136,7 @@ if (!function_exists('trx_addons_sc_widget_slider_add_shortcode')) {
 */
 if ( !function_exists( 'trx_addons_sc_slide' ) ) {
 	function trx_addons_sc_slide($atts, $content=''){	
-		$atts = trx_addons_sc_prepare_atts('trx_slide', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_slide', $atts, trx_addons_sc_common_atts( 'trx_slide', 'id', array(
 			// Individual params
 			'title' => '',
 			'subtitle' => '',
@@ -145,8 +144,7 @@ if ( !function_exists( 'trx_addons_sc_slide' ) ) {
 			'image' => '',
 			'video_url' => '',
 			'video_embed' => '',
-			))
-		);
+		) ) );
 
 		global $TRX_ADDONS_STORAGE;
 
@@ -175,7 +173,7 @@ if (!function_exists('trx_addons_sc_slide_add_shortcode')) {
 */
 if ( !function_exists( 'trx_addons_sc_slider_controller' ) ) {
 	function trx_addons_sc_slider_controller($atts, $content=''){	
-		$atts = trx_addons_sc_prepare_atts('trx_slider_controller', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_slider_controller', $atts, trx_addons_sc_common_atts( 'trx_slider_controller', 'id', array(
 			// Individual params
 			'controller_style' => 'thumbs',
 			'slider_id' => '',
@@ -186,8 +184,7 @@ if ( !function_exists( 'trx_addons_sc_slider_controller' ) ) {
 			'height' => '',
 			'interval' => '7000',
 			'controls' => 0,
-			))
-		);
+		) ) );
 		$atts['slides_per_view'] = empty($atts['slides_per_view']) ? 1 : max(1, min(8, (int) $atts['slides_per_view']));
 		if ( in_array( $atts['effect'], array( 'fade', 'flip', 'cube' ) ) ) {
 			$atts['slides_per_view'] = 1;	
@@ -238,7 +235,7 @@ if (!function_exists('trx_addons_sc_slider_controller_add_shortcode')) {
 */
 if ( !function_exists( 'trx_addons_sc_slider_controls' ) ) {
 	function trx_addons_sc_slider_controls($atts, $content = ''){	
-		$atts = trx_addons_sc_prepare_atts('trx_slider_controls', $atts, trx_addons_sc_common_atts('id', array(
+		$atts = trx_addons_sc_prepare_atts( 'trx_slider_controls', $atts, trx_addons_sc_common_atts( 'trx_slider_controls', 'id', array(
 			// Individual params
 			'slider_id' => '',
 			'controls_style' => 'default',
@@ -248,8 +245,7 @@ if ( !function_exists( 'trx_addons_sc_slider_controls' ) ) {
 			'hide_next' => 0,
 			'title_next' => '',
 			'pagination_style' => 'none',
-			))
-		);
+		) ) );
 		
 		$output = '<div' . (!empty($atts['id']) ? ' id="'.esc_attr($atts['id']).'"' : '')
 						. ' class="sc_slider_controls'

@@ -187,9 +187,16 @@ if ( ! function_exists( 'trx_addons_cpt_layouts_admin_menu' ) ) {
 					);
 				}
 			}
-			// Add a separator after the menu item 'Theme Layouts'
 			global $menu;
-			$menu['3.1'] = array( '', 'read', 'separator-theme-end', '', 'wp-menu-separator' ); // WPCS: override ok.
+			$sep_idx = '3.1';
+			// Move a menu item 'Theme Layouts' after the 'Theme Panel'
+			if ( ! empty( $menu['3'] ) ) {
+				$menu['2.3'] = $menu['3'];
+				unset($menu['3']);
+				$sep_idx = '2.4';
+			}
+			// Add a separator after the menu item 'Theme Layouts'
+			$menu[ $sep_idx ] = array( '', 'read', 'separator-theme-end', '', 'wp-menu-separator' ); // WPCS: override ok.
 		}
 	}
 }
@@ -323,7 +330,7 @@ if ( ! function_exists( 'trx_addons_cpt_layouts_create_layout_post_meta_replace_
 	add_filter( 'trx_addons_filter_create_layout_post_meta', 'trx_addons_cpt_layouts_create_layout_post_meta_replace_site_url', 10, 4 );
 	function trx_addons_cpt_layouts_create_layout_post_meta_replace_site_url( $meta_val, $meta_key, $layout_slug, $new_id ) {
 		if ( is_string( $meta_val ) && substr( $meta_val, 0, 2 ) == '[{' && substr( $meta_val, -2 ) == '}]' ) {
-			$meta_val = preg_replace( '#(http[s]?[:])?\\\\\\\\/\\\\\\\\/[a-zA-Z0-9_\\.\\-]+#', str_replace( '/', '\\\\\\\\/', get_home_url() ), $meta_val );
+			$meta_val = preg_replace( '#(http[s]?[:])?\\\\\\\\/\\\\\\\\/[a-zA-Z0-9_\\.\\-]+#', str_replace( '/', '\\\\\\\\/', home_url() ), $meta_val );
 		}
 		return $meta_val;
 	}
@@ -622,6 +629,8 @@ if ( !function_exists( 'trx_addons_cpt_layouts_importer_export_fields' ) ) {
 if ( !function_exists( 'trx_addons_cpt_layouts_show_layout' ) ) {
 	add_action( 'trx_addons_action_show_layout', 'trx_addons_cpt_layouts_show_layout', 10, 3 );
 	function trx_addons_cpt_layouts_show_layout($layout_id, $post_id=0, $echo=true) {
+		// Local cache for the layouts
+		static $layouts = array();
 		// Prevent recursion when show layouts
 		static $busy = array();
 		if ( ! empty( $busy[ $layout_id ] ) ) return '!';
@@ -629,52 +638,58 @@ if ( !function_exists( 'trx_addons_cpt_layouts_show_layout' ) ) {
 		// Generate layout
 		$content = '';
 		if ( (int) $layout_id > 0 ) {
+			// Check if layout already exists in the local cache (this layout already was shown in this page)
+			if ( ! empty( $layouts[ $layout_id ] ) ) {
+				$content = $layouts[ $layout_id ];
+			}
 			// Load layouts from the cache
-			$use_cache = trx_addons_is_on( trx_addons_get_option( 'layouts_cache' ) )
-							//&& trx_addons_is_off( trx_addons_get_option( 'debug_mode' ) )
-							&& ! is_admin()
-							&& ! wp_doing_ajax()
-							&& ! trx_addons_is_preview();
+			if ( empty( $content ) ) {
+				$use_cache = trx_addons_is_on( trx_addons_get_option( 'layouts_cache' ) )
+								//&& trx_addons_is_off( trx_addons_get_option( 'debug_mode' ) )
+								&& ! is_admin()
+								&& ! wp_doing_ajax()
+								&& ! trx_addons_is_preview();
 
-			// Check layout's type
-			if ( $use_cache ) {
-				$use_cache = false;
-				$types_to_cache = trx_addons_array_get_keys_by_value( trx_addons_get_option( 'layouts_cache_types' ) );
-				if ( count( $types_to_cache ) > 0 ) {
-					$layout_meta = get_post_meta( $layout_id, 'trx_addons_options', true );
-					if ( ! empty( $layout_meta['layout_type'] )
-						&& in_array( $layout_meta['layout_type'], $types_to_cache )
-						&& apply_filters( 'trx_addons_filter_layout_cache_by_type', true, compact( 'layout_id', 'post_id', 'layout_meta' ) )
-					) {
-						$use_cache = true;
+				// Check layout's type
+				if ( $use_cache ) {
+					$use_cache = false;
+					$types_to_cache = trx_addons_array_get_keys_by_value( trx_addons_get_option( 'layouts_cache_types' ) );
+					if ( count( $types_to_cache ) > 0 ) {
+						$layout_meta = get_post_meta( $layout_id, 'trx_addons_options', true );
+						if ( ! empty( $layout_meta['layout_type'] )
+							&& in_array( $layout_meta['layout_type'], $types_to_cache )
+							&& apply_filters( 'trx_addons_filter_layout_cache_by_type', true, compact( 'layout_id', 'post_id', 'layout_meta' ) )
+						) {
+							$use_cache = true;
+						}
+					}
+				}
+				// Cache only on the most visited pages (by default, caching only 1/2 of the most visited pages)
+				if ( $use_cache && trx_addons_is_on( trx_addons_get_option( 'layouts_cache_popular' ) ) && function_exists( 'trx_addons_statistics_get_info' ) ) {
+					$stats = trx_addons_statistics_get_info();
+					if ( is_array( $stats ) && ! empty( $stats['total'] ) ) {
+						$use_cache = apply_filters( 'trx_addons_filter_layout_cache_popular', $stats['index'] < $stats['total'] / 2, $stats );
+					}
+				}
+				// Use cached layout
+				if ( $use_cache ) {
+					// Store layouts for each post and URL separately
+					$url = trx_addons_get_current_url();
+					$url_hash = md5( $url );
+					$cache_key = sprintf('%1$s_%2$s_%3$s', $layout_id, $post_id, $url_hash );
+					$cache = trx_addons_cache_load( $cache_key );
+					if ( ! empty( $cache['layout'] ) ) {
+						$content = $cache['layout'];
+						if ( ! empty( $cache['css']) ) {
+							trx_addons_add_inline_css( $cache['css'] );
+						}
+						if ( ! empty( $cache['html']) ) {
+							trx_addons_add_inline_html( $cache['html'] );
+						}
 					}
 				}
 			}
-			// Cache only on the most visited pages (by default, caching only 1/2 of the most visited pages)
-			if ( $use_cache && trx_addons_is_on( trx_addons_get_option( 'layouts_cache_popular' ) ) && function_exists( 'trx_addons_statistics_get_info' ) ) {
-				$stats = trx_addons_statistics_get_info();
-				if ( is_array( $stats ) && ! empty( $stats['total'] ) ) {
-					$use_cache = apply_filters( 'trx_addons_filter_layout_cache_popular', $stats['index'] < $stats['total'] / 2, $stats );
-				}
-			}
-			// Use cached layout
-			if ( $use_cache ) {
-				// Store layouts for each post and URL separately
-				$url = trx_addons_get_current_url();
-				$url_hash = md5( $url );
-				$cache_key = sprintf('%1$s_%2$s_%3$s', $layout_id, $post_id, $url_hash );
-				$cache = trx_addons_cache_load( $cache_key );
-				if ( ! empty( $cache['layout'] ) ) {
-					$content = $cache['layout'];
-					if ( ! empty( $cache['css']) ) {
-						trx_addons_add_inline_css( $cache['css'] );
-					}
-					if ( ! empty( $cache['html']) ) {
-						trx_addons_add_inline_html( $cache['html'] );
-					}
-				}
-			}
-			// Create layout
+			// Create layout if not exists in the cache
 			if ( empty( $content ) ) {
 				do_action( 'trx_addons_action_before_show_layout', $layout_id );
 				$layout = get_post($layout_id);
@@ -704,6 +719,10 @@ if ( !function_exists( 'trx_addons_cpt_layouts_show_layout' ) ) {
 					}
 					// Replace macros in the content
 					$content = apply_filters('trx_addons_filter_sc_layout_prepare_macros', $content, $layout->ID );
+					// Save content to the local cache
+					if ( apply_filters( 'trx_addons_filter_sc_layout_use_local_cache', false ) ) {
+						$layouts[ $layout_id ] = $content;
+					}
 					// Save content to cache
 					if ( $use_cache ) {
 						trx_addons_cache_save( $cache_key, array(
