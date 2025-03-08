@@ -1,7 +1,6 @@
 # WordPress core files
 /wp-admin/
 /wp-includes/
-/index.php
 /license.txt
 /readme.html
 /wp-activate.php
@@ -17,7 +16,6 @@
 /wp-settings.php
 /wp-signup.php
 /wp-trackback.php
-/xmlrpc.php
 
 # Ignore specific wp-content subfolders
 wp-content/mu-plugins/
@@ -38,6 +36,7 @@ wp-content/uploads/*
 *.log
 *.sql
 *.sqlite
+.htaccess
 
 # Ignore OS-generated files
 .DS_Store
